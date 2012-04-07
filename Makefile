@@ -1,16 +1,18 @@
-PROGRAM=tester
-LIB=src/libutest.a
-CFLAGS=-Wall -g -Wextra -std=c99
-LIBOBJ=src/utest.c
-OBJ=tests.c stack.c more-tests.c
+UTEST=src/libutest.a
+CFLAGS=-Wall -g -Wextra -std=c99 -Isrc
+UTEST_OBJ=src/utest.o
 CC=gcc
 
-$(PROGRAM) : $(LIB) $(OBJ) stack.h
-	$(CC) $(CFLAGS) -o $(PROGRAM) $(OBJ) -Isrc -lutest -Lsrc
+STACK_EX=examples/stack/stack-test
+STACK_OBJ=examples/stack/tests.o examples/stack/stack.o
 
-$(LIB) : $(LIBOBJ) src/utest.h
-	$(CC) $(CFLAGS) src/utest.c -c -o src/utest.o
-	ar rs $(LIB) src/utest.o
+all : $(UTEST) $(STACK_EX)
+
+$(UTEST) : $(UTEST_OBJ) src/utest.h
+	ar crs $(UTEST) $(UTEST_OBJ)
+
+$(STACK_EX) : $(LIB) $(STACK_OBJ)
+	$(CC) $(CFLAGS) -o $(STACK_EX) $(STACK_OBJ) -lutest -Lsrc
 
 %.o : %.c
 	$(CC) -c $(CFLAGS) -o $@ $<
@@ -18,10 +20,7 @@ $(LIB) : $(LIBOBJ) src/utest.h
 .PHONY : clean distclean
 
 clean :
-	rm -f src/*.o
-	rm -f *.o
+	rm -f src/*.o *.o examples/stack/*.o
 
 distclean : clean
-	rm -f $(LIB)
-	rm -f $(PROGRAM)
-
+	rm -f $(UTEST) $(STACK_EX)
