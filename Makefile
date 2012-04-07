@@ -1,6 +1,6 @@
 PROGRAM=tester
 CFLAGS=-Wall -g -Wextra -std=c99
-OBJ=tests.c stack.c utest.c
+OBJ=tests.c stack.c utest.c more-tests.c
 CC=gcc
 
 $(PROGRAM) : $(OBJ) utest.h stack.h

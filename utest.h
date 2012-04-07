@@ -1,6 +1,8 @@
 #ifndef UTEST_H
 #define UTEST_H
 
+#include <string.h>
+
 #define JOIN_(x,y) x ## y
 #define JOIN(x,y) JOIN_(x,y)
 #define STRINGIFY_(x) #x
@@ -12,6 +14,9 @@
 #define NORMAL  "\033[0m"
 
 #define INBOLD(x) BOLD x NORMAL
+
+#define UT_DIRECT_EQ(x,y) (x == y)
+#define UT_STR_EQ(x,y) (strcmp(x,y) == 0)
 
 /**
  */
@@ -41,18 +46,24 @@
 /**
  */
 #define ut_assert_eq_int(expected, actual)                                  \
-    ut_assert_eq_with_type(int, "%d", expected, actual)
+    ut_assert_eq_with_type(int, UT_DIRECT_EQ, "%d", expected, actual)
 
 /**
  */
 #define ut_assert_eq_uint(expected, actual)                                 \
-    ut_assert_eq_with_type(unsigned int, "%u", expected, actual)
+    ut_assert_eq_with_type(unsigned int, UT_DIRECT_EQ, "%u", expected, actual)
 
-#define ut_assert_eq_with_type(type, fmt, expected, actual)                 \
+/**
+ */
+#define ut_assert_equal_string(expected, actual)                            \
+    ut_assert_eq_with_type(char *, UT_STR_EQ, "%s", expected, actual)
+
+
+#define ut_assert_eq_with_type(type, eq, fmt, expected, actual)             \
     do {                                                                    \
         type _ut_exp = expected;                                            \
         type _ut_act = actual;                                              \
-        _ut_assert_func(_ut_exp == _ut_act,                                 \
+        _ut_assert_func(eq(_ut_exp, _ut_act),                               \
                 "Expected <" INBOLD(fmt) ">, got <" INBOLD(fmt) ">",        \
                 _ut_exp, _ut_act);                                          \
     } while (0)
