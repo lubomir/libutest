@@ -31,7 +31,7 @@
 /**
  */
 #define ut_assert_null(exp)                                                 \
-    _ut_assert_func(exp == NULL, INBOLD(STRINGIFY(exp) " is not NULL")
+    _ut_assert_func(exp == NULL, INBOLD(STRINGIFY(exp)) " is not NULL")
 
 /**
  */
