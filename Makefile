@@ -1,10 +1,16 @@
 PROGRAM=tester
+LIB=src/libutest.a
 CFLAGS=-Wall -g -Wextra -std=c99
-OBJ=tests.c stack.c utest.c more-tests.c
+LIBOBJ=src/utest.c
+OBJ=tests.c stack.c more-tests.c
 CC=gcc
 
-$(PROGRAM) : $(OBJ) utest.h stack.h
-	$(CC) $(CFLAGS) -o $(PROGRAM) $(OBJ) -I.
+$(PROGRAM) : $(LIB) $(OBJ) stack.h
+	$(CC) $(CFLAGS) -o $(PROGRAM) $(OBJ) -Isrc -lutest -Lsrc
+
+$(LIB) : $(LIBOBJ) src/utest.h
+	$(CC) $(CFLAGS) src/utest.c -c -o src/utest.o
+	ar rs $(LIB) src/utest.o
 
 %.o : %.c
 	$(CC) -c $(CFLAGS) -o $@ $<
@@ -12,8 +18,10 @@ $(PROGRAM) : $(OBJ) utest.h stack.h
 .PHONY : clean distclean
 
 clean :
+	rm -f src/*.o
 	rm -f *.o
 
 distclean : clean
+	rm -f $(LIB)
 	rm -f $(PROGRAM)
 
