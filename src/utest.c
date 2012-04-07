@@ -77,6 +77,9 @@ int ut_run_all_tests(void)
 
     for (int i = 0; i < tests->num; i++) {
         int old_fails = assertions_failed;
+#ifdef DEBUG
+        fprintf(stderr, "Running test '%s'\n", tests->names[i]);
+#endif
         if (tests->setup) {
             tests->setup();
         }
