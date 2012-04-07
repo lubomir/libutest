@@ -119,11 +119,11 @@ void ut_assert_func(const char *file,
         return;
     }
     assertions_failed++;
-    fprintf(logs,
-            "Assertion in %s%s%s failed:\n\t", BOLD, current_test_name, NORMAL);
+    fprintf(logs, "Assertion in %s%s%s (%s:%d) failed:\n\t",
+            BOLD, current_test_name, NORMAL, file, lineno);
     va_list args;
     va_start(args, msg);
     vfprintf(logs, msg, args);
     va_end(args);
-    fprintf(logs, " at %s:%d\n\n", file, lineno);
+    fprintf(logs, "\n\n");
 }
