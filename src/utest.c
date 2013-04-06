@@ -66,8 +66,9 @@ void init_tests(void)
 
 void ut_register_test(const char const *name, func_t f)
 {
-    if (tests == NULL)
+    if (tests == NULL) {
         init_tests();
+    }
     if (tests->num >= tests->size) {
         tests->size = 2 * tests->size;
         tests->funcs = safe_realloc(tests->funcs, sizeof(func_t) * tests->size);
@@ -80,8 +81,9 @@ void ut_register_test(const char const *name, func_t f)
 
 void ut_register_callback(void (*cb)(void), int type)
 {
-    if (tests == NULL)
+    if (tests == NULL) {
         init_tests();
+    }
     switch (type) {
     case 0:
         tests->setup = cb;
