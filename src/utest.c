@@ -27,7 +27,6 @@ struct suite {
 
 static Suite *tests = NULL;
 static const char *current_test_name = NULL;
-static unsigned int tests_failed = 0;
 static unsigned int assertions_ok = 0;
 static unsigned int assertions_failed = 0;
 static FILE * logs = NULL;
@@ -136,7 +135,7 @@ ut_register_callback (void (*cb)(void), const char *suitename, int type)
 }
 
 static unsigned int
-suite_run (Suite *suite)
+suite_run (Suite *suite, unsigned int *tests_failed)
 {
     for (size_t i = 0; i < suite->num; i++) {
         unsigned int old_fails = assertions_failed;
@@ -165,10 +164,11 @@ int
 ut_run_all_tests (void)
 {
     unsigned int tests_ran = 0;
+    unsigned int tests_failed = 0;
     logs = tmpfile();
 
     for (Suite *suite = tests; suite; suite = suite->next) {
-        tests_ran += suite_run(suite);
+        tests_ran += suite_run(suite, &tests_failed);
     }
     printf("\n\n");
     char buffer[BUFFER_SIZE];
