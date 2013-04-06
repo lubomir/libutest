@@ -135,6 +135,30 @@ ut_register_callback (void (*cb)(void), const char *suitename, int type)
     }
 }
 
+static unsigned int
+suite_run (Suite *suite)
+{
+    for (size_t i = 0; i < suite->num; i++) {
+        unsigned int old_fails = assertions_failed;
+        debug("Running '%s:%s'\n", suite->name, suite->names[i]);
+        if (suite->setup) {
+            suite->setup();
+        }
+        current_test_name = suite->names[i];
+        suite->funcs[i]();
+        if (suite->teardown) {
+            suite->teardown();
+        }
+        if (old_fails != assertions_failed) {
+            tests_failed++;
+            printf(RED "F" NORMAL);
+        } else {
+            printf(GREEN "." NORMAL);
+        }
+    }
+    return suite->num;
+}
+
 #define BUFFER_SIZE 256
 
 int
@@ -144,25 +168,7 @@ ut_run_all_tests (void)
     logs = tmpfile();
 
     for (Suite *suite = tests; suite; suite = suite->next) {
-        for (size_t i = 0; i < suite->num; i++) {
-            unsigned int old_fails = assertions_failed;
-            debug("Running '%s:%s'\n", suite->name, suite->names[i]);
-            if (suite->setup) {
-                suite->setup();
-            }
-            current_test_name = suite->names[i];
-            suite->funcs[i]();
-            if (suite->teardown) {
-                suite->teardown();
-            }
-            if (old_fails != assertions_failed) {
-                tests_failed++;
-                printf(RED "F" NORMAL);
-            } else {
-                printf(GREEN "." NORMAL);
-            }
-        }
-        tests_ran += suite->num;
+        tests_ran += suite_run(suite);
     }
     printf("\n\n");
     char buffer[BUFFER_SIZE];
