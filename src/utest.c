@@ -123,27 +123,31 @@ void ut_register_callback(void (*cb)(void), const char *suitename, int type)
 
 int ut_run_all_tests(void)
 {
+    unsigned int tests_ran = 0;
     logs = tmpfile();
 
-    for (size_t i = 0; i < tests->num; i++) {
-        unsigned int old_fails = assertions_failed;
+    for (Suite *suite = tests; suite; suite = suite->next) {
+        for (size_t i = 0; i < suite->num; i++) {
+            unsigned int old_fails = assertions_failed;
 #ifdef DEBUG
-        fprintf(stderr, "Running test '%s:%s'\n", tests->name, tests->names[i]);
+            fprintf(stderr, "Running test '%s:%s'\n", suite->name, suite->names[i]);
 #endif
-        if (tests->setup) {
-            tests->setup();
+            if (suite->setup) {
+                suite->setup();
+            }
+            current_test_name = suite->names[i];
+            suite->funcs[i]();
+            if (suite->teardown) {
+                suite->teardown();
+            }
+            if (old_fails != assertions_failed) {
+                tests_failed++;
+                printf(RED "F" NORMAL);
+            } else {
+                printf(GREEN "." NORMAL);
+            }
         }
-        current_test_name = tests->names[i];
-        tests->funcs[i]();
-        if (tests->teardown) {
-            tests->teardown();
-        }
-        if (old_fails != assertions_failed) {
-            tests_failed++;
-            printf(RED "F" NORMAL);
-        } else {
-            printf(GREEN "." NORMAL);
-        }
+        tests_ran += suite->num;
     }
     printf("\n\n");
     char buffer[BUFFER_SIZE];
@@ -154,7 +158,7 @@ int ut_run_all_tests(void)
 
     printf("%u assertions succeeded, %u assertions failed\n",
             assertions_ok, assertions_failed);
-    printf("%zu tests ran\n", tests->num);
+    printf("%u tests ran\n", tests_ran);
     fclose(logs);
     return tests_failed == 0;
 }
