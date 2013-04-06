@@ -32,7 +32,8 @@ static unsigned int assertions_ok = 0;
 static unsigned int assertions_failed = 0;
 static FILE * logs = NULL;
 
-void shutdown_tests(void)
+static void
+shutdown_tests (void)
 {
     debug("Shutting down tests\n");
     Suite *s = tests;
@@ -69,7 +70,7 @@ void * safe_realloc (void *mem, size_t size)
 }
 
 static Suite *
-suite_new(const char *name)
+suite_new (const char *name)
 {
     static int once = 0;
     if (!once++) {
@@ -104,7 +105,8 @@ Suite * find_suite (const char *name)
     return tmp;
 }
 
-void ut_register_test(const char *suite, const char const *name, func_t f)
+void
+ut_register_test (const char *suite, const char const *name, func_t f)
 {
     Suite *tests = find_suite(suite);
 
@@ -118,7 +120,8 @@ void ut_register_test(const char *suite, const char const *name, func_t f)
     tests->num++;
 }
 
-void ut_register_callback(void (*cb)(void), const char *suitename, int type)
+void
+ut_register_callback (void (*cb)(void), const char *suitename, int type)
 {
     Suite *suite = find_suite(suitename);
 
@@ -134,7 +137,8 @@ void ut_register_callback(void (*cb)(void), const char *suitename, int type)
 
 #define BUFFER_SIZE 256
 
-int ut_run_all_tests(void)
+int
+ut_run_all_tests (void)
 {
     unsigned int tests_ran = 0;
     logs = tmpfile();
@@ -174,10 +178,11 @@ int ut_run_all_tests(void)
     return tests_failed == 0;
 }
 
-void ut_assert_func(const char *file,
-                    int lineno,
-                    int expr,
-                    const char *msg, ...)
+void
+ut_assert_func (const char *file,
+                int lineno,
+                int expr,
+                const char *msg, ...)
 {
     if (expr) {
         assertions_ok++;
