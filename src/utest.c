@@ -30,13 +30,36 @@ void shutdown_tests(void)
     free(tests);
 }
 
+static inline
+void * safe_malloc (size_t size)
+{
+    void *mem = malloc(size);
+    if (!mem) {
+        fprintf(stderr, " *** ERROR: memory allocation failed\n");
+        abort();
+    }
+    return mem;
+}
+
+static inline
+void * safe_realloc (void *mem, size_t size)
+{
+    void *new_mem = realloc(mem, size);
+    if (!new_mem) {
+        fprintf(stderr, " *** ERROR: memory allocation failed\n");
+        free(mem);
+        abort();
+    }
+    return new_mem;
+}
+
 void init_tests(void)
 {
-    tests = malloc(sizeof(tests_t));
+    tests = malloc(sizeof *tests);
     tests->size = 8;
     tests->num = 0;
-    tests->funcs = malloc(sizeof(func_t) * tests->size);
-    tests->names = malloc(sizeof(char *) * tests->size);
+    tests->funcs = safe_malloc(sizeof(func_t) * tests->size);
+    tests->names = safe_malloc(sizeof(func_t) * tests->size);
     tests->setup = tests->teardown = NULL;
     atexit(shutdown_tests);
 }
@@ -47,8 +70,8 @@ void ut_register_test(const char const *name, func_t f)
         init_tests();
     if (tests->num >= tests->size) {
         tests->size = 2 * tests->size;
-        tests->funcs = realloc(tests->funcs, sizeof(func_t) * tests->size);
-        tests->names = realloc(tests->names, sizeof(func_t) * tests->size);
+        tests->funcs = safe_realloc(tests->funcs, sizeof(func_t) * tests->size);
+        tests->names = safe_realloc(tests->names, sizeof(func_t) * tests->size);
     }
     tests->names[tests->num] = name;
     tests->funcs[tests->num] = f;
