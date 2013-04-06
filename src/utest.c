@@ -105,17 +105,16 @@ void ut_register_test(const char *suite, const char const *name, func_t f)
     tests->num++;
 }
 
-void ut_register_callback(void (*cb)(void), int type)
+void ut_register_callback(void (*cb)(void), const char *suitename, int type)
 {
-    //if (tests == NULL) {
-    //    init_tests();
-    //}
+    Suite *suite = find_suite(suitename);
+
     switch (type) {
     case 0:
-        tests->setup = cb;
+        suite->setup = cb;
         break;
     case 1:
-        tests->teardown = cb;
+        suite->teardown = cb;
         break;
     }
 }

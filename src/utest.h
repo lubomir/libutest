@@ -78,25 +78,42 @@
     } while (0)
 
 
-/**
- */
-#define UT_SETUP                                                            \
+#define _ut_UT_SETUP(suitename)                                             \
     void _ut_setup (void);                                                  \
     void _ut_setup_register (void) __attribute__((constructor));            \
     void _ut_setup_register (void) {                                        \
-        ut_register_callback(_ut_setup, 0);                                 \
+        ut_register_callback(_ut_setup, suitename, 0);                      \
     }                                                                       \
     void _ut_setup(void)
 
 /**
  */
-#define UT_TEARDOWN                                                         \
+#define UT_SUITE_SETUP(suitname)                                            \
+    _ut_UT_SETUP(STRINGIFY(suitname))
+
+/**
+ */
+#define UT_SETUP                                                            \
+    _ut_UT_SETUP(__FILE__)
+
+#define _ut_UT_TEARDOWN(suitename)                                          \
     void _ut_teardown (void);                                               \
     void _ut_teardown_register (void) __attribute__((constructor));         \
     void _ut_teardown_register (void) {                                     \
-        ut_register_callback(_ut_teardown, 1);                              \
+        ut_register_callback(_ut_teardown, suitename, 1);                   \
     }                                                                       \
     void _ut_teardown(void)
+
+/**
+ */
+#define UT_SUITE_TEARDOWN(suitname)                                         \
+    _ut_UT_TEARDOWN(STRINGIFY(suitname))
+
+/**
+ */
+#define UT_TEARDOWN                                                         \
+    _ut_UT_TEARDOWN(__FILE__)
+
 
 /**
  */
@@ -110,7 +127,7 @@ int ut_run_all_tests(void);
     ut_assert_func(__FILE__, __LINE__, exp, __VA_ARGS__)
 
 void ut_register_test(const char *suite, const char *name, void (*f)(void));
-void ut_register_callback(void (*cb)(void), int type);
+void ut_register_callback(void (*cb)(void), const char *suitename, int type);
 void ut_assert_func(const char *file, int lineno, int expr, const char *msg, ...);
 
 #endif /* end of include guard: UTEST_H */
