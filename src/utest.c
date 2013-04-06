@@ -29,9 +29,14 @@ static FILE * logs = NULL;
 
 void shutdown_tests(void)
 {
-    free(tests->funcs);
-    free(tests->names);
-    free(tests);
+    Suite *s = tests;
+    while (s) {
+        tests = s->next;
+        free(s->funcs);
+        free(s->names);
+        free(s);
+        s = tests;
+    }
 }
 
 static inline
