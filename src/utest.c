@@ -6,15 +6,18 @@
 #include <unistd.h>
 
 typedef void (*func_t)(void);
+typedef struct tests_s tests_t;
 
-typedef struct {
+struct tests_s {
+    const char *suite;
     size_t size;
     size_t num;
     const char const **names;
     func_t *funcs;
     func_t setup;
     func_t teardown;
-} tests_t;
+    struct tests_s *next;
+};
 
 static tests_t *tests = NULL;
 static const char *current_test_name = NULL;
@@ -56,15 +59,17 @@ void * safe_realloc (void *mem, size_t size)
 void init_tests(void)
 {
     tests = malloc(sizeof *tests);
+    tests->suite = "";
     tests->size = 8;
     tests->num = 0;
     tests->funcs = safe_malloc(sizeof(func_t) * tests->size);
     tests->names = safe_malloc(sizeof(func_t) * tests->size);
     tests->setup = tests->teardown = NULL;
+    tests->next = NULL;
     atexit(shutdown_tests);
 }
 
-void ut_register_test(const char const *name, func_t f)
+void ut_register_test(const char *suite, const char const *name, func_t f)
 {
     if (tests == NULL) {
         init_tests();

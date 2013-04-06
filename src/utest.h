@@ -5,6 +5,7 @@
 
 #define JOIN_(x,y) x ## y
 #define JOIN(x,y) JOIN_(x,y)
+#define JOIN4(a,b,c,d) JOIN(JOIN(a,b), JOIN(c,d))
 #define STRINGIFY_(x) #x
 #define STRINGIFY(x) STRINGIFY_(x)
 
@@ -20,14 +21,19 @@
 
 /**
  */
-#define UT_TEST(tname)                                                      \
-    void JOIN(_ut_test_, tname) (void);                                     \
-    void JOIN(_ut_test_register_,tname) (void)                              \
+#define UT_SUITE_TEST(suite, tname)                                         \
+    void JOIN4(_ut_test_, suite, _,tname) (void);                           \
+    void JOIN4(_ut_test_register_, suite, _,tname) (void)                    \
         __attribute__((constructor(__COUNTER__ + 101)));                    \
-    void JOIN(_ut_test_register_,tname) (void) {                            \
-        ut_register_test(STRINGIFY(tname), JOIN(_ut_test_,tname));          \
+    void JOIN4(_ut_test_register_, suite, _,tname) (void) {                 \
+        ut_register_test(STRINGIFY(suite),                                  \
+                STRINGIFY(tname),                                           \
+                JOIN4(_ut_test_, suite, _,tname));                          \
     }                                                                       \
-    void JOIN(_ut_test_, tname) (void)
+    void JOIN4(_ut_test_, suite, _, tname) (void)
+
+#define UT_TEST(tname)                                                      \
+    UT_SUITE_TEST(, tname)
 
 /**
  */
@@ -100,7 +106,7 @@ int ut_run_all_tests(void);
 #define _ut_assert_func(exp,...)                                            \
     ut_assert_func(__FILE__, __LINE__, exp, __VA_ARGS__)
 
-void ut_register_test(const char *name, void (*f)(void));
+void ut_register_test(const char *suite, const char *name, void (*f)(void));
 void ut_register_callback(void (*cb)(void), int type);
 void ut_assert_func(const char *file, int lineno, int expr, const char *msg, ...);
 
