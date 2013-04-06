@@ -5,6 +5,12 @@
 #include <stdarg.h>
 #include <unistd.h>
 
+#ifdef DEBUG
+# define debug(...) fprintf(stderr, " *** DEBUG: " __VA_ARGS__);
+#else
+# define debug(...)
+#endif
+
 typedef void (*func_t)(void);
 typedef struct suite Suite;
 
@@ -28,6 +34,7 @@ static FILE * logs = NULL;
 
 void shutdown_tests(void)
 {
+    debug("Shutting down tests\n");
     Suite *s = tests;
     while (s) {
         tests = s->next;
@@ -135,9 +142,7 @@ int ut_run_all_tests(void)
     for (Suite *suite = tests; suite; suite = suite->next) {
         for (size_t i = 0; i < suite->num; i++) {
             unsigned int old_fails = assertions_failed;
-#ifdef DEBUG
-            fprintf(stderr, "Running test '%s:%s'\n", suite->name, suite->names[i]);
-#endif
+            debug("Running '%s:%s'\n", suite->name, suite->names[i]);
             if (suite->setup) {
                 suite->setup();
             }
