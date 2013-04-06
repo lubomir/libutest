@@ -6,20 +6,21 @@
 #include <unistd.h>
 
 typedef void (*func_t)(void);
-typedef struct tests_s tests_t;
+typedef struct suite Suite;
 
-struct tests_s {
-    const char *suite;
+struct suite {
+    const char *name;
     size_t size;
     size_t num;
     const char const **names;
     func_t *funcs;
     func_t setup;
     func_t teardown;
-    struct tests_s *next;
+    struct suite *next;
 };
 
-static tests_t *tests = NULL;
+static int once = 0;
+static Suite *tests = NULL;
 static const char *current_test_name = NULL;
 static unsigned int tests_failed = 0;
 static unsigned int assertions_ok = 0;
@@ -56,24 +57,44 @@ void * safe_realloc (void *mem, size_t size)
     return new_mem;
 }
 
-void init_tests(void)
+static Suite *
+suite_new(const char *name)
 {
-    tests = malloc(sizeof *tests);
-    tests->suite = "";
-    tests->size = 8;
-    tests->num = 0;
-    tests->funcs = safe_malloc(sizeof(func_t) * tests->size);
-    tests->names = safe_malloc(sizeof(func_t) * tests->size);
-    tests->setup = tests->teardown = NULL;
-    tests->next = NULL;
-    atexit(shutdown_tests);
+    Suite *suite = malloc(sizeof *tests);
+    suite->name = name;
+    suite->size = 8;
+    suite->num = 0;
+    suite->funcs = safe_malloc(sizeof(func_t) * suite->size);
+    suite->names = safe_malloc(sizeof(func_t) * suite->size);
+    suite->setup = suite->teardown = NULL;
+    suite->next = NULL;
+    if (!once) {
+        atexit(shutdown_tests);
+    }
+    return suite;
+}
+
+static inline
+Suite * find_suite (const char *name)
+{
+    Suite *tmp = tests;
+
+    while (tmp != NULL && strcmp(tmp->name, name) != 0) {
+        tmp = tmp->next;
+    }
+    if (tmp == NULL) {
+        tmp = suite_new(name);
+        tmp->next = tests;
+        tests = tmp;
+    }
+
+    return tmp;
 }
 
 void ut_register_test(const char *suite, const char const *name, func_t f)
 {
-    if (tests == NULL) {
-        init_tests();
-    }
+    Suite *tests = find_suite(suite);
+
     if (tests->num >= tests->size) {
         tests->size = 2 * tests->size;
         tests->funcs = safe_realloc(tests->funcs, sizeof(func_t) * tests->size);
@@ -86,9 +107,9 @@ void ut_register_test(const char *suite, const char const *name, func_t f)
 
 void ut_register_callback(void (*cb)(void), int type)
 {
-    if (tests == NULL) {
-        init_tests();
-    }
+    //if (tests == NULL) {
+    //    init_tests();
+    //}
     switch (type) {
     case 0:
         tests->setup = cb;
@@ -108,7 +129,7 @@ int ut_run_all_tests(void)
     for (size_t i = 0; i < tests->num; i++) {
         unsigned int old_fails = assertions_failed;
 #ifdef DEBUG
-        fprintf(stderr, "Running test '%s'\n", tests->names[i]);
+        fprintf(stderr, "Running test '%s:%s'\n", tests->name, tests->names[i]);
 #endif
         if (tests->setup) {
             tests->setup();
