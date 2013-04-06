@@ -36,7 +36,7 @@
 /**
  */
 #define UT_SUITE_TEST(suite, tname)                                         \
-    _ut_UT_SUITE_TEST(suite, suite, tname)
+    _ut_UT_SUITE_TEST(suite, STRINGIFY(suite), tname)
 
 /**
  */
@@ -78,41 +78,41 @@
     } while (0)
 
 
-#define _ut_UT_SETUP(suitename)                                             \
-    void _ut_setup (void);                                                  \
-    void _ut_setup_register (void) __attribute__((constructor));            \
-    void _ut_setup_register (void) {                                        \
-        ut_register_callback(_ut_setup, suitename, 0);                      \
+#define _ut_UT_SETUP(id, suitename)                                         \
+    void _ut_setup_##id (void);                                             \
+    void _ut_setup_##id##_register (void) __attribute__((constructor));     \
+    void _ut_setup_##id##_register (void) {                                 \
+        ut_register_callback(_ut_setup_##id, suitename, 0);                 \
     }                                                                       \
-    void _ut_setup(void)
+    void _ut_setup_##id(void)
 
 /**
  */
-#define UT_SUITE_SETUP(suitname)                                            \
-    _ut_UT_SETUP(STRINGIFY(suitname))
+#define UT_SUITE_SETUP(suitename)                                           \
+    _ut_UT_SETUP(suitename, STRINGIFY(suitename))
 
 /**
  */
 #define UT_SETUP                                                            \
-    _ut_UT_SETUP(__FILE__)
+    _ut_UT_SETUP(, __FILE__)
 
-#define _ut_UT_TEARDOWN(suitename)                                          \
-    void _ut_teardown (void);                                               \
-    void _ut_teardown_register (void) __attribute__((constructor));         \
-    void _ut_teardown_register (void) {                                     \
-        ut_register_callback(_ut_teardown, suitename, 1);                   \
+#define _ut_UT_TEARDOWN(id, suitename)                                      \
+    void _ut_teardown_##id (void);                                          \
+    void _ut_teardown_##id##_register (void) __attribute__((constructor));  \
+    void _ut_teardown_##id##_register (void) {                              \
+        ut_register_callback(_ut_teardown_##id, suitename, 1);              \
     }                                                                       \
-    void _ut_teardown(void)
+    void _ut_teardown_##id(void)
 
 /**
  */
-#define UT_SUITE_TEARDOWN(suitname)                                         \
-    _ut_UT_TEARDOWN(STRINGIFY(suitname))
+#define UT_SUITE_TEARDOWN(suitename)                                        \
+    _ut_UT_TEARDOWN(suitename, STRINGIFY(suitename))
 
 /**
  */
 #define UT_TEARDOWN                                                         \
-    _ut_UT_TEARDOWN(__FILE__)
+    _ut_UT_TEARDOWN(, __FILE__)
 
 
 /**
