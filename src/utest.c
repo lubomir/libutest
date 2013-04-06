@@ -19,7 +19,6 @@ struct suite {
     struct suite *next;
 };
 
-static int once = 0;
 static Suite *tests = NULL;
 static const char *current_test_name = NULL;
 static unsigned int tests_failed = 0;
@@ -65,6 +64,11 @@ void * safe_realloc (void *mem, size_t size)
 static Suite *
 suite_new(const char *name)
 {
+    static int once = 0;
+    if (!once++) {
+        atexit(shutdown_tests);
+    }
+
     Suite *suite = malloc(sizeof *tests);
     suite->name = name;
     suite->size = 8;
@@ -73,9 +77,6 @@ suite_new(const char *name)
     suite->names = safe_malloc(sizeof(func_t) * suite->size);
     suite->setup = suite->teardown = NULL;
     suite->next = NULL;
-    if (!once) {
-        atexit(shutdown_tests);
-    }
     return suite;
 }
 
