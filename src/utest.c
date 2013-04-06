@@ -8,8 +8,8 @@
 typedef void (*func_t)(void);
 
 typedef struct {
-    int size;
-    int num;
+    size_t size;
+    size_t num;
     const char const **names;
     func_t *funcs;
     func_t setup;
@@ -18,9 +18,9 @@ typedef struct {
 
 static tests_t *tests = NULL;
 static const char *current_test_name = NULL;
-static int tests_failed = 0;
-static int assertions_ok = 0;
-static int assertions_failed = 0;
+static unsigned int tests_failed = 0;
+static unsigned int assertions_ok = 0;
+static unsigned int assertions_failed = 0;
 static FILE * logs = NULL;
 
 void shutdown_tests(void)
@@ -75,8 +75,8 @@ int ut_run_all_tests(void)
 {
     logs = tmpfile();
 
-    for (int i = 0; i < tests->num; i++) {
-        int old_fails = assertions_failed;
+    for (size_t i = 0; i < tests->num; i++) {
+        unsigned int old_fails = assertions_failed;
 #ifdef DEBUG
         fprintf(stderr, "Running test '%s'\n", tests->names[i]);
 #endif
@@ -102,9 +102,9 @@ int ut_run_all_tests(void)
         printf("%s", buffer);
     }
 
-    printf("%d assertions succeeded, %d assertions failed\n",
+    printf("%u assertions succeeded, %u assertions failed\n",
             assertions_ok, assertions_failed);
-    printf("%d tests ran\n", tests->num);
+    printf("%zu tests ran\n", tests->num);
     fclose(logs);
     return tests_failed == 0;
 }
