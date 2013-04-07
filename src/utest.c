@@ -76,7 +76,7 @@ suite_new (const char *name)
         atexit(shutdown_tests);
     }
 
-    Suite *suite = malloc(sizeof *tests);
+    Suite *suite = safe_malloc(sizeof *tests);
     suite->name = name;
     suite->size = 8;
     suite->num = 0;
