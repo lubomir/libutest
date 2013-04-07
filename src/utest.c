@@ -51,7 +51,7 @@ void * safe_malloc (size_t size)
     void *mem = malloc(size);
     if (!mem) {
         fprintf(stderr, " *** ERROR: memory allocation failed\n");
-        abort();
+        exit(EXIT_FAILURE);
     }
     return mem;
 }
@@ -63,7 +63,7 @@ void * safe_realloc (void *mem, size_t size)
     if (!new_mem) {
         fprintf(stderr, " *** ERROR: memory allocation failed\n");
         free(mem);
-        abort();
+        exit(EXIT_FAILURE);
     }
     return new_mem;
 }
