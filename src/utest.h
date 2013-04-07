@@ -3,7 +3,6 @@
 
 #include <string.h>
 
-#define JOIN(a,b,d) a ## _ ## b ## _ ## d
 #define STRINGIFY_(x) #x
 #define STRINGIFY(x) STRINGIFY_(x)
 
@@ -18,15 +17,15 @@
 #define UT_STR_EQ(x,y) (strcmp(x,y) == 0)
 
 #define _ut_UT_SUITE_TEST(suite, suitename, tname)                          \
-    void JOIN(_ut_test, suite, tname) (void);                               \
-    void JOIN(_ut_test_register, suite, tname) (void)                       \
+    void _ut_test_##suite##_##tname (void);                                 \
+    void _ut_test_register_##suite##_##tname (void)                         \
         __attribute__((constructor(__COUNTER__ + 101)));                    \
-    void JOIN(_ut_test_register, suite, tname) (void) {                     \
+    void _ut_test_register_##suite##_##tname (void) {                       \
         ut_register_test(suitename,                                         \
                 STRINGIFY(tname),                                           \
-                JOIN(_ut_test, suite, tname));                              \
+                _ut_test_##suite##_##tname);                                \
     }                                                                       \
-    void JOIN(_ut_test, suite, tname) (void)
+    void _ut_test_##suite##_##tname (void)
 
 /**
  */
