@@ -12,3 +12,6 @@ include data/Makefile.include
 if ENABLE_EXAMPLES
 include examples/Makefile.include
 endif
+
+doc :
+	doxygen Doxyfile
