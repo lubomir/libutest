@@ -1,0 +1,3 @@
+noinst_PROGRAMS += examples/suites/suite-test
+examples_suites_suite_test_SOURCES = examples/suites/tests.c
+examples_suites_suite_test_LDADD = src/libutest.la

@@ -10,6 +10,7 @@ AM_INIT_AUTOMAKE([foreign subdir-objects silent-rules -Wall])
 
 # Checks for programs.
 AC_PROG_CC_C99
+AM_PROG_CC_C_O
 LT_INIT
 
 # Checks for libraries.

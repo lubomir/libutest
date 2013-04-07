@@ -1,0 +1,5 @@
+noinst_PROGRAMS += examples/more-files/more-files-test
+examples_more_files_more_files_test_SOURCES = examples/more-files/tests1.c \
+					      examples/more-files/tests2.h
+examples_more_files_more_files_test_LDADD = src/libutest.la
+

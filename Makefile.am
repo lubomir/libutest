@@ -4,5 +4,6 @@ lib_LTLIBRARIES = src/libutest.la
 
 src_libutest_la_SOURCES = src/utest.h \
 			  src/utest.c
-
-include examples/Makefile.am
+noinst_PROGRAMS =
+AM_CFLAGS = -I$(srcdir)/src
+include examples/Makefile.include
