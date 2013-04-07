@@ -7,6 +7,7 @@ src_libutest_la_SOURCES = src/utest.h \
 noinst_PROGRAMS =
 AM_CFLAGS = -I$(srcdir)/src
 
+include data/Makefile.include
 if ENABLE_EXAMPLES
 include examples/Makefile.include
 endif

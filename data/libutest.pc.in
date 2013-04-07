@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: @PACKAGE_NAME@
+Version: @VERSION@
+Description: Simple unit testing library
+Cflags: -I${includedir}
+Libs: -L${libdir} -lutest
