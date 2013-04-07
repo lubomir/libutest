@@ -1,9 +1,18 @@
+/**
+ * @file utest.h    Public definitions for libutest
+ */
 #ifndef UTEST_H
 #define UTEST_H
 
 #include <string.h>
 
+/**
+ * @internal @{
+ */
 #define STRINGIFY_(x) #x
+/**
+ * @internal @def STRINGIFY(x) Transform an identifier to a string constant.
+ */
 #define STRINGIFY(x) STRINGIFY_(x)
 
 #define RED     "\033[1;31m"
@@ -13,9 +22,18 @@
 
 #define INBOLD(x) BOLD x NORMAL
 
+/**
+ * Direct comparison of two values.
+ */
 #define UT_DIRECT_EQ(x,y) (x == y)
+/**
+ * Comparison of strings using strcmp().
+ */
 #define UT_STR_EQ(x,y) (strcmp(x,y) == 0)
 
+/**
+ * Internal macro for defining tests
+ */
 #define _ut_UT_SUITE_TEST(suite, suitename, tname)                          \
     static void _ut_test_##suite##_##tname (void);                          \
     static void _ut_test_register_##suite##_##tname (void)                  \
@@ -26,18 +44,27 @@
                 _ut_test_##suite##_##tname);                                \
     }                                                                       \
     static void _ut_test_##suite##_##tname (void)
+/** @} */
 
 /**
+ * Define a new test.
+ *
+ * @param tname name of the new test
  */
 #define UT_TEST(tname)                                                      \
     _ut_UT_SUITE_TEST(def, __FILE__, tname)
 
 /**
+ * Define new test in a suite.
+ *
+ * @param suite name of the suite
+ * @param tname test name
  */
 #define UT_SUITE_TEST(suite, tname)                                         \
     _ut_UT_SUITE_TEST(suite, STRINGIFY(suite), tname)
 
 /**
+ * Fail the test unless exp evaluates to true.
  */
 #define ut_assert(exp) ut_assert_func(exp, STRINGIFY(exp))
 

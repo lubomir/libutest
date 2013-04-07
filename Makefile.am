@@ -13,5 +13,6 @@ if ENABLE_EXAMPLES
 include examples/Makefile.include
 endif
 
+.PHONY: doc
 doc :
 	doxygen Doxyfile
