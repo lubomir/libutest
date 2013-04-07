@@ -45,8 +45,8 @@ shutdown_tests (void)
     }
 }
 
-static inline
-void * safe_malloc (size_t size)
+static inline void *
+safe_malloc (size_t size)
 {
     void *mem = malloc(size);
     if (!mem) {
@@ -56,8 +56,8 @@ void * safe_malloc (size_t size)
     return mem;
 }
 
-static inline
-void * safe_realloc (void *mem, size_t size)
+static inline void *
+safe_realloc (void *mem, size_t size)
 {
     void *new_mem = realloc(mem, size);
     if (!new_mem) {
@@ -87,8 +87,8 @@ suite_new (const char *name)
     return suite;
 }
 
-static inline
-Suite * find_suite (const char *name)
+static inline Suite *
+find_suite (const char *name)
 {
     Suite *tmp = tests;
 
