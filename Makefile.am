@@ -2,6 +2,7 @@ ACLOCAL_AMFLAGS = $$ACLOCAL_ARGS -I m4
 
 lib_LTLIBRARIES = src/libutest.la
 
+include_HEADERS = src/utest.h
 src_libutest_la_SOURCES = src/utest.h \
 			  src/utest.c
 noinst_PROGRAMS =
