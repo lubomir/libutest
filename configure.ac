@@ -40,3 +40,10 @@ AC_CHECK_FUNCS([atexit memset strstr])
 
 AC_CONFIG_FILES([Doxyfile Makefile data/libutest.pc docs/conf.py])
 AC_OUTPUT
+
+echo ""
+echo "libutest $VERSION"
+echo ""
+echo " Prefix......................: ${prefix}"
+echo " Compiling examples..........: ${enable_examples:-yes}"
+echo " Building docs...............: ${enable_docs:-no}"
