@@ -14,6 +14,11 @@ AC_ARG_ENABLE([examples],
 
 AM_CONDITIONAL([ENABLE_EXAMPLES], [test "x$enable_examples" != "xno"])
 
+# Add --enable-docs option
+AC_ARG_ENABLE([docs],
+	      AS_HELP_STRING([--enable-docs], [Build the documentation]))
+AM_CONDITIONAL([ENABLE_DOCS], [test "x$enable_docs" != "xno"])
+
 # Checks for programs.
 AC_PROG_CC_C99
 AM_PROG_CC_C_O

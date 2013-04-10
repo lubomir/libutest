@@ -2,6 +2,7 @@ CLEANFILES = docs/_build docs/doxygen
 SPHINXBUILD   = sphinx-build
 BUILDDIR      = docs/_build
 SPHINXOPTS    =
+
 .PHONY: doc
 doc :
 	doxygen Doxyfile
