@@ -34,5 +34,5 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([atexit memset strstr])
 
-AC_CONFIG_FILES([Doxyfile Makefile data/libutest.pc])
+AC_CONFIG_FILES([Doxyfile Makefile data/libutest.pc docs/conf.py])
 AC_OUTPUT

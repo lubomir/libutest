@@ -20,5 +20,4 @@ install/
 *.la
 *.lo
 stamp-h1
-doc/
 Doxyfile
