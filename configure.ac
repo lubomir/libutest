@@ -11,13 +11,12 @@ AM_INIT_AUTOMAKE([foreign subdir-objects silent-rules -Wall])
 # Add --disable-examples option
 AC_ARG_ENABLE([examples],
               AS_HELP_STRING([--disable-examples], [Do not build examples]))
-
 AM_CONDITIONAL([ENABLE_EXAMPLES], [test "x$enable_examples" != "xno"])
 
 # Add --enable-docs option
 AC_ARG_ENABLE([docs],
 	      AS_HELP_STRING([--enable-docs], [Build the documentation]))
-AM_CONDITIONAL([ENABLE_DOCS], [test "x$enable_docs" != "xno"])
+AM_CONDITIONAL([ENABLE_DOCS], [test "x$enable_docs" = "xyes"])
 
 # Checks for programs.
 AC_PROG_CC_C99

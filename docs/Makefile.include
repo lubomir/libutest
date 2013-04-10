@@ -1,7 +1,8 @@
 CLEANFILES = docs/_build docs/doxygen
+
 SPHINXBUILD   = sphinx-build
-BUILDDIR      = docs/_build
-SPHINXOPTS    =
+BUILDDIR      = $(top_builddir)/docs/_build
+SPHINXOPTS    = -c $(top_builddir)/docs
 
 .PHONY: doc
 doc :
