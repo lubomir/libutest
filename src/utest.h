@@ -17,15 +17,15 @@
 #define UT_STR_EQ(x,y) (strcmp(x,y) == 0)
 
 #define _ut_UT_SUITE_TEST(suite, suitename, tname)                          \
-    void _ut_test_##suite##_##tname (void);                                 \
-    void _ut_test_register_##suite##_##tname (void)                         \
+    static void _ut_test_##suite##_##tname (void);                          \
+    static void _ut_test_register_##suite##_##tname (void)                  \
         __attribute__((constructor(__COUNTER__ + 101)));                    \
-    void _ut_test_register_##suite##_##tname (void) {                       \
+    static void _ut_test_register_##suite##_##tname (void) {                \
         ut_register_test(suitename,                                         \
                 STRINGIFY(tname),                                           \
                 _ut_test_##suite##_##tname);                                \
     }                                                                       \
-    void _ut_test_##suite##_##tname (void)
+    static void _ut_test_##suite##_##tname (void)
 
 /**
  */
@@ -78,12 +78,13 @@
 
 
 #define _ut_UT_SETUP(id, suitename)                                         \
-    void _ut_setup_##id (void);                                             \
-    void _ut_setup_##id##_register (void) __attribute__((constructor));     \
-    void _ut_setup_##id##_register (void) {                                 \
+    static void _ut_setup_##id (void);                                      \
+    static void _ut_setup_##id##_register (void)                            \
+        __attribute__((constructor));                                       \
+    static void _ut_setup_##id##_register (void) {                          \
         ut_register_callback(_ut_setup_##id, suitename, 0);                 \
     }                                                                       \
-    void _ut_setup_##id(void)
+    static void _ut_setup_##id(void)
 
 /**
  */
@@ -96,12 +97,13 @@
     _ut_UT_SETUP(, __FILE__)
 
 #define _ut_UT_TEARDOWN(id, suitename)                                      \
-    void _ut_teardown_##id (void);                                          \
-    void _ut_teardown_##id##_register (void) __attribute__((constructor));  \
-    void _ut_teardown_##id##_register (void) {                              \
+    static void _ut_teardown_##id (void);                                   \
+    static void _ut_teardown_##id##_register (void)                         \
+        __attribute__((constructor));                                       \
+    static void _ut_teardown_##id##_register (void) {                       \
         ut_register_callback(_ut_teardown_##id, suitename, 1);              \
     }                                                                       \
-    void _ut_teardown_##id(void)
+    static void _ut_teardown_##id(void)
 
 /**
  */
