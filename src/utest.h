@@ -237,6 +237,7 @@ int ut_run_all_tests(void);
  * @param msg   `printf`-like format string to print error message in case
  *              assertion fails
  */
-void _ut_assert_func(const char *fname, int line, int expr, const char *msg, ...);
+void _ut_assert_func(const char *fname, int line, int expr, const char *msg, ...)
+    __attribute__((format(printf, 4, 5)));
 
 #endif /* end of include guard: UTEST_H */

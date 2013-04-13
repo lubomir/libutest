@@ -45,6 +45,9 @@ shutdown_tests (void)
     }
 }
 
+static inline void * safe_malloc  (size_t)         __attribute__((alloc_size(1)));
+static inline void * safe_realloc (void *, size_t) __attribute__((alloc_size(2)));
+
 static inline void *
 safe_malloc (size_t size)
 {
