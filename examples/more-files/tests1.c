@@ -21,11 +21,11 @@ UT_TEST(strstr_works) {
 UT_TEST(atoi_works) {
     int num;
     num = atoi("5");
-    ut_assert_eq_int(5, num);
+    ut_assert_equal_int(5, num);
     num = atoi("15");
-    ut_assert_eq_int(15, num);
+    ut_assert_equal_int(15, num);
     num = atoi("-10");
-    ut_assert_eq_int(-10, num);
+    ut_assert_equal_int(-10, num);
 }
 
 UT_DEFAULT_MAIN

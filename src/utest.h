@@ -53,12 +53,12 @@
 
 /**
  */
-#define ut_assert_eq_int(expected, actual)                                  \
+#define ut_assert_equal_int(expected, actual)                                  \
     ut_assert_eq_with_type(int, UT_DIRECT_EQ, "%d", expected, actual)
 
 /**
  */
-#define ut_assert_eq_uint(expected, actual)                                 \
+#define ut_assert_equal_uint(expected, actual)                                 \
     ut_assert_eq_with_type(unsigned int, UT_DIRECT_EQ, "%u", expected, actual)
 
 /**

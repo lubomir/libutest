@@ -10,7 +10,7 @@ UT_SUITE_SETUP(Foo) {
 }
 
 UT_SUITE_TEST(Foo, foo_is_zero) {
-    ut_assert_eq_int(*foo, 0);
+    ut_assert_equal_int(*foo, 0);
 }
 
 UT_SUITE_TEARDOWN(Foo) {
@@ -24,7 +24,7 @@ UT_SUITE_SETUP(Bar) {
 }
 
 UT_SUITE_TEST(Bar, bar_is_one) {
-    ut_assert_eq_int(*bar, 1);
+    ut_assert_equal_int(*bar, 1);
 }
 
 UT_SUITE_TEARDOWN(Bar) {
