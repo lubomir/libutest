@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 2
 
    defining-tests
+   writing-tests
 
 
 Indices and tables
