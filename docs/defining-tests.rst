@@ -1,6 +1,6 @@
 
-Defining your tests
-===================
+Defining tests
+==============
 
 To define a test, use any of the following macros.
 

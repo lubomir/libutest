@@ -1,6 +1,6 @@
 
-Writing your tests
-==================
+Writing tests
+=============
 
 In each test, you can use many test assertions.
 
