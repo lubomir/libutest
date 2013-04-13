@@ -11,7 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   defining
+   defining-tests
 
 
 Indices and tables
