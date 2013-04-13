@@ -39,17 +39,17 @@
 
 /**
  */
-#define ut_assert(exp) _ut_assert_func(exp, STRINGIFY(exp))
+#define ut_assert(exp) ut_assert_func(exp, STRINGIFY(exp))
 
 /**
  */
 #define ut_assert_null(exp)                                                 \
-    _ut_assert_func(exp == NULL, INBOLD(STRINGIFY(exp)) " is not NULL")
+    ut_assert_func(exp == NULL, INBOLD(STRINGIFY(exp)) " is not NULL")
 
 /**
  */
 #define ut_assert_not_null(exp)                                             \
-    _ut_assert_func(exp != NULL, INBOLD(STRINGIFY(exp)) " is NULL")
+    ut_assert_func(exp != NULL, INBOLD(STRINGIFY(exp)) " is NULL")
 
 /**
  */
@@ -71,7 +71,7 @@
     do {                                                                    \
         type _ut_exp = expected;                                            \
         type _ut_act = actual;                                              \
-        _ut_assert_func(eq(_ut_exp, _ut_act),                               \
+        ut_assert_func(eq(_ut_exp, _ut_act),                               \
                 "Expected <" INBOLD(fmt) ">, got <" INBOLD(fmt) ">",        \
                 _ut_exp, _ut_act);                                          \
     } while (0)
@@ -124,11 +124,11 @@ int ut_run_all_tests(void);
  */
 #define UT_DEFAULT_MAIN int main (void) { return ut_run_all_tests() == 0; }
 
-#define _ut_assert_func(exp,...)                                            \
-    ut_assert_func(__FILE__, __LINE__, exp, __VA_ARGS__)
+#define ut_assert_func(exp,...)                                            \
+    _ut_assert_func(__FILE__, __LINE__, exp, __VA_ARGS__)
 
 void ut_register_test(const char *suite, const char *name, void (*f)(void));
 void ut_register_callback(void (*cb)(void), const char *suitename, int type);
-void ut_assert_func(const char *file, int lineno, int expr, const char *msg, ...);
+void _ut_assert_func(const char *file, int lineno, int expr, const char *msg, ...);
 
 #endif /* end of include guard: UTEST_H */

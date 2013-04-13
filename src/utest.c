@@ -185,10 +185,10 @@ ut_run_all_tests (void)
 }
 
 void
-ut_assert_func (const char *file,
-                int lineno,
-                int expr,
-                const char *msg, ...)
+_ut_assert_func (const char *file,
+                 int lineno,
+                 int expr,
+                 const char *msg, ...)
 {
     if (expr) {
         assertions_ok++;
