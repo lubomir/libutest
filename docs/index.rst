@@ -13,6 +13,7 @@ Contents:
 
    defining-tests
    writing-tests
+   running-tests
 
 
 Indices and tables
