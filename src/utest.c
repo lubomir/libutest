@@ -206,3 +206,8 @@ _ut_assert_func (const char *file,
     va_end(args);
     fprintf(logs, "\n\n");
 }
+
+int __attribute__((weak)) main (void)
+{
+    return ut_run_all_tests() == 0;
+}

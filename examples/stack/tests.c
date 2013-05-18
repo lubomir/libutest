@@ -82,5 +82,3 @@ UT_TEST(contains_exactly_pushed_items) {
     ut_assert_equal_uint(1000, num);
     ut_assert_equal_int(500500, sum);
 }
-
-UT_DEFAULT_MAIN

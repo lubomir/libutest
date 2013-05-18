@@ -27,5 +27,3 @@ UT_TEST(atoi_works) {
     num = atoi("-10");
     ut_assert_equal_int(-10, num);
 }
-
-UT_DEFAULT_MAIN

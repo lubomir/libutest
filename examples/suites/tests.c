@@ -31,5 +31,3 @@ UT_SUITE_TEARDOWN(Bar) {
     free(bar);
     bar = NULL;
 }
-
-UT_DEFAULT_MAIN
