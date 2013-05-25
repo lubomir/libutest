@@ -45,10 +45,7 @@ shutdown_tests (void)
     }
 }
 
-static inline void * safe_malloc  (size_t)         __attribute__((alloc_size(1)));
-static inline void * safe_realloc (void *, size_t) __attribute__((alloc_size(2)));
-
-static inline void *
+static inline void * __attribute__((alloc_size(1)))
 safe_malloc (size_t size)
 {
     void *mem = malloc(size);
@@ -59,7 +56,7 @@ safe_malloc (size_t size)
     return mem;
 }
 
-static inline void *
+static inline void * __attribute__((alloc_size(2)))
 safe_realloc (void *mem, size_t size)
 {
     void *new_mem = realloc(mem, size);
