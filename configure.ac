@@ -6,7 +6,8 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_HEADERS([config.h])
 
-AM_INIT_AUTOMAKE([foreign subdir-objects silent-rules -Wall])
+AM_INIT_AUTOMAKE([foreign subdir-objects -Wall])
+AM_SILENT_RULES([yes])
 
 # Add --disable-examples option
 AC_ARG_ENABLE([examples],
