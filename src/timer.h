@@ -1,7 +1,7 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#define _POSIX_C_SOURCE 199309L
+#include <config.h>
 
 #include <time.h>
 

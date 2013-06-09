@@ -4,7 +4,6 @@
 
 struct timer {
     struct timespec total;
-    struct timespec tmp;
 };
 
 static inline void
@@ -36,8 +35,6 @@ Timer * timer_new(void)
     Timer *t = malloc(sizeof *t);
     t->total.tv_sec = 0;
     t->total.tv_nsec = 0;
-    t->tmp.tv_sec = 0;
-    t->tmp.tv_nsec = 0;
     return t;
 }
 
@@ -48,14 +45,16 @@ void timer_free(Timer *t)
 
 void timer_start(Timer *timer)
 {
-    clock_gettime(CLOCK_REALTIME, &timer->tmp);
-    time_sub(&timer->total, &timer->tmp);
+    struct timespec tmp = { 0, 0 };
+    clock_gettime(CLOCK_REALTIME, &tmp);
+    time_sub(&timer->total, &tmp);
 }
 
 void timer_stop(Timer *timer)
 {
-    clock_gettime(CLOCK_REALTIME, &timer->tmp);
-    time_add(&timer->total, &timer->tmp);
+    struct timespec tmp = { 0, 0 };
+    clock_gettime(CLOCK_REALTIME, &tmp);
+    time_add(&timer->total, &tmp);
 }
 
 double timer_get_elapsed(Timer *timer)
