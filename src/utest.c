@@ -34,6 +34,7 @@ struct test_data {
 struct test_result {
     unsigned int tests_ran;
     unsigned int tests_failed;
+    unsigned int tests_crashed;
     unsigned int assertions_ok;
     unsigned int assertions_failed;
 };
@@ -191,7 +192,7 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
         }
 
         if (WIFSIGNALED(status)) {
-            results->tests_failed++;
+            results->tests_crashed++;
             printf(RED "C" NORMAL);
         } else if (data.assertions_failed > 0) {
             results->tests_failed++;
@@ -210,7 +211,7 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
 int
 ut_run_all_tests (void)
 {
-    struct test_result results = { 0, 0, 0, 0 };
+    struct test_result results = { 0, 0, 0, 0, 0 };
     FILE *logs = tmpfile();
 
     for (Suite *suite = tests; suite; suite = suite->next) {
@@ -225,7 +226,8 @@ ut_run_all_tests (void)
 
     printf("%u assertions succeeded, %u assertions failed\n",
             results.assertions_ok, results.assertions_failed);
-    printf("%u tests ran\n", results.tests_ran);
+    printf("%u tests ran, %u failed, %u crashed\n",
+            results.tests_ran, results.tests_failed, results.tests_crashed);
     fclose(logs);
     return results.tests_failed == 0;
 }
