@@ -18,7 +18,7 @@ struct suite {
     const char *name;
     size_t size;
     size_t num;
-    const char const **names;
+    const char ** names;
     func_t *funcs;
     func_t setup;
     func_t teardown;
@@ -105,7 +105,7 @@ find_suite (const char *name)
 }
 
 void
-ut_register_test (const char *suite, const char const *name, func_t f)
+ut_register_test (const char *suite, const char * name, func_t f)
 {
     Suite *tests = find_suite(suite);
 
