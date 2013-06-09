@@ -31,6 +31,7 @@ LT_INIT
 AC_CHECK_LIB([utest], [ut_assert_func])
 
 # Checks for header files.
+AC_CHECK_HEADER_STDBOOL
 AC_CHECK_HEADERS([stdlib.h string.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
