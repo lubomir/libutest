@@ -18,6 +18,22 @@
 #define INBOLD(x) BOLD x NORMAL
 
 /**
+ * Structure with data passed to testing functions.
+ * This is an opaque data type, do not access it directly.
+ */
+typedef struct test_data TestData;
+
+/**
+ * Type of a test function. Do not use directly.
+ */
+typedef void (*func_t)(TestData *);
+
+/**
+ * Type of a callback.
+ */
+typedef void (*cb_t)(void);
+
+/**
  * Direct comparison of two values.
  */
 #define UT_DIRECT_EQ(x,y) (x == y)
@@ -30,7 +46,7 @@
  * Internal macro for defining tests.
  */
 #define _ut_UT_SUITE_TEST(suite, suitename, tname)                          \
-    static void _ut_test_##suite##_##tname (void);                          \
+    static void _ut_test_##suite##_##tname (TestData *_ut_test_data);       \
     static void _ut_test_register_##suite##_##tname (void)                  \
         __attribute__((constructor(__COUNTER__ + 101)));                    \
     static void _ut_test_register_##suite##_##tname (void) {                \
@@ -38,7 +54,7 @@
                 STRINGIFY(tname),                                           \
                 _ut_test_##suite##_##tname);                                \
     }                                                                       \
-    static void _ut_test_##suite##_##tname (void)
+    static void _ut_test_##suite##_##tname (TestData *_ut_test_data)
 
 /**
  * Internal macro for defining setup function.
@@ -81,7 +97,7 @@
  * @param name  name of the test
  * @param f     function to run
  */
-void ut_register_test(const char *suite, const char *name, void (*f)(void));
+void ut_register_test(const char *suite, const char *name, func_t f);
 
 /**
  * Internal function to register setup/teardown functions.
@@ -90,7 +106,7 @@ void ut_register_test(const char *suite, const char *name, void (*f)(void));
  * @param suite name of the modified test suite
  * @param type  0 for setup, 1 for teardown
  */
-void ut_register_callback(void (*cb)(void), const char *suite, int type);
+void ut_register_callback(cb_t cb, const char *suite, int type);
 
 /** @endcond */
 
@@ -223,7 +239,7 @@ int ut_run_all_tests(void);
  * file name and line number.
  */
 #define ut_assert_func(exp,...)                                            \
-    _ut_assert_func(__FILE__, __LINE__, exp, __VA_ARGS__)
+    _ut_assert_func(_ut_test_data, __FILE__, __LINE__, exp, __VA_ARGS__)
 
 /**
  * Function implementing the assertion.
@@ -237,7 +253,12 @@ int ut_run_all_tests(void);
  * @param msg   `printf`-like format string to print error message in case
  *              assertion fails
  */
-void _ut_assert_func(const char *fname, int line, int expr, const char *msg, ...)
-    __attribute__((format(printf, 4, 5)));
+void _ut_assert_func(TestData *data,
+                      const char *fname,
+                      int line,
+                      int expr,
+                      const char *msg,
+                      ...)
+    __attribute__((format(printf, 5, 6)));
 
 #endif /* end of include guard: UTEST_H */

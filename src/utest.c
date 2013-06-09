@@ -11,7 +11,6 @@
 # define debug(...)
 #endif
 
-typedef void (*func_t)(void);
 typedef struct suite Suite;
 
 struct suite {
@@ -20,13 +19,19 @@ struct suite {
     size_t num;
     const char ** names;
     func_t *funcs;
-    func_t setup;
-    func_t teardown;
+    cb_t setup;
+    cb_t teardown;
     struct suite *next;
 };
 
+struct test_data {
+    const char *name;
+    unsigned int assertions_ok;
+    unsigned int assertions_failed;
+    FILE *logs;
+};
+
 static Suite *tests = NULL;
-static const char *current_test_name = NULL;
 static unsigned int assertions_ok = 0;
 static unsigned int assertions_failed = 0;
 static FILE * logs = NULL;
@@ -138,22 +143,27 @@ static unsigned int
 suite_run (Suite *suite, unsigned int *tests_failed)
 {
     for (size_t i = 0; i < suite->num; i++) {
-        unsigned int old_fails = assertions_failed;
+
+        TestData data = {suite->names[i], 0, 0, logs};
+
         debug("Running '%s:%s'\n", suite->name, suite->names[i]);
         if (suite->setup) {
             suite->setup();
         }
-        current_test_name = suite->names[i];
-        suite->funcs[i]();
+
+        suite->funcs[i](&data);
+
         if (suite->teardown) {
             suite->teardown();
         }
-        if (old_fails != assertions_failed) {
+        if (data.assertions_failed > 0) {
             tests_failed++;
             printf(RED "F" NORMAL);
         } else {
             printf(GREEN "." NORMAL);
         }
+        assertions_ok += data.assertions_ok;
+        assertions_failed += data.assertions_failed;
     }
     return suite->num;
 }
@@ -185,23 +195,24 @@ ut_run_all_tests (void)
 }
 
 void
-_ut_assert_func (const char *file,
+_ut_assert_func (TestData *data,
+                 const char *file,
                  int lineno,
                  int expr,
                  const char *msg, ...)
 {
     if (expr) {
-        assertions_ok++;
+        data->assertions_ok++;
         return;
     }
-    assertions_failed++;
-    fprintf(logs, "Assertion in %s%s%s (%s:%d) failed:\n\t",
-            BOLD, current_test_name, NORMAL, file, lineno);
+    data->assertions_failed++;
+    fprintf(data->logs, "Assertion in %s%s%s (%s:%d) failed:\n\t",
+            BOLD, data->name, NORMAL, file, lineno);
     va_list args;
     va_start(args, msg);
-    vfprintf(logs, msg, args);
+    vfprintf(data->logs, msg, args);
     va_end(args);
-    fprintf(logs, "\n\n");
+    fprintf(data->logs, "\n\n");
 }
 
 int __attribute__((weak)) main (void)
