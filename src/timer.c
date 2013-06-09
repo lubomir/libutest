@@ -38,9 +38,11 @@ time_add(struct timespec *dest, struct timespec *a)
 Timer * timer_new(void)
 {
     Timer *t = malloc(sizeof *t);
-    t->total.tv_sec = 0;
-    t->total.tv_nsec = 0;
-    t->running = false;
+    if (t) {
+        t->total.tv_sec = 0;
+        t->total.tv_nsec = 0;
+        t->running = false;
+    }
     return t;
 }
 

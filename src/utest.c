@@ -227,6 +227,10 @@ ut_run_all_tests (void)
     struct test_result results = { NULL, 0, 0, 0, 0, 0 };
     FILE *logs = tmpfile();
     results.timer = timer_new();
+    if (!results.timer) {
+        fprintf(stderr, " *** ERROR: memory allocation failed\n");
+        exit(EXIT_FAILURE);
+    }
 
     for (Suite *suite = tests; suite; suite = suite->next) {
         suite_run(suite, &results, logs);
