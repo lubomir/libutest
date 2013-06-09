@@ -144,23 +144,56 @@ ut_register_callback (void (*cb)(void), const char *suitename, int type)
 }
 
 static void
+test_run (Suite *suite, size_t idx, TestData *data)
+{
+    if (suite->setup) {
+        suite->setup();
+    }
+
+    suite->funcs[idx](data);
+
+    if (suite->teardown) {
+        suite->teardown();
+    }
+}
+
+static void
 suite_run (Suite *suite, struct test_result *results, FILE *logs)
 {
     for (size_t i = 0; i < suite->num; i++) {
+        debug("Running '%s:%s'\n", suite->name, suite->names[i]);
 
         TestData data = {suite->names[i], 0, 0, logs};
+        int pipe_fd[2];
 
-        debug("Running '%s:%s'\n", suite->name, suite->names[i]);
-        if (suite->setup) {
-            suite->setup();
+        if (pipe(pipe_fd) < 0) {
+            perror("pipe");
+            abort();
         }
 
-        suite->funcs[i](&data);
-
-        if (suite->teardown) {
-            suite->teardown();
+        fflush(stdout);
+        pid_t pid = fork();
+        int status;
+        if (pid < 0) {
+            perror("fork");
+            abort();
+        } else if (pid == 0) {
+            close(pipe_fd[0]);
+            test_run (suite, i, &data);
+            write(pipe_fd[1], &data, sizeof data);
+            close(pipe_fd[1]);
+            exit(0);
+        } else {
+            close(pipe_fd[1]);
+            waitpid(pid, &status, 0);
+            read(pipe_fd[0], &data, sizeof data);
+            close(pipe_fd[0]);
         }
-        if (data.assertions_failed > 0) {
+
+        if (WIFSIGNALED(status)) {
+            results->tests_failed++;
+            printf(RED "C" NORMAL);
+        } else if (data.assertions_failed > 0) {
             results->tests_failed++;
             printf(RED "F" NORMAL);
         } else {
