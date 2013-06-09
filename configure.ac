@@ -33,11 +33,13 @@ AC_CHECK_HEADERS([stdlib.h string.h unistd.h])
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_INLINE
 AC_TYPE_SIZE_T
+AC_TYPE_PID_T
 
 # Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([atexit memset strstr])
+AC_FUNC_FORK
 
 AC_CONFIG_FILES([Doxyfile Makefile data/libutest.pc docs/conf.py])
 AC_OUTPUT
