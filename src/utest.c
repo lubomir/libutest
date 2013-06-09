@@ -1,3 +1,5 @@
+#include <config.h>
+
 #include "utest.h"
 
 #include <stdio.h>

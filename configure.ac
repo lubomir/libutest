@@ -9,6 +9,9 @@ AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([foreign subdir-objects -Wall])
 AM_SILENT_RULES([yes])
 
+# Enable feature test macros
+AC_DEFINE([_POSIX_C_SOURCE], [200809L], [We want some POSIX features])
+
 # Add --disable-examples option
 AC_ARG_ENABLE([examples],
               AS_HELP_STRING([--disable-examples], [Do not build examples]))
