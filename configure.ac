@@ -28,7 +28,6 @@ AM_PROG_CC_C_O
 LT_INIT
 
 # Checks for libraries.
-AC_CHECK_LIB([utest], [ut_assert_func])
 
 # Checks for header files.
 AC_CHECK_HEADER_STDBOOL
