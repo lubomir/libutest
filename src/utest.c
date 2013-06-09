@@ -1,5 +1,6 @@
 #include <config.h>
 
+#include "timer.h"
 #include "utest.h"
 
 #include <stdarg.h>
@@ -37,6 +38,7 @@ struct test_data {
 };
 
 struct test_result {
+    Timer *timer;
     unsigned int tests_ran;
     unsigned int tests_failed;
     unsigned int tests_crashed;
@@ -178,6 +180,7 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
         }
 
         fflush(stdout);
+        timer_start(results->timer);
         pid_t pid = fork();
         int status;
         if (pid < 0) {
@@ -192,6 +195,7 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
         } else {
             close(pipe_fd[1]);
             waitpid(pid, &status, 0);
+            timer_stop(results->timer);
             read(pipe_fd[0], &data, sizeof data);
             close(pipe_fd[0]);
         }
@@ -220,8 +224,9 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
 int
 ut_run_all_tests (void)
 {
-    struct test_result results = { 0, 0, 0, 0, 0 };
+    struct test_result results = { NULL, 0, 0, 0, 0, 0 };
     FILE *logs = tmpfile();
+    results.timer = timer_new();
 
     for (Suite *suite = tests; suite; suite = suite->next) {
         suite_run(suite, &results, logs);
@@ -237,7 +242,9 @@ ut_run_all_tests (void)
             results.assertions_ok, results.assertions_failed);
     printf("%u tests ran, %u failed, %u crashed\n",
             results.tests_ran, results.tests_failed, results.tests_crashed);
+    printf("Time elapsed: %.3f sec\n", timer_get_elapsed(results.timer));
     fclose(logs);
+    timer_free(results.timer);
     return results.tests_failed == 0;
 }
 
