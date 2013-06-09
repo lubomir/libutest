@@ -3,8 +3,6 @@
 
 #include <config.h>
 
-#include <time.h>
-
 /**
  * Timer allows the program to measure real time. This is an opaque structure
  * and should be used only by provided functions.

@@ -1,5 +1,7 @@
 #include "timer.h"
 
+#include <time.h>
+
 #include <stdlib.h>
 
 struct timer {
