@@ -32,8 +32,6 @@ struct test_data {
 };
 
 static Suite *tests = NULL;
-static unsigned int assertions_ok = 0;
-static unsigned int assertions_failed = 0;
 
 static void
 shutdown_tests (void)
@@ -139,7 +137,7 @@ ut_register_callback (void (*cb)(void), const char *suitename, int type)
 }
 
 static unsigned int
-suite_run (Suite *suite, unsigned int *tests_failed, FILE *logs)
+suite_run (Suite *suite, unsigned int *tests_failed, FILE *logs, unsigned int *assertions_ok, unsigned int *assertions_failed)
 {
     for (size_t i = 0; i < suite->num; i++) {
 
@@ -161,8 +159,8 @@ suite_run (Suite *suite, unsigned int *tests_failed, FILE *logs)
         } else {
             printf(GREEN "." NORMAL);
         }
-        assertions_ok += data.assertions_ok;
-        assertions_failed += data.assertions_failed;
+        *assertions_ok += data.assertions_ok;
+        *assertions_failed += data.assertions_failed;
     }
     return suite->num;
 }
@@ -175,9 +173,11 @@ ut_run_all_tests (void)
     unsigned int tests_ran = 0;
     unsigned int tests_failed = 0;
     FILE *logs = tmpfile();
+    unsigned int assertions_ok = 0;
+    unsigned int assertions_failed = 0;
 
     for (Suite *suite = tests; suite; suite = suite->next) {
-        tests_ran += suite_run(suite, &tests_failed, logs);
+        tests_ran += suite_run(suite, &tests_failed, logs, &assertions_ok, &assertions_failed);
     }
     printf("\n\n");
     char buffer[BUFFER_SIZE];
