@@ -193,6 +193,10 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
 
         if (WIFSIGNALED(status)) {
             results->tests_crashed++;
+            fprintf(logs, "Crash in %s%s%s\n\tKilled with signal %s%d%s (%s)\n\n",
+                    BOLD, data.name, NORMAL,
+                    BOLD, WTERMSIG(status), NORMAL,
+                    strsignal(WTERMSIG(status)));
             printf(RED "C" NORMAL);
         } else if (data.assertions_failed > 0) {
             results->tests_failed++;
