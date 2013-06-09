@@ -31,6 +31,13 @@ struct test_data {
     FILE *logs;
 };
 
+struct test_result {
+    unsigned int tests_ran;
+    unsigned int tests_failed;
+    unsigned int assertions_ok;
+    unsigned int assertions_failed;
+};
+
 static Suite *tests = NULL;
 
 static void
@@ -136,8 +143,8 @@ ut_register_callback (void (*cb)(void), const char *suitename, int type)
     }
 }
 
-static unsigned int
-suite_run (Suite *suite, unsigned int *tests_failed, FILE *logs, unsigned int *assertions_ok, unsigned int *assertions_failed)
+static void
+suite_run (Suite *suite, struct test_result *results, FILE *logs)
 {
     for (size_t i = 0; i < suite->num; i++) {
 
@@ -154,15 +161,15 @@ suite_run (Suite *suite, unsigned int *tests_failed, FILE *logs, unsigned int *a
             suite->teardown();
         }
         if (data.assertions_failed > 0) {
-            tests_failed++;
+            results->tests_failed++;
             printf(RED "F" NORMAL);
         } else {
             printf(GREEN "." NORMAL);
         }
-        *assertions_ok += data.assertions_ok;
-        *assertions_failed += data.assertions_failed;
+        results->assertions_ok += data.assertions_ok;
+        results->assertions_failed += data.assertions_failed;
     }
-    return suite->num;
+    results->tests_ran += suite->num;
 }
 
 #define BUFFER_SIZE 256
@@ -170,14 +177,11 @@ suite_run (Suite *suite, unsigned int *tests_failed, FILE *logs, unsigned int *a
 int
 ut_run_all_tests (void)
 {
-    unsigned int tests_ran = 0;
-    unsigned int tests_failed = 0;
+    struct test_result results = { 0, 0, 0, 0 };
     FILE *logs = tmpfile();
-    unsigned int assertions_ok = 0;
-    unsigned int assertions_failed = 0;
 
     for (Suite *suite = tests; suite; suite = suite->next) {
-        tests_ran += suite_run(suite, &tests_failed, logs, &assertions_ok, &assertions_failed);
+        suite_run(suite, &results, logs);
     }
     printf("\n\n");
     char buffer[BUFFER_SIZE];
@@ -187,10 +191,10 @@ ut_run_all_tests (void)
     }
 
     printf("%u assertions succeeded, %u assertions failed\n",
-            assertions_ok, assertions_failed);
-    printf("%u tests ran\n", tests_ran);
+            results.assertions_ok, results.assertions_failed);
+    printf("%u tests ran\n", results.tests_ran);
     fclose(logs);
-    return tests_failed == 0;
+    return results.tests_failed == 0;
 }
 
 void
