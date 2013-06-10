@@ -239,6 +239,8 @@ int ut_run_all_tests(void);
 /**
  * This macro expands to a simple main. This main function runs all the
  * defined tests and then exits with number of failed tests.
+ *
+ * @deprecated
  */
 #define UT_DEFAULT_MAIN int main (void) { return ut_run_all_tests() == 0; }
 
