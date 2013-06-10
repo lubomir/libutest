@@ -3,7 +3,8 @@ ACLOCAL_AMFLAGS = -I m4
 lib_LTLIBRARIES = src/libutest.la
 
 include_HEADERS = src/utest.h
-src_libutest_la_SOURCES = src/timer.c \
+src_libutest_la_SOURCES = src/main.c \
+			  src/timer.c \
 			  src/utest.h \
 			  src/utest.c
 noinst_PROGRAMS =
