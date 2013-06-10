@@ -16,6 +16,15 @@
 #define INBOLD(x) BOLD x NORMAL
 
 /**
+ * Enumeration for callback types: setup and teardown functions. Using these
+ * directly is not neecessary.
+ */
+typedef enum {
+    UT_CALLBACK_SETUP,
+    UT_CALLBACK_TEARDOWN
+} UtCallbackType;
+
+/**
  * Structure with data passed to testing functions.
  * This is an opaque data type, do not access it directly.
  */
@@ -61,7 +70,7 @@ typedef void (*cb_t)(void);
     void _ut_setup_##id (void);                                             \
     void _ut_setup_##id##_register (void) __attribute__((constructor));     \
     void _ut_setup_##id##_register (void) {                                 \
-        ut_register_callback(_ut_setup_##id, suitename, 0);                 \
+        ut_register_callback(_ut_setup_##id, suitename, UT_CALLBACK_SETUP); \
     }                                                                       \
     void _ut_setup_##id(void)
 
@@ -84,7 +93,8 @@ typedef void (*cb_t)(void);
     void _ut_teardown_##id (void);                                          \
     void _ut_teardown_##id##_register (void) __attribute__((constructor));  \
     void _ut_teardown_##id##_register (void) {                              \
-        ut_register_callback(_ut_teardown_##id, suitename, 1);              \
+        ut_register_callback(_ut_teardown_##id,                             \
+                suitename, UT_CALLBACK_TEARDOWN);                           \
     }                                                                       \
     void _ut_teardown_##id(void)
 
@@ -104,7 +114,7 @@ void ut_register_test(const char *suite, const char *name, func_t f);
  * @param suite name of the modified test suite
  * @param type  0 for setup, 1 for teardown
  */
-void ut_register_callback(cb_t cb, const char *suite, int type);
+void ut_register_callback(cb_t cb, const char *suite, UtCallbackType type);
 
 /** @endcond */
 

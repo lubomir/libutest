@@ -137,15 +137,15 @@ ut_register_test (const char *suite, const char * name, func_t f)
 }
 
 void
-ut_register_callback (void (*cb)(void), const char *suitename, int type)
+ut_register_callback (void (*cb)(void), const char *suitename, UtCallbackType type)
 {
     Suite *suite = find_suite(suitename);
 
     switch (type) {
-    case 0:
+    case UT_CALLBACK_SETUP:
         suite->setup = cb;
         break;
-    case 1:
+    case UT_CALLBACK_TEARDOWN:
         suite->teardown = cb;
         break;
     }
