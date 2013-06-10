@@ -24,13 +24,13 @@ struct suite {
     size_t size;
     size_t num;
     const char ** names;
-    func_t *funcs;
-    cb_t setup;
-    cb_t teardown;
+    UtFunc *funcs;
+    UtCallback setup;
+    UtCallback teardown;
     struct suite *next;
 };
 
-struct test_data {
+struct ut_test_data {
     const char *name;
     unsigned int assertions_ok;
     unsigned int assertions_failed;
@@ -97,8 +97,8 @@ suite_new (const char *name)
     suite->name = name;
     suite->size = 8;
     suite->num = 0;
-    suite->funcs = safe_malloc(sizeof(func_t) * suite->size);
-    suite->names = safe_malloc(sizeof(func_t) * suite->size);
+    suite->funcs = safe_malloc(sizeof(UtFunc) * suite->size);
+    suite->names = safe_malloc(sizeof(UtFunc) * suite->size);
     suite->setup = suite->teardown = NULL;
     suite->next = NULL;
     return suite;
@@ -122,14 +122,14 @@ find_suite (const char *name)
 }
 
 void
-ut_register_test (const char *suite, const char * name, func_t f)
+ut_register_test (const char *suite, const char * name, UtFunc f)
 {
     Suite *tests = find_suite(suite);
 
     if (tests->num >= tests->size) {
         tests->size = 2 * tests->size;
-        tests->funcs = safe_realloc(tests->funcs, sizeof(func_t) * tests->size);
-        tests->names = safe_realloc(tests->names, sizeof(func_t) * tests->size);
+        tests->funcs = safe_realloc(tests->funcs, sizeof(UtFunc) * tests->size);
+        tests->names = safe_realloc(tests->names, sizeof(UtFunc) * tests->size);
     }
     tests->names[tests->num] = name;
     tests->funcs[tests->num] = f;
@@ -137,7 +137,7 @@ ut_register_test (const char *suite, const char * name, func_t f)
 }
 
 void
-ut_register_callback (void (*cb)(void), const char *suitename, UtCallbackType type)
+ut_register_callback (UtCallback cb, const char *suitename, UtCallbackType type)
 {
     Suite *suite = find_suite(suitename);
 
@@ -152,7 +152,7 @@ ut_register_callback (void (*cb)(void), const char *suitename, UtCallbackType ty
 }
 
 static void
-test_run (Suite *suite, size_t idx, TestData *data)
+test_run (Suite *suite, size_t idx, UtTestData *data)
 {
     if (suite->setup) {
         suite->setup();
@@ -171,7 +171,7 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
     for (size_t i = 0; i < suite->num; i++) {
         debug("Running '%s:%s'\n", suite->name, suite->names[i]);
 
-        TestData data = {suite->names[i], 0, 0, logs};
+        UtTestData data = {suite->names[i], 0, 0, logs};
         int pipe_fd[2];
 
         if (pipe(pipe_fd) < 0) {
@@ -253,7 +253,7 @@ ut_run_all_tests (void)
 }
 
 void
-_ut_assert_func (TestData *data,
+_ut_assert_func (UtTestData *data,
                  const char *file,
                  int lineno,
                  int expr,

@@ -28,17 +28,17 @@ typedef enum {
  * Structure with data passed to testing functions.
  * This is an opaque data type, do not access it directly.
  */
-typedef struct test_data TestData;
+typedef struct ut_test_data UtTestData;
 
 /**
  * Type of a test function. Do not use directly.
  */
-typedef void (*func_t)(TestData *);
+typedef void (*UtFunc)(UtTestData *);
 
 /**
  * Type of a callback.
  */
-typedef void (*cb_t)(void);
+typedef void (*UtCallback)(void);
 
 /**
  * Direct comparison of two values.
@@ -53,7 +53,7 @@ typedef void (*cb_t)(void);
  * Internal macro for defining tests.
  */
 #define _ut_UT_SUITE_TEST(suite, suitename, tname)                          \
-    static void _ut_test_##suite##_##tname (TestData *_ut_test_data);       \
+    static void _ut_test_##suite##_##tname (UtTestData *_ut_test_data);     \
     static void _ut_test_register_##suite##_##tname (void)                  \
         __attribute__((constructor(__COUNTER__ + 101)));                    \
     static void _ut_test_register_##suite##_##tname (void) {                \
@@ -61,7 +61,7 @@ typedef void (*cb_t)(void);
                 STRINGIFY(tname),                                           \
                 _ut_test_##suite##_##tname);                                \
     }                                                                       \
-    static void _ut_test_##suite##_##tname (TestData *_ut_test_data)
+    static void _ut_test_##suite##_##tname (UtTestData *_ut_test_data)
 
 /**
  * Internal macro for defining setup function.
@@ -105,7 +105,7 @@ typedef void (*cb_t)(void);
  * @param name  name of the test
  * @param f     function to run
  */
-void ut_register_test(const char *suite, const char *name, func_t f);
+void ut_register_test(const char *suite, const char *name, UtFunc f);
 
 /**
  * Internal function to register setup/teardown functions.
@@ -114,7 +114,7 @@ void ut_register_test(const char *suite, const char *name, func_t f);
  * @param suite name of the modified test suite
  * @param type  0 for setup, 1 for teardown
  */
-void ut_register_callback(cb_t cb, const char *suite, UtCallbackType type);
+void ut_register_callback(UtCallback cb, const char *suite, UtCallbackType type);
 
 /** @endcond */
 
@@ -261,12 +261,12 @@ int ut_run_all_tests(void);
  * @param msg   `printf`-like format string to print error message in case
  *              assertion fails
  */
-void _ut_assert_func(TestData *data,
-                      const char *fname,
-                      int line,
-                      int expr,
-                      const char *msg,
-                      ...)
+void _ut_assert_func(UtTestData *data,
+                     const char *fname,
+                     int line,
+                     int expr,
+                     const char *msg,
+                     ...)
     __attribute__((format(printf, 5, 6)));
 
 #endif /* end of include guard: UTEST_H */
