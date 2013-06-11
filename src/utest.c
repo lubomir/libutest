@@ -17,9 +17,7 @@
 # define debug(...)
 #endif
 
-typedef struct suite Suite;
-
-struct suite {
+typedef struct suite {
     const char *name;
     size_t size;
     size_t num;
@@ -28,7 +26,7 @@ struct suite {
     UtCallback setup;
     UtCallback teardown;
     struct suite *next;
-};
+} Suite;
 
 struct ut_test_data {
     const char *name;
