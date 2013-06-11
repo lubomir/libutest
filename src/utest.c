@@ -206,6 +206,7 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
             test_run (suite, i, &data);
             write(pipe_fd[1], &data, sizeof data);
             close(pipe_fd[1]);
+            fclose(logs);
             exit(EXIT_SUCCESS);
         } else {
             close(pipe_fd[1]);
