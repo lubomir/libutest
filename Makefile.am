@@ -6,7 +6,8 @@ include_HEADERS = src/utest.h
 src_libutest_la_SOURCES = src/main.c \
 			  src/timer.c \
 			  src/utest.h \
-			  src/utest.c
+			  src/utest.c \
+			  src/utils.c
 noinst_PROGRAMS =
 AM_CFLAGS = -I$(srcdir)/src
 

@@ -2,6 +2,7 @@
 
 #include "timer.h"
 #include "utest.h"
+#include "utils.h"
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -10,12 +11,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-
-#ifdef DEBUG
-# define debug(...) fprintf(stderr, " *** DEBUG: " __VA_ARGS__);
-#else
-# define debug(...)
-#endif
 
 typedef struct suite {
     const char *name;
@@ -58,29 +53,6 @@ shutdown_tests (void)
         free(s);
         s = tests;
     }
-}
-
-static inline void * __attribute__((alloc_size(1)))
-safe_malloc (size_t size)
-{
-    void *mem = malloc(size);
-    if (!mem) {
-        fprintf(stderr, " *** ERROR: memory allocation failed\n");
-        exit(EXIT_FAILURE);
-    }
-    return mem;
-}
-
-static inline void * __attribute__((alloc_size(2)))
-safe_realloc (void *mem, size_t size)
-{
-    void *new_mem = realloc(mem, size);
-    if (!new_mem) {
-        fprintf(stderr, " *** ERROR: memory allocation failed\n");
-        free(mem);
-        exit(EXIT_FAILURE);
-    }
-    return new_mem;
 }
 
 static Suite *
@@ -163,23 +135,6 @@ test_run (Suite *suite, size_t idx, UtTestData *data)
     }
 }
 
-/**
- * Print a character on stdout with given color. If stdout is not a terminal,
- * the color will be skipped.
- *
- * @param c     char to be printed
- * @param color ANSI color escape sequence
- */
-static void
-putc_color(char c, char *color)
-{
-    if (isatty(STDOUT_FILENO)) {
-        printf("%s%c%s", color, c, NORMAL);
-    } else {
-        putchar(c);
-    }
-}
-
 static void
 suite_run (Suite *suite, struct test_result *results, FILE *logs)
 {
@@ -243,10 +198,6 @@ ut_run_all_tests (void)
     struct test_result results = { NULL, 0, 0, 0, 0, 0 };
     FILE *logs = tmpfile();
     results.timer = timer_new();
-    if (!results.timer) {
-        fprintf(stderr, " *** ERROR: memory allocation failed\n");
-        exit(EXIT_FAILURE);
-    }
 
     for (Suite *suite = tests; suite; suite = suite->next) {
         suite_run(suite, &results, logs);

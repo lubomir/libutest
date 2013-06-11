@@ -1,4 +1,5 @@
 #include "timer.h"
+#include "utils.h"
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -37,12 +38,10 @@ time_add(struct timespec *dest, struct timespec *a)
 
 Timer * timer_new(void)
 {
-    Timer *t = malloc(sizeof *t);
-    if (t) {
-        t->total.tv_sec = 0;
-        t->total.tv_nsec = 0;
-        t->running = false;
-    }
+    Timer *t = safe_malloc(sizeof *t);
+    t->total.tv_sec = 0;
+    t->total.tv_nsec = 0;
+    t->running = false;
     return t;
 }
 
@@ -54,7 +53,7 @@ void timer_free(Timer *t)
 void timer_start(Timer *timer)
 {
     if (timer->running) {
-        fprintf(stderr, " *** WARNING: timer is already running\n");
+        warning("timer is already running");
     }
     struct timespec tmp = { 0, 0 };
     clock_gettime(CLOCK_REALTIME, &tmp);
@@ -65,7 +64,7 @@ void timer_start(Timer *timer)
 void timer_stop(Timer *timer)
 {
     if (!timer->running) {
-        fprintf(stderr, " *** WARNING: timer is not running\n");
+        warning("timer is not running");
     }
     struct timespec tmp = { 0, 0 };
     clock_gettime(CLOCK_REALTIME, &tmp);
@@ -76,7 +75,7 @@ void timer_stop(Timer *timer)
 double timer_get_elapsed(Timer *timer)
 {
     if (timer->running) {
-        fprintf(stderr, " *** WARNING: timer is running\n");
+        warning("timer is running");
     }
     return timer->total.tv_sec + timer->total.tv_nsec / 1000000000.0;
 }
