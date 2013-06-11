@@ -52,7 +52,8 @@ void
 copy_from_to(FILE *src, FILE *dest)
 {
     static char buffer[4096];
-    while (fgets(buffer, sizeof buffer, src) != NULL) {
-        fprintf(dest, "%s", buffer);
+    size_t len;
+    while ((len = fread(buffer, sizeof buffer, 1, src)) > 0) {
+        fwrite(buffer, len, 1, dest);
     }
 }
