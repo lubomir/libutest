@@ -65,4 +65,12 @@ void * safe_realloc (void *mem, size_t size) __attribute__((alloc_size(2)));
  */
 void putc_color(char c, char *color);
 
+/**
+ * Read all data from one file handle and write it to the other.
+ *
+ * @param src   where to copy from
+ * @param dest  where to write
+ */
+void copy_from_to(FILE *src, FILE *dest);
+
 #endif /* end of include guard: UTILS_H */

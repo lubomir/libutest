@@ -190,8 +190,6 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
     results->tests_ran += suite->num;
 }
 
-#define BUFFER_SIZE 256
-
 int
 ut_run_all_tests (void)
 {
@@ -203,11 +201,9 @@ ut_run_all_tests (void)
         suite_run(suite, &results, logs);
     }
     printf("\n\n");
-    char buffer[BUFFER_SIZE];
+
     rewind(logs);
-    while (fgets(buffer, BUFFER_SIZE, logs) != NULL) {
-        printf("%s", buffer);
-    }
+    copy_from_to(logs, stdout);
 
     printf("%u assertions succeeded, %u assertions failed\n",
             results.assertions_ok, results.assertions_failed);

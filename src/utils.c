@@ -48,3 +48,11 @@ putc_color(char c, char *color)
     }
 }
 
+void
+copy_from_to(FILE *src, FILE *dest)
+{
+    static char buffer[4096];
+    while (fgets(buffer, sizeof buffer, src) != NULL) {
+        fprintf(dest, "%s", buffer);
+    }
+}
