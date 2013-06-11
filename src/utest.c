@@ -163,6 +163,23 @@ test_run (Suite *suite, size_t idx, UtTestData *data)
     }
 }
 
+/**
+ * Print a character on stdout with given color. If stdout is not a terminal,
+ * the color will be skipped.
+ *
+ * @param c     char to be printed
+ * @param color ANSI color escape sequence
+ */
+static void
+putc_color(char c, char *color)
+{
+    if (isatty(STDOUT_FILENO)) {
+        printf("%s%c%s", color, c, NORMAL);
+    } else {
+        putchar(c);
+    }
+}
+
 static void
 suite_run (Suite *suite, struct test_result *results, FILE *logs)
 {
@@ -204,12 +221,12 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
                     BOLD, data.name, NORMAL,
                     BOLD, WTERMSIG(status), NORMAL,
                     strsignal(WTERMSIG(status)));
-            printf(RED "C" NORMAL);
+            putc_color('C', RED);
         } else if (data.assertions_failed > 0) {
             results->tests_failed++;
-            printf(RED "F" NORMAL);
+            putc_color('F', RED);
         } else {
-            printf(GREEN "." NORMAL);
+            putc_color('.', GREEN);
         }
         results->assertions_ok += data.assertions_ok;
         results->assertions_failed += data.assertions_failed;
