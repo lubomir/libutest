@@ -61,7 +61,8 @@ typedef void (*UtCallback)(void);
                 STRINGIFY(tname),                                           \
                 _ut_test_##suite##_##tname);                                \
     }                                                                       \
-    static void _ut_test_##suite##_##tname (UtTestData *_ut_test_data)
+    static void _ut_test_##suite##_##tname (UtTestData * _ut_test_data      \
+            __attribute__((unused)))
 
 /**
  * Internal macro for defining setup function.
