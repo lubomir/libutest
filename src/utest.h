@@ -8,8 +8,6 @@
 #define STRINGIFY_(x) #x
 #define STRINGIFY(x) STRINGIFY_(x)
 
-#define RED     "\033[1;31m"
-#define GREEN   "\033[1;32m"
 #define BOLD    "\033[1m"
 #define NORMAL  "\033[0m"
 
