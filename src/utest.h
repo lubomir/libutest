@@ -55,9 +55,7 @@ typedef void (*UtCallback)(void);
     static void _ut_test_register_##suite##_##tname (void)                  \
         __attribute__((constructor(__COUNTER__ + 101)));                    \
     static void _ut_test_register_##suite##_##tname (void) {                \
-        ut_register_test(suitename,                                         \
-                STRINGIFY(tname),                                           \
-                _ut_test_##suite##_##tname);                                \
+        ut_register_test(suitename, #tname, _ut_test_##suite##_##tname);    \
     }                                                                       \
     static void _ut_test_##suite##_##tname (UtTestData * _ut_test_data      \
             __attribute__((unused)))
@@ -136,7 +134,7 @@ void ut_register_callback(UtCallback cb, const char *suite, UtCallbackType type)
  * @param tname test name
  */
 #define UT_SUITE_TEST(suite, tname)                                         \
-    _ut_UT_SUITE_TEST(suite, STRINGIFY(suite), tname)
+    _ut_UT_SUITE_TEST(suite, #suite, tname)
 
 /**
  * Fail the test unless `exp` evaluates to true.
@@ -209,7 +207,7 @@ void ut_register_callback(UtCallback cb, const char *suite, UtCallbackType type)
  * @param suitename     the test suite to be extended with this code
  */
 #define UT_SUITE_SETUP(suitename)                                           \
-    _ut_UT_SETUP(suitename, STRINGIFY(suitename))
+    _ut_UT_SETUP(suitename, #suitename)
 
 /**
  * Add a teardown to the default file suite.
@@ -226,7 +224,7 @@ void ut_register_callback(UtCallback cb, const char *suite, UtCallbackType type)
  * This code will be run after each test in the test suite with given name.
  */
 #define UT_SUITE_TEARDOWN(suitename)                                        \
-    _ut_UT_TEARDOWN(suitename, STRINGIFY(suitename))
+    _ut_UT_TEARDOWN(suitename, #suitename)
 
 /**
  * Run all defined tests.
