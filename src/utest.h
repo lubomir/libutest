@@ -5,13 +5,14 @@
 #define UTEST_H
 
 /** @cond HIDDEN */
-#define STRINGIFY_(x) #x
-#define STRINGIFY(x) STRINGIFY_(x)
+#define _ut_STRINGIFY_INT(x) #x
+#define _ut_STRINGIFY(x) _ut_STRINGIFY_INT(x)
 
-#define BOLD    "\033[1m"
-#define NORMAL  "\033[0m"
+#define _ut_BOLD    "\033[1m"
+#define _ut_NORMAL  "\033[0m"
 
-#define INBOLD(x) BOLD x NORMAL
+#define _ut_INBOLD(x)   _ut_BOLD x _ut_NORMAL
+#define _ut_INBOLD_S(x) _ut_INBOLD(_ut_STRINGIFY(x))
 
 /**
  * Enumeration for callback types: setup and teardown functions. Using these
@@ -79,7 +80,7 @@ typedef void (*UtCallback)(void);
         type _ut_exp = expected;                                            \
         type _ut_act = actual;                                              \
         ut_assert_func(eq(_ut_exp, _ut_act),                                \
-                "Expected <" INBOLD(fmt) ">, got <" INBOLD(fmt) ">",        \
+                "Expected <"_ut_INBOLD(fmt)">, got <"_ut_INBOLD(fmt)">",    \
                 _ut_exp, _ut_act);                                          \
     } while (0)
 
@@ -145,7 +146,7 @@ void ut_register_callback(UtCallback cb, const char *suite, UtCallbackType type)
  *
  * @param exp   expression that must evaluate to `TRUE`
  */
-#define ut_assert(exp) ut_assert_func(exp, STRINGIFY(exp))
+#define ut_assert(exp) ut_assert_func(exp, _ut_STRINGIFY(exp))
 
 /**
  * Fail the test unless `exp` evaluates to `NULL`.
@@ -153,7 +154,7 @@ void ut_register_callback(UtCallback cb, const char *suite, UtCallbackType type)
  * @param exp   expression that must evaluate to `NULL`
  */
 #define ut_assert_null(exp)                                                 \
-    ut_assert_func((exp) == NULL, INBOLD(STRINGIFY(exp)) " is not NULL")
+    ut_assert_func((exp) == NULL, _ut_INBOLD_S(exp) " is not NULL")
 
 /**
  * Fail the test if expression evaluates to `NULL`.
@@ -161,7 +162,7 @@ void ut_register_callback(UtCallback cb, const char *suite, UtCallbackType type)
  * @param exp   expression that must evaluate to anything but `NULL`
  */
 #define ut_assert_not_null(exp)                                             \
-    ut_assert_func((exp) != NULL, INBOLD(STRINGIFY(exp)) " is NULL")
+    ut_assert_func((exp) != NULL, _ut_INBOLD_S(exp) " is NULL")
 
 /**
  * Fail the test unless two integer values are the same.
