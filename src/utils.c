@@ -53,7 +53,7 @@ copy_from_to(FILE *src, FILE *dest)
 {
     static char buffer[4096];
     size_t len;
-    while ((len = fread(buffer, sizeof buffer, 1, src)) > 0) {
+    while ((len = fread(buffer, 1, sizeof buffer, src)) > 0) {
         fwrite(buffer, len, 1, dest);
     }
 }
