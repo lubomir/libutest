@@ -43,7 +43,7 @@ struct test_result {
 
 static Suite *tests = NULL;
 
-static void
+static void __attribute__((destructor))
 shutdown_tests (void)
 {
     debug("Shutting down tests\n");
@@ -59,11 +59,6 @@ shutdown_tests (void)
 static Suite *
 suite_new (const char *name)
 {
-    static int once = 0;
-    if (!once++) {
-        atexit(shutdown_tests);
-    }
-
     Suite *suite = safe_malloc(sizeof *tests);
     suite->name = name;
     suite->size = 8;
