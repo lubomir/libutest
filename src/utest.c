@@ -16,8 +16,10 @@ typedef struct suite {
     const char *name;
     size_t size;
     size_t num;
-    const char ** names;
-    UtFunc *funcs;
+    struct {
+        const char *name;
+        UtFunc func;
+    } *tests;
     UtCallback setup;
     UtCallback teardown;
     struct suite *next;
@@ -48,8 +50,7 @@ shutdown_tests (void)
     Suite *s = tests;
     while (s) {
         tests = s->next;
-        free(s->funcs);
-        free(s->names);
+        free(s->tests);
         free(s);
         s = tests;
     }
@@ -67,8 +68,7 @@ suite_new (const char *name)
     suite->name = name;
     suite->size = 8;
     suite->num = 0;
-    suite->funcs = safe_malloc(sizeof(UtFunc) * suite->size);
-    suite->names = safe_malloc(sizeof(UtFunc) * suite->size);
+    suite->tests = safe_malloc(sizeof(*suite->tests) * suite->size);
     suite->setup = suite->teardown = NULL;
     suite->next = NULL;
     return suite;
@@ -94,16 +94,15 @@ find_suite (const char *name)
 void
 ut_register_test (const char *suite, const char * name, UtFunc f)
 {
-    Suite *tests = find_suite(suite);
+    Suite *s = find_suite(suite);
 
-    if (tests->num >= tests->size) {
-        tests->size = 2 * tests->size;
-        tests->funcs = safe_realloc(tests->funcs, sizeof(UtFunc) * tests->size);
-        tests->names = safe_realloc(tests->names, sizeof(UtFunc) * tests->size);
+    if (s->num >= s->size) {
+        s->size = 2 * s->size;
+        s->tests = safe_realloc(s->tests, sizeof(*s->tests) * s->size);
     }
-    tests->names[tests->num] = name;
-    tests->funcs[tests->num] = f;
-    tests->num++;
+    s->tests[tests->num].name = name;
+    s->tests[tests->num].func = f;
+    s->num++;
 }
 
 void
@@ -128,7 +127,7 @@ test_run (Suite *suite, size_t idx, UtTestData *data)
         suite->setup();
     }
 
-    suite->funcs[idx](data);
+    suite->tests[idx].func(data);
 
     if (suite->teardown) {
         suite->teardown();
@@ -141,7 +140,7 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
     for (size_t i = 0; i < suite->num; i++) {
         debug("Running '%s:%s'\n", suite->name, suite->names[i]);
 
-        UtTestData data = {suite->names[i], 0, 0, logs};
+        UtTestData data = {suite->tests[i].name, 0, 0, logs};
         int pipe_fd[2];
 
         if (pipe(pipe_fd) < 0) {
