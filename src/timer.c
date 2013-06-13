@@ -13,7 +13,7 @@ struct timer {
 };
 
 static inline void
-time_sub(struct timespec *dest, struct timespec *a)
+time_sub (struct timespec *dest, struct timespec *a)
 {
     dest->tv_sec  -= a->tv_sec;
     dest->tv_nsec -= a->tv_nsec;
@@ -25,7 +25,7 @@ time_sub(struct timespec *dest, struct timespec *a)
 }
 
 static inline void
-time_add(struct timespec *dest, struct timespec *a)
+time_add (struct timespec *dest, struct timespec *a)
 {
     dest->tv_sec  += a->tv_sec;
     dest->tv_nsec += a->tv_nsec;
@@ -36,7 +36,8 @@ time_add(struct timespec *dest, struct timespec *a)
     }
 }
 
-Timer * timer_new(void)
+Timer *
+timer_new (void)
 {
     Timer *t = safe_malloc(sizeof *t);
     t->total.tv_sec = 0;
@@ -45,12 +46,14 @@ Timer * timer_new(void)
     return t;
 }
 
-void timer_free(Timer *t)
+void
+timer_free (Timer *t)
 {
     free(t);
 }
 
-void timer_start(Timer *timer)
+void
+timer_start (Timer *timer)
 {
     if (timer->running) {
         warning("timer is already running");
@@ -61,7 +64,8 @@ void timer_start(Timer *timer)
     timer->running = true;
 }
 
-void timer_stop(Timer *timer)
+void
+timer_stop (Timer *timer)
 {
     if (!timer->running) {
         warning("timer is not running");
@@ -72,7 +76,8 @@ void timer_stop(Timer *timer)
     timer->running = false;
 }
 
-double timer_get_elapsed(Timer *timer)
+double
+timer_get_elapsed (Timer *timer)
 {
     if (timer->running) {
         warning("timer is running");

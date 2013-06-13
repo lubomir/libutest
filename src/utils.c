@@ -6,7 +6,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void emit_message(const char *type, const char *msg, ...)
+void
+emit_message (const char *type, const char *msg, ...)
 {
     va_list args;
     va_start(args, msg);
@@ -39,7 +40,7 @@ safe_realloc (void *mem, size_t size)
 }
 
 void
-putc_color(char c, char *color)
+putc_color (char c, char *color)
 {
     if (isatty(STDOUT_FILENO)) {
         printf("%s%c%s", color, c, NORMAL);
@@ -49,7 +50,7 @@ putc_color(char c, char *color)
 }
 
 void
-copy_from_to(FILE *src, FILE *dest)
+copy_from_to (FILE *src, FILE *dest)
 {
     static char buffer[4096];
     size_t len;

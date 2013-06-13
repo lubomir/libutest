@@ -157,7 +157,7 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
             abort();
         } else if (pid == 0) {
             close(pipe_fd[0]);
-            test_run (suite, i, &data);
+            test_run(suite, i, &data);
             write(pipe_fd[1], &data, sizeof data);
             close(pipe_fd[1]);
             fclose(logs);
