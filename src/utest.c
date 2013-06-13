@@ -68,7 +68,7 @@ suite_new (const char *name)
     suite->name = name;
     suite->size = 8;
     suite->num = 0;
-    suite->tests = safe_malloc(sizeof(*suite->tests) * suite->size);
+    suite->tests = safe_malloc(sizeof *suite->tests * suite->size);
     suite->setup = suite->teardown = NULL;
     suite->next = NULL;
     return suite;
@@ -98,7 +98,7 @@ ut_register_test (const char *suite, const char * name, UtFunc f)
 
     if (s->num >= s->size) {
         s->size = 2 * s->size;
-        s->tests = safe_realloc(s->tests, sizeof(*s->tests) * s->size);
+        s->tests = safe_realloc(s->tests, sizeof *s->tests * s->size);
     }
     s->tests[tests->num].name = name;
     s->tests[tests->num].func = f;
