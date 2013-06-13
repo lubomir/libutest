@@ -1,3 +1,5 @@
+#include <config.h>
+
 #include "utest.h"
 
 int __attribute__((weak)) main (void)

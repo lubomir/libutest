@@ -1,8 +1,6 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#include <config.h>
-
 /**
  * Timer allows the program to measure real time. This is an opaque structure
  * and should be used only by provided functions.
