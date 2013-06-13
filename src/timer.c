@@ -40,8 +40,6 @@ Timer *
 timer_new (void)
 {
     Timer *t = safe_malloc(sizeof *t);
-    t->total.tv_sec = 0;
-    t->total.tv_nsec = 0;
     t->running = false;
     return t;
 }

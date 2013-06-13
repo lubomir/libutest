@@ -40,6 +40,7 @@ void emit_message(const char *type, const char *msg, ...)
 /**
  * Allocate a chunk of memory. This function is similar to malloc, only when
  * allocation fails, it prints error message and exits the program immediately.
+ * Unlike malloc(3), this function initializes the memory to zero.
  *
  * @param size  size of the memory block
  * @return pointer to newly allocated memory

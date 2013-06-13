@@ -62,10 +62,7 @@ suite_new (const char *name)
     Suite *suite = safe_malloc(sizeof *tests);
     suite->name = name;
     suite->size = 8;
-    suite->num = 0;
     suite->tests = safe_malloc(sizeof *suite->tests * suite->size);
-    suite->setup = suite->teardown = NULL;
-    suite->next = NULL;
     return suite;
 }
 

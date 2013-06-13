@@ -4,6 +4,7 @@
 
 #include <stdarg.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 void
@@ -24,7 +25,7 @@ safe_malloc (size_t size)
         error("memory allocation failed");
         exit(EXIT_FAILURE);
     }
-    return mem;
+    return memset(mem, 0, size);
 }
 
 void *
