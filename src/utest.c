@@ -92,8 +92,8 @@ ut_register_test (const char *suite, const char * name, UtFunc f)
         s->size = 2 * s->size;
         s->tests = safe_realloc(s->tests, sizeof *s->tests * s->size);
     }
-    s->tests[tests->num].name = name;
-    s->tests[tests->num].func = f;
+    s->tests[s->num].name = name;
+    s->tests[s->num].func = f;
     s->num++;
 }
 
