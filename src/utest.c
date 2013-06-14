@@ -130,7 +130,7 @@ static void
 suite_run (Suite *suite, struct test_result *results, FILE *logs)
 {
     for (size_t i = 0; i < suite->num; i++) {
-        debug("Running '%s:%s'\n", suite->name, suite->names[i]);
+        debug("Running '%s:%s'\n", suite->name, suite->tests[i].name);
 
         UtTestData data = {suite->tests[i].name, 0, 0, logs};
         int pipe_fd[2];
