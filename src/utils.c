@@ -14,6 +14,7 @@ emit_message (const char *type, const char *msg, ...)
     va_start(args, msg);
     fprintf(stderr, " *** %s: ", type);
     vfprintf(stderr, msg, args);
+    fputc('\n', stderr);
     va_end(args);
 }
 
