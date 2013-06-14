@@ -41,25 +41,25 @@ struct test_result {
     unsigned int assertions_failed;
 };
 
-static Suite *tests = NULL;
+static Suite *global_tests = NULL;
 
 static void __attribute__((destructor))
 shutdown_tests (void)
 {
     debug("Shutting down tests\n");
-    Suite *s = tests;
+    Suite *s = global_tests;
     while (s) {
-        tests = s->next;
+        global_tests = s->next;
         free(s->tests);
         free(s);
-        s = tests;
+        s = global_tests;
     }
 }
 
 static Suite *
 suite_new (const char *name)
 {
-    Suite *suite = safe_malloc(sizeof *tests);
+    Suite *suite = safe_malloc(sizeof *suite);
     suite->name = name;
     suite->size = 8;
     suite->tests = safe_malloc(sizeof *suite->tests * suite->size);
@@ -69,15 +69,15 @@ suite_new (const char *name)
 static inline Suite *
 find_suite (const char *name)
 {
-    Suite *tmp = tests;
+    Suite *tmp = global_tests;
 
     while (tmp != NULL && strcmp(tmp->name, name) != 0) {
         tmp = tmp->next;
     }
     if (tmp == NULL) {
         tmp = suite_new(name);
-        tmp->next = tests;
-        tests = tmp;
+        tmp->next = global_tests;
+        global_tests = tmp;
     }
 
     return tmp;
@@ -188,7 +188,7 @@ ut_run_all_tests (void)
     FILE *logs = tmpfile();
     results.timer = timer_new();
 
-    for (Suite *suite = tests; suite; suite = suite->next) {
+    for (Suite *suite = global_tests; suite; suite = suite->next) {
         suite_run(suite, &results, logs);
     }
     printf("\n\n");
