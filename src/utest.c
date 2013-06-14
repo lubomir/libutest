@@ -89,12 +89,12 @@ ut_register_test (const char *suite, const char * name, UtFunc f)
     Suite *s = find_suite(suite);
 
     if (s->num >= s->size) {
-        s->size = 2 * s->size;
+        s->size *= 2;
         s->tests = safe_realloc(s->tests, sizeof *s->tests * s->size);
     }
     s->tests[s->num].name = name;
     s->tests[s->num].func = f;
-    s->num++;
+    ++s->num;
 }
 
 void
@@ -129,7 +129,7 @@ test_run (Suite *suite, size_t idx, UtTestData *data)
 static void
 suite_run (Suite *suite, struct test_result *results, FILE *logs)
 {
-    for (size_t i = 0; i < suite->num; i++) {
+    for (size_t i = 0; i < suite->num; ++i) {
         debug("Running '%s:%s'\n", suite->name, suite->tests[i].name);
 
         UtTestData data = {suite->tests[i].name, 0, 0, logs};
@@ -163,14 +163,14 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
         }
 
         if (WIFSIGNALED(status)) {
-            results->tests_crashed++;
+            ++results->tests_crashed;
             fprintf(logs, "Crash in %s%s%s\n\tKilled with signal %s%d%s (%s)\n\n",
                     BOLD, data.name, NORMAL,
                     BOLD, WTERMSIG(status), NORMAL,
                     strsignal(WTERMSIG(status)));
             putc_color('C', RED);
         } else if (data.assertions_failed > 0) {
-            results->tests_failed++;
+            ++results->tests_failed;
             putc_color('F', RED);
         } else {
             putc_color('.', GREEN);
@@ -214,10 +214,10 @@ _ut_assert_func (UtTestData *data,
                  const char *msg, ...)
 {
     if (expr) {
-        data->assertions_ok++;
+        ++data->assertions_ok;
         return;
     }
-    data->assertions_failed++;
+    ++data->assertions_failed;
     fprintf(data->logs, "Assertion in %s%s%s (%s:%d) failed:\n\t",
             BOLD, data->name, NORMAL, file, lineno);
     va_list args;
