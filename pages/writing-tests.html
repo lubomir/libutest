@@ -16,20 +16,57 @@
           <h1>Writing tests</h1>
 
 <p>In each test, you can use many test assertions.</p>
-<ul>
-<li><code>ut_assert</code></li>
-<li><code>ut_assert_null</code></li>
-<li><code>ut_assert_not_null</code></li>
-<li><code>ut_assert_equal_int</code></li>
-<li><code>ut_assert_equal_uint</code></li>
-<li><code>ut_assert_equal_string</code></li>
-</ul>
+<dl>
+<dt><code>ut_assert(expr)</code></dt>
+<dd>Check that <code>expr</code> evaluates to truth (i.e. anything non-zero).
+</dd>
+</dl>
+<h3 id="pointers">Pointers</h3>
+<dl>
+<dt><code>ut_assert_null(ptr)</code></dt>
+<dd><p>Check that <code>ptr</code> is <code>NULL</code> pointer.</p>
+</dd>
+<dt><code>ut_assert_not_null(ptr)</code></dt>
+<dd><p>Check that <code>ptr</code> points somewhere to memory and is not <code>NULL</code>.</p>
+</dd>
+</dl>
+<h3 id="basic-values">Basic values</h3>
+<dl>
+<dt><code>ut_assert_equal_int(expected, actual)</code></dt>
+<dd><p>Check equality of two integers. The first argument should be the expected value. While swapping the arguments makes no difference in whether or not the assertion succeeds, the order is important for error message.</p>
+</dd>
+<dt><code>ut_assert_equal_uint(expected, actual)</code></dt>
+<dd><p>Check equality of two unsigned integers.</p>
+</dd>
+<dt><code>ut_assert_equal_string(expected, actual)</code></dt>
+<dd><p>Check that both arguments are non-<code>NULL</code> and contain the same string. The character data is compared, not memory addresses.</p>
+</dd>
+</dl>
 <h2 id="custom-assertions">Custom assertions</h2>
 <p>You may find yourself in a situation where you need to write your own assertion. There is support for doing that.</p>
-<ul>
-<li><code>ut_assert_func</code></li>
-<li><code>ut_assert_func</code></li>
-</ul>
+<dl>
+<dt><code>ut_assert_func(expr, fmt, ...)</code></dt>
+<dd><p>Verify that <code>expr</code> evaluates to true. The error message is determined by the <code>fmt</code> argument, which is a <code>printf</code>-like formatting string.</p>
+<p>Please note that is is in fact a macro, that wraps a function and gives it current file name and line number to further enhance error message.</p>
+</dd>
+</dl>
+<h3 id="example">Example</h3>
+<pre class="sourceCode C"><code class="sourceCode c"><span class="kw">struct</span> pair {
+    <span class="dt">int</span> x;
+    <span class="dt">char</span> *str;
+};
+
+<span class="co">/* Verify that the struct contains the same number</span>
+<span class="co"> * as string and as a real integer. */</span>
+<span class="dt">void</span> my_assert(<span class="kw">struct</span> pair *p)
+{
+    <span class="dt">int</span> str_value = atoi(p-&gt;str);
+
+    ut_assert_func(p-&gt;x == str_value,
+        <span class="st">&quot;Struct data is not consistent</span><span class="ch">\n</span><span class="st">&quot;</span>
+        <span class="st">&quot;{ x=%d; str=</span><span class="ch">\&quot;</span><span class="st">%s</span><span class="ch">\&quot;</span><span class="st"> }&quot;</span>,
+        p-&gt;x, p-&gt;str);
+}</code></pre>
 
 <ul id="bottom-nav">
 
