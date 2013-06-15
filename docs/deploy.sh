@@ -11,18 +11,10 @@ if [ ! -d .git ]; then
     exit 1
 fi
 
-ghc --make "$DIR/site.hs"
-if [ $? -ne 0 ]; then
-    echo "Compilation failed"
-    exit 1
-fi
-
 if ! git diff-index --quiet HEAD --; then
     echo "Repo is not clean!"
     exit 1
 fi
-
-( cd docs; ./site rebuild )
 
 cp -r "$DIR/_site" "$tempdir"
 

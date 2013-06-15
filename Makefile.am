@@ -11,7 +11,9 @@ src_libutest_la_SOURCES = src/main.c \
 noinst_PROGRAMS =
 AM_CFLAGS = -I$(srcdir)/src
 
+CLEANFILES=
 include data/Makefile.include
+include docs/Makefile.include
 if ENABLE_EXAMPLES
 include examples/Makefile.include
 endif

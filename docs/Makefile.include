@@ -1,0 +1,13 @@
+
+CLEANFILES += docs/site.hi docs/site.o
+
+docs/site : docs/site.hs
+	ghc --make docs/site.hs
+
+.PHONY: web deploy
+
+web : docs/site
+	cd docs && ./site rebuild
+
+deploy : web
+	./docs/deploy.sh
