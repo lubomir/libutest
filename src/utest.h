@@ -53,9 +53,8 @@ typedef void (*UtCallback)(void);
  */
 #define _ut_UT_SUITE_TEST(suite, suitename, tname)                          \
     static void _ut_test_##suite##_##tname (UtTestData *_ut_test_data);     \
-    static void _ut_test_register_##suite##_##tname (void)                  \
-        __attribute__((constructor(__COUNTER__ + 101)));                    \
-    static void _ut_test_register_##suite##_##tname (void) {                \
+    static void __attribute__((constructor(__COUNTER__ + 101)))             \
+    _ut_test_register_##suite##_##tname (void) {                            \
         ut_register_test(suitename, #tname, _ut_test_##suite##_##tname);    \
     }                                                                       \
     static void _ut_test_##suite##_##tname (UtTestData * _ut_test_data      \
@@ -65,12 +64,12 @@ typedef void (*UtCallback)(void);
  * Internal macro for defining setup function.
  */
 #define _ut_UT_SETUP(id, suitename)                                         \
-    void _ut_setup_##id (void);                                             \
-    void _ut_setup_##id##_register (void) __attribute__((constructor));     \
-    void _ut_setup_##id##_register (void) {                                 \
+    static void _ut_setup_##id (void);                                      \
+    static void __attribute__((constructor))                                \
+    _ut_setup_##id##_register (void) {                                      \
         ut_register_callback(_ut_setup_##id, suitename, UT_CALLBACK_SETUP); \
     }                                                                       \
-    void _ut_setup_##id(void)
+    static void _ut_setup_##id(void)
 
 /**
  * Internal helper macro for writing simple assertions.
@@ -88,13 +87,13 @@ typedef void (*UtCallback)(void);
  * Internal helper macro for writing teardown functions.
  */
 #define _ut_UT_TEARDOWN(id, suitename)                                      \
-    void _ut_teardown_##id (void);                                          \
-    void _ut_teardown_##id##_register (void) __attribute__((constructor));  \
-    void _ut_teardown_##id##_register (void) {                              \
+    static void _ut_teardown_##id (void);                                   \
+    static void __attribute__((constructor))                                \
+    _ut_teardown_##id##_register (void) {                                   \
         ut_register_callback(_ut_teardown_##id,                             \
                 suitename, UT_CALLBACK_TEARDOWN);                           \
     }                                                                       \
-    void _ut_teardown_##id(void)
+    static void _ut_teardown_##id(void)
 
 /**
  * Internal function to register a test.
