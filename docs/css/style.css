@@ -57,3 +57,36 @@ header h1 {
     position: absolute;
     right: 0;
 }
+
+code {
+    background-color: #eeeeec;
+    color: #2e3436;
+}
+
+.sourceCode {
+    background-color: #2e3436;
+    color: #eeeeec;
+}
+pre.sourceCode {
+    border: 5px solid #2e3436;
+}
+
+.dt, .kw, .fu {
+    font-weight: bold;
+}
+
+.ot {
+    color: #ad7fa8;
+}
+.dv, .st {
+    color: #edd400;
+}
+ .dt {
+    color: #8ae234;
+}
+.kw {
+    color: #eeeeec;
+}
+.co {
+    color: #888a85;
+}
