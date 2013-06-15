@@ -1,0 +1,54 @@
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: #3465a4;
+}
+
+header {
+    background: #2e3436;
+    color: #eeeeec;
+    padding: 1em;
+    text-align: center;
+    border-bottom: 5px solid #204a87;
+}
+
+header p {
+    margin-top: 0;
+}
+header h1 {
+    margin-bottom: 0;
+}
+
+#body {
+    width: 30em;
+    margin: 0 auto;
+}
+
+#bottom-nav {
+    position: relative;
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+}
+#bottom-nav a {
+    text-decoration: none;
+}
+#bottom-nav a:hover {
+    text-decoration: underline;
+}
+#bottom-nav li {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+#prev-link {
+    position: absolute;
+    left: 0;
+}
+#next-link {
+    position: absolute;
+    right: 0;
+}
