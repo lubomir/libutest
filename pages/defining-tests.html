@@ -8,7 +8,7 @@
 
   <body>
       <header>
-          <h1>libutest</h1>
+          <h1><a href="http://lubomir.github.io/libutest/">libutest</a></h1>
           <p>simple unit testing for C</p>
       </header>
 
@@ -18,19 +18,48 @@
 <p>To define a test, use any of the following macros.</p>
 <p>Each test belongs to a test suite. The macro <code>UT_TEST</code> defines a test in current file suite. Therefore if for some reason you want to have one test suite split across more files, you need to explicitly put them into the same suite using <code>UT_SUITE_TEST</code>.</p>
 <p>All tests in a single suite will be executed in the order in which they are defined. The order of the suites themselves is not defined. Order of tests in a suite split to more files is also not well defined.</p>
-<ul>
-<li><code>UT_TEST</code></li>
-<li><code>UT_SUITE_TEST</code></li>
-</ul>
+<dl>
+<dt><code>UT_TEST(testname)</code></dt>
+<dd><p>This macro creates a new test with given name.</p>
+</dd>
+<dt><code>UT_SUITE_TEST(suite, testname)</code></dt>
+<dd><p>Using this macro you can create a test in given test suite. The <code>suite</code> argument should be name of the test suite. There is no need to create the suite beforehand.</p>
+</dd>
+</dl>
+<h3 id="example">Example</h3>
+<pre class="sourceCode C"><code class="sourceCode c">UT_TEST(firstTest) {
+    puts(<span class="st">&quot;I will run automatically&quot;</span>);
+}</code></pre>
 <h2 id="fixtures">Fixtures</h2>
 <p>If you have some common code for the tests, you might want to put them into a separate place. You can use <code>UT_SETUP</code> and <code>UT_TEARDOWN</code> to define a piece of code that runs before and after all tests. There are variants of the macro that assign the code to specific test suite.</p>
 <p>There can only be one setup function and one teardown function for each suite.</p>
-<ul>
-<li><code>UT_SETUP</code></li>
-<li><code>UT_SUITE_SETUP</code></li>
-<li><code>UT_TEARDOWN</code></li>
-<li><code>UT_SUITE_TEARDOWN</code></li>
-</ul>
+<dl>
+<dt><code>UT_SETUP</code></dt>
+<dd><p>This macro enables you to register a piece of code that is run before each test of registered by <code>UT_TEST</code>.</p>
+</dd>
+<dt><code>UT_SUITE_SETUP(suite)</code></dt>
+<dd><p>This macro is same as <code>UT_SETUP</code>, only the code is run before test of the corresponding test suite.</p>
+</dd>
+<dt><code>UT_TEARDOWN</code></dt>
+<dd><p>Teardown code is run after each test with no explicit suite.</p>
+</dd>
+<dt><code>UT_SUITE_TEARDOWN(suite)</code></dt>
+<dd><p>This code is run after each test in given suite.</p>
+</dd>
+</dl>
+<h3 id="example-1">Example</h3>
+<pre class="sourceCode C"><code class="sourceCode c">UT_SETUP {
+    puts(<span class="st">&quot;Setup 1&quot;</span>);
+}
+
+UT_TEST(testWithSetup) {
+    puts(<span class="st">&quot;Setup 1 was executed already&quot;</span>);
+    puts(<span class="st">&quot;But teardown will run only after this test&quot;</span>);
+}
+
+UT_TEARDOWN {
+    puts(<span class="st">&quot;All done, good job!&quot;</span>);
+}</code></pre>
 
 <ul id="bottom-nav">
 
