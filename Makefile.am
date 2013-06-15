@@ -15,7 +15,3 @@ include data/Makefile.include
 if ENABLE_EXAMPLES
 include examples/Makefile.include
 endif
-
-if ENABLE_DOCS
-include docs/Makefile.include
-endif

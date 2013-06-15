@@ -17,11 +17,6 @@ AC_ARG_ENABLE([examples],
               AS_HELP_STRING([--disable-examples], [Do not build examples]))
 AM_CONDITIONAL([ENABLE_EXAMPLES], [test "x$enable_examples" != "xno"])
 
-# Add --enable-docs option
-AC_ARG_ENABLE([docs],
-	      AS_HELP_STRING([--enable-docs], [Build the documentation]))
-AM_CONDITIONAL([ENABLE_DOCS], [test "x$enable_docs" = "xyes"])
-
 # Checks for programs.
 AC_PROG_CC_C99
 AM_PROG_CC_C_O
@@ -44,7 +39,7 @@ AC_FUNC_REALLOC
 AC_CHECK_FUNCS([atexit clock_gettime memset strstr])
 AC_FUNC_FORK
 
-AC_CONFIG_FILES([Doxyfile Makefile data/libutest.pc docs/conf.py])
+AC_CONFIG_FILES([Makefile data/libutest.pc])
 AC_OUTPUT
 
 echo ""
@@ -52,4 +47,3 @@ echo "libutest $VERSION"
 echo ""
 echo " Prefix......................: ${prefix}"
 echo " Compiling examples..........: ${enable_examples:-yes}"
-echo " Building docs...............: ${enable_docs:-no}"
