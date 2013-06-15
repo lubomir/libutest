@@ -14,6 +14,11 @@ header {
     text-align: center;
     border-bottom: 5px solid #204a87;
 }
+header a {
+    background: #2e3436;
+    color: #eeeeec;
+    text-decoration: none;
+}
 
 header p {
     margin-top: 0;
