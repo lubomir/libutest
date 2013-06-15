@@ -13,11 +13,15 @@ to manually include `UT_DEFAULT_MAIN` anymore, as the default `main` function
 is included in the library and is used unless your code defines your own entry
 point function.
 
- * `UT_DEFAULT_MAIN`
+`UT_DEFAULT_MAIN`
+
+:   Deprecated. This macro expands to definition of a `main()` function.
 
 However, if you are not satisfied with it and want something more complex, you
 can write your own entrypoint. In that case you will need `ut_run_all_tests`
 function to run the tests.
 
- * `ut_run_all_tests`
+`int ut_run_all_tests (void)`
 
+:   Run all registered tests from all suites. This function returns number of
+    failed tests.
