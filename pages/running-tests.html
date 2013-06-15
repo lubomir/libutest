@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="../css/style.css" type="text/css">
+    <title>libutest - Running the tests</title>
+  </head>
+
+  <body>
+      <header>
+          <h1>libutest</h1>
+          <p>simple unit testing for C</p>
+      </header>
+
+      <div id="body">
+          <h1>Running the tests</h1>
+
+<p>Tests written using <em>libutest</em> are meant to be compiled into a separate executable file. Therefore to be able to run it, the needs to be a <code>main</code> function.</p>
+<p>There is a default main provided which you can insert into your program with <code>UT_DEFAULT_MAIN</code> (now deprecated). Starting from version 0.2, there is no need to manually include <code>UT_DEFAULT_MAIN</code> anymore, as the default <code>main</code> function is included in the library and is used unless your code defines your own entry point function.</p>
+<ul>
+<li><code>UT_DEFAULT_MAIN</code></li>
+</ul>
+<p>However, if you are not satisfied with it and want something more complex, you can write your own entrypoint. In that case you will need <code>ut_run_all_tests</code> function to run the tests.</p>
+<ul>
+<li><code>ut_run_all_tests</code></li>
+</ul>
+
+<ul id="bottom-nav">
+
+    <li id="prev-link"><a href="writing-tests.html">Previous</a></li>
+
+    <li><a href="../index.html">Index</a></li>
+
+</ul>
+
+      </div>
+  </body>
+</html>
