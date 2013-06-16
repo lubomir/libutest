@@ -63,11 +63,12 @@ assertion should call exactly one of `ut_pass` and `ut_fail`.
 :   Marks the assertion as passed. This is again a macro that wraps a function
     and passes it additional arguments.
 
-`ut_fail(const char *file, int line)`
+`ut_fail(int line)`
 
 :   Mark the assertion as failed. This macro also prints a header with
     information about which test this assertion is in as well as file and line
-    number. This information is obtained from the arguments.
+    number. File name is determined by the current test, line number must be
+    supplied in an argument.
 
 `ut_message(msg, ...)`
 
