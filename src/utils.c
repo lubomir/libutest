@@ -3,6 +3,7 @@
 #include "utils.h"
 
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -51,12 +52,30 @@ putc_color (char c, char *color)
     }
 }
 
+static void
+write_strip_escapes (char *buffer, size_t len, FILE *dest)
+{
+    for (size_t i = 0; i < len; ++i) {
+        if (buffer[i] == '\033') {
+            while (buffer[++i] != 'm');
+            continue;
+        }
+        fputc(buffer[i], dest);
+    }
+}
+
 void
 copy_from_to (FILE *src, FILE *dest)
 {
     static char buffer[4096];
     size_t len;
+    bool tty = isatty(fileno(dest));
+
     while ((len = fread(buffer, 1, sizeof buffer, src)) > 0) {
-        fwrite(buffer, len, 1, dest);
+        if (tty) {
+            fwrite(buffer, len, 1, dest);
+        } else {
+            write_strip_escapes(buffer, len, dest);
+        }
     }
 }

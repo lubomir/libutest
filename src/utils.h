@@ -69,6 +69,8 @@ void putc_color(char c, char *color);
 /**
  * Read all data from one file handle and write it to the other.
  *
+ * If dest is not a TTY, all escape sequences will be stripped from the data.
+ *
  * @param src   where to copy from
  * @param dest  where to write
  */
