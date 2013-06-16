@@ -28,6 +28,7 @@ typedef struct suite {
 
 struct ut_test_data {
     const char *name;
+    const char *file;
     unsigned int assertions_ok;
     unsigned int assertions_failed;
     FILE *logs;
@@ -141,7 +142,7 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
     for (size_t i = 0; i < suite->num; ++i) {
         debug("Running '%s:%s'\n", suite->name, suite->tests[i].name);
 
-        UtTestData data = {suite->tests[i].name, 0, 0, logs};
+        UtTestData data = {suite->tests[i].name, suite->tests[i].file, 0, 0, logs};
         int pipe_fd[2];
 
         if (pipe(pipe_fd) < 0) {
@@ -216,17 +217,13 @@ ut_run_all_tests (void)
 }
 
 void
-_ut_assert_func (UtTestData *data,
-                 const char *file,
-                 int lineno,
-                 int expr,
-                 const char *msg, ...)
+_ut_assert_func (UtTestData *data, int lineno, int expr, const char *msg, ...)
 {
     if (expr) {
         _ut_pass(data);
         return;
     }
-    _ut_fail(data, file, lineno);
+    _ut_fail(data, lineno);
 
     va_list args;
     va_start(args, msg);
@@ -235,7 +232,7 @@ _ut_assert_func (UtTestData *data,
 }
 
 void
-_ut_assert_equal_string (UtTestData *data, const char *file, int line,
+_ut_assert_equal_string (UtTestData *data, int line,
                          const char *expected, const char *actual)
 {
     if (expected == NULL && actual == NULL) {
@@ -246,7 +243,7 @@ _ut_assert_equal_string (UtTestData *data, const char *file, int line,
         _ut_pass(data);
         return;
     }
-    _ut_fail(data, file, line);
+    _ut_fail(data, line);
 
     if (expected == NULL) {
         _ut_message(data, "Expected NULL, got <"_ut_INBOLD("%s")">", actual);
@@ -271,11 +268,11 @@ _ut_assert_equal_string (UtTestData *data, const char *file, int line,
 }
 
 void
-_ut_fail (UtTestData *data, const char *file, int line)
+_ut_fail (UtTestData *data, int line)
 {
     ++data->assertions_failed;
     fprintf(data->logs, "Assertion in "_ut_INBOLD("%s")" (%s:%d) failed:\n",
-            data->name, file, line);
+            data->name, data->file, line);
 }
 
 void

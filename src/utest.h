@@ -183,19 +183,17 @@ void ut_register_callback(UtCallback cb, const char *suite, UtCallbackType type)
  * @param actual    expression that evaluates to a pointer to `char`
  */
 #define ut_assert_equal_string(expected, actual)                            \
-    _ut_assert_equal_string(_ut_test_data, __FILE__, __LINE__, expected, actual)
+    _ut_assert_equal_string(_ut_test_data, __LINE__, expected, actual)
 
 /**
  * Actual string compare assertion.
  *
  * @param data      test data
- * @param file      file where the test is defined
  * @param line      line from which the assertion was called
  * @param expected  expected string
  * @param actual    actual string
  */
-void _ut_assert_equal_string(UtTestData *data,
-        const char *file, int line,
+void _ut_assert_equal_string(UtTestData *data, int line,
         const char *expected, const char *actual);
 
 /**
@@ -254,7 +252,7 @@ int ut_run_all_tests(void);
  * file name and line number.
  */
 #define ut_assert_func(exp,...)                                            \
-    _ut_assert_func(_ut_test_data, __FILE__, __LINE__, exp, __VA_ARGS__)
+    _ut_assert_func(_ut_test_data, __LINE__, exp, __VA_ARGS__)
 
 /**
  * Function implementing the assertion.
@@ -262,37 +260,35 @@ int ut_run_all_tests(void);
  * This function is intended for writing custom assertions. Direct calls
  * are not advised.
  *
- * @param fname filename where the assertion takes place
+ * @param data  test data
  * @param line  line number where the assertion is located
  * @param expr  expression that is tested by the assertion
  * @param msg   `printf`-like format string to print error message in case
  *              assertion fails
  */
 void _ut_assert_func(UtTestData *data,
-                     const char *fname,
                      int line,
                      int expr,
                      const char *msg,
                      ...)
-    __attribute__((format(printf, 5, 6)));
+    __attribute__((format(printf, 4, 5)));
 
 /**
  * Wrapper around `_ut_fail`. This prints standard failure message and marks
- * the assertion as failed.
+ * the assertion as failed. The message includes a filename, which is
+ * automatically determined from the current test.
  *
- * @param file  filename to be included in the message
  * @param line  line number to be included in the message
  */
-#define ut_fail(file, line)   _ut_fail(_ut_test_data, file, line)
+#define ut_fail(line)   _ut_fail(_ut_test_data, line)
 
 /**
  * Mark current assertion as failed and print standard failure message.
  *
  * @param data  test data
- * @param file  filename to be included in the message
  * @param line  line number to be included in the message
  */
-void _ut_fail(UtTestData *data, const char *file, int line);
+void _ut_fail(UtTestData *data, int line);
 
 /**
  * Mark current assertion as passed.
