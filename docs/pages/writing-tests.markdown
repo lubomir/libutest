@@ -53,6 +53,29 @@ assertion. There is support for doing that.
     Please note that is is in fact a macro, that wraps a function and gives it
     current file name and line number to further enhance error message.
 
+
+If your assertion can not be easily delegated to `ut_assert_func`, you can use
+following macros to build your assertion from scratch. Please note that each
+assertion should call exactly one of `ut_pass` and `ut_fail`.
+
+`ut_pass()`
+
+:   Marks the assertion as passed. This is again a macro that wraps a function
+    and passes it additional arguments.
+
+`ut_fail(const char *file, int line)`
+
+:   Mark the assertion as failed. This macro also prints a header with
+    information about which test this assertion is in as well as file and line
+    number. This information is obtained from the arguments.
+
+`ut_message(msg, ...)`
+
+:   This macro is a helper for failed assertions. It enables you to print
+    detailed information about why the assertion failed. Since there is an
+    empty line after the message, you should only call this once.
+
+
 ### Example
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.C}
