@@ -4,6 +4,8 @@
 #ifndef UTEST_H
 #define UTEST_H
 
+#include <string.h>
+
 /** @cond HIDDEN */
 #define _ut_STRINGIFY_INT(x) #x
 #define _ut_STRINGIFY(x) _ut_STRINGIFY_INT(x)
