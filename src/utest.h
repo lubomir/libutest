@@ -46,7 +46,8 @@ typedef void (*UtCallback)(void);
     static void _ut_test_##suite##_##tname (UtTestData *_ut_test_data);     \
     static void __attribute__((constructor(__COUNTER__ + 101)))             \
     _ut_test_register_##suite##_##tname (void) {                            \
-        ut_register_test(suitename, #tname, _ut_test_##suite##_##tname);    \
+        ut_register_test(suitename, #tname,                                 \
+                _ut_test_##suite##_##tname, __FILE__);                      \
     }                                                                       \
     static void _ut_test_##suite##_##tname (UtTestData * _ut_test_data      \
             __attribute__((unused)))
@@ -92,8 +93,10 @@ typedef void (*UtCallback)(void);
  * @param suite name of the test suite
  * @param name  name of the test
  * @param f     function to run
+ * @param file  file where the test is defined
  */
-void ut_register_test(const char *suite, const char *name, UtFunc f);
+void ut_register_test(const char *suite, const char *name, UtFunc f,
+        const char *file);
 
 /**
  * Internal function to register setup/teardown functions.

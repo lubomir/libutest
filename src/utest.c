@@ -19,6 +19,7 @@ typedef struct suite {
     struct {
         const char *name;
         UtFunc func;
+        const char *file;
     } *tests;
     UtCallback setup;
     UtCallback teardown;
@@ -90,7 +91,8 @@ find_suite (const char *name)
 }
 
 void
-ut_register_test (const char *suite, const char * name, UtFunc f)
+ut_register_test (const char *suite, const char * name, UtFunc f,
+        const char *file)
 {
     Suite *s = find_suite(suite);
 
@@ -100,6 +102,7 @@ ut_register_test (const char *suite, const char * name, UtFunc f)
     }
     s->tests[s->num].name = name;
     s->tests[s->num].func = f;
+    s->tests[s->num].file = file;
     ++s->num;
 }
 
@@ -170,8 +173,10 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
 
         if (WIFSIGNALED(status)) {
             ++results->tests_crashed;
-            fprintf(logs, "Crash in %s%s%s\n\tKilled with signal %s%d%s (%s)\n\n",
+            fprintf(logs, "Crash in %s%s%s (%s)\n\t"
+                    "Killed with signal %s%d%s (%s)\n\n",
                     BOLD, data.name, NORMAL,
+                    suite->tests[i].file,
                     BOLD, WTERMSIG(status), NORMAL,
                     strsignal(WTERMSIG(status)));
             putc_color('C', RED);
