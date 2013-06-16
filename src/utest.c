@@ -151,6 +151,7 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
         }
 
         fflush(stdout);
+        fflush(logs);
         timer_start(results->timer);
         pid_t pid = fork();
         int status;
