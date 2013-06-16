@@ -273,4 +273,54 @@ void _ut_assert_func(UtTestData *data,
                      ...)
     __attribute__((format(printf, 5, 6)));
 
+/**
+ * Wrapper around `_ut_fail`. This prints standard failure message and marks
+ * the assertion as failed.
+ *
+ * @param file  filename to be included in the message
+ * @param line  line number to be included in the message
+ */
+#define ut_fail(file, line)   _ut_fail(_ut_test_data, file, line)
+
+/**
+ * Mark current assertion as failed and print standard failure message.
+ *
+ * @param data  test data
+ * @param file  filename to be included in the message
+ * @param line  line number to be included in the message
+ */
+void _ut_fail(UtTestData *data, const char *file, int line);
+
+/**
+ * Mark current assertion as passed.
+ */
+#define ut_pass()   _ut_pass(_ut_test_data);
+
+/**
+ * Mark current assertion as passed.
+ *
+ * @param data  test data
+ */
+void _ut_pass(UtTestData *data);
+
+/**
+ * Print detailed message about failed assertion. This macro uses
+ * `printf`-like arguments. The message will be properly indented and
+ * followed by appropriate number of newlines.
+ */
+#define ut_message(...) _ut_message(_ut_test_data, __VA_ARGS);
+
+/**
+ * Print detailed message about failed assertion.
+ *
+ * The message will be properly indented and followed by appropriate number of
+ * newlines.
+ *
+ * @param data  test data
+ * @param msg   `printf`-like format string
+ * @param ...   the rest of arguments
+ */
+void _ut_message(UtTestData *data, const char *msg, ...)
+    __attribute__((format(printf, 2, 3)));
+
 #endif /* end of include guard: UTEST_H */

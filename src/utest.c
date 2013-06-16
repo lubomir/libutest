@@ -41,6 +41,12 @@ struct test_result {
     unsigned int assertions_failed;
 };
 
+/**
+ * Helper function for printing messages.
+ */
+static void _ut_vmessage (UtTestData *data, const char *msg, va_list args);
+
+
 static Suite *global_tests = NULL;
 
 static void __attribute__((destructor))
@@ -214,47 +220,41 @@ _ut_assert_func (UtTestData *data,
                  const char *msg, ...)
 {
     if (expr) {
-        ++data->assertions_ok;
+        _ut_pass(data);
         return;
     }
-    ++data->assertions_failed;
-    fprintf(data->logs, "Assertion in %s%s%s (%s:%d) failed:\n\t",
-            BOLD, data->name, NORMAL, file, lineno);
+    _ut_fail(data, file, lineno);
+
     va_list args;
     va_start(args, msg);
-    vfprintf(data->logs, msg, args);
+    _ut_vmessage(data, msg, args);
     va_end(args);
-    fprintf(data->logs, "\n\n");
 }
 
 void
-_ut_assert_equal_string(UtTestData *data, const char *file, int line,
-                        const char *expected, const char *actual)
+_ut_assert_equal_string (UtTestData *data, const char *file, int line,
+                         const char *expected, const char *actual)
 {
     if (expected == NULL && actual == NULL) {
-        ++data->assertions_ok;
+        _ut_pass(data);
         return;
     }
     if (expected && actual && strcmp(expected, actual) == 0) {
-        ++data->assertions_ok;
+        _ut_pass(data);
         return;
     }
-    ++data->assertions_failed;
-    fprintf(data->logs, "Assertion in %s%s%s (%s:%d) failed:\n\t",
-            BOLD, data->name, NORMAL, file, line);
+    _ut_fail(data, file, line);
 
     if (expected == NULL) {
-        fprintf(data->logs, "Expected NULL, got <%s%s%s>\n\n",
-                BOLD, actual, NORMAL);
+        _ut_message(data, "Expected NULL, got <"_ut_INBOLD("%s")">", actual);
         return;
     }
     if (actual == NULL) {
-        fprintf(data->logs, "Expected <%s%s%s>, got NULL\n\n",
-                BOLD, expected, NORMAL);
+        _ut_message(data, "Expected <"_ut_INBOLD("%s")">, got NULL", expected);
         return;
     }
 
-    fprintf(data->logs, "Expected <%s%s%s>\n", BOLD, expected, NORMAL);
+    fprintf(data->logs, "\tExpected <"_ut_INBOLD("%s")">\n", expected);
     fprintf(data->logs, "\tGot      <%s", BOLD);
     size_t len = strlen(expected);
     for (size_t i = 0; actual[i] != 0; ++i) {
@@ -265,4 +265,35 @@ _ut_assert_equal_string(UtTestData *data, const char *file, int line,
         }
     }
     fprintf(data->logs, "%s>\n\n", NORMAL);
+}
+
+void
+_ut_fail (UtTestData *data, const char *file, int line)
+{
+    ++data->assertions_failed;
+    fprintf(data->logs, "Assertion in %s%s%s (%s:%d) failed:\n",
+            BOLD, data->name, NORMAL, file, line);
+}
+
+void
+_ut_message (UtTestData *data, const char *msg, ...)
+{
+    va_list args;
+    va_start(args, msg);
+    _ut_vmessage(data, msg, args);
+    va_end(args);
+}
+
+static void
+_ut_vmessage (UtTestData *data, const char *msg, va_list args)
+{
+    fputc('\t', data->logs);
+    vfprintf(data->logs, msg, args);
+    fprintf(data->logs, "\n\n");
+}
+
+void
+_ut_pass (UtTestData *data)
+{
+    ++data->assertions_ok;
 }
