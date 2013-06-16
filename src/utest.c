@@ -173,12 +173,10 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
 
         if (WIFSIGNALED(status)) {
             ++results->tests_crashed;
-            fprintf(logs, "Crash in %s%s%s (%s)\n\t"
-                    "Killed with signal %s%d%s (%s)\n\n",
-                    BOLD, data.name, NORMAL,
-                    suite->tests[i].file,
-                    BOLD, WTERMSIG(status), NORMAL,
-                    strsignal(WTERMSIG(status)));
+            fprintf(logs, "Crash in "_ut_INBOLD("%s")" (%s)\n\t"
+                    "Killed with signal "_ut_INBOLD("%d")" (%s)\n\n",
+                    data.name, suite->tests[i].file,
+                    WTERMSIG(status), strsignal(WTERMSIG(status)));
             putc_color('C', RED);
         } else if (data.assertions_failed > 0) {
             ++results->tests_failed;
@@ -276,8 +274,8 @@ void
 _ut_fail (UtTestData *data, const char *file, int line)
 {
     ++data->assertions_failed;
-    fprintf(data->logs, "Assertion in %s%s%s (%s:%d) failed:\n",
-            BOLD, data->name, NORMAL, file, line);
+    fprintf(data->logs, "Assertion in "_ut_INBOLD("%s")" (%s:%d) failed:\n",
+            data->name, file, line);
 }
 
 void
