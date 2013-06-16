@@ -56,8 +56,9 @@ static void
 write_strip_escapes (char *buffer, size_t len, FILE *dest)
 {
     for (size_t i = 0; i < len; ++i) {
-        if (buffer[i] == '\033') {
-            while (buffer[++i] != 'm');
+        if (buffer[i] == '\033' && buffer[i+1] == '[') {
+            i += 2;
+            while (buffer[i] < '@' || buffer[i] > '~') ++i;
             continue;
         }
         fputc(buffer[i], dest);
