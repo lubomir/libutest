@@ -1,3 +1,4 @@
+include examples/failing/Makefile.include
 include examples/more-files/Makefile.include
 include examples/stack/Makefile.include
 include examples/suites/Makefile.include
