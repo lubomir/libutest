@@ -202,7 +202,7 @@ ut_run_all_tests (void)
     for (Suite *suite = global_tests; suite; suite = suite->next) {
         suite_run(suite, &results, logs);
     }
-    printf("\n\n");
+    fputs("\n\n", stdout);
 
     rewind(logs);
     copy_from_to(logs, stdout);
@@ -256,16 +256,16 @@ _ut_assert_equal_string (UtTestData *data, int line,
     }
 
     fprintf(data->logs, "\tExpected <"_ut_INBOLD("%s")">\n", expected);
-    fprintf(data->logs, "\tGot      <%s", BOLD);
+    fputs("\tGot      <" BOLD, data->logs);
     size_t len = strlen(expected);
     for (size_t i = 0; actual[i] != 0; ++i) {
         if (i < len && actual[i] != expected[i]) {
-            fprintf(data->logs, "%s%c%s%s", RED, actual[i], NORMAL, BOLD);
+            fprintf(data->logs, RED "%c" NORMAL BOLD, actual[i]);
         } else {
             fputc(actual[i], data->logs);
         }
     }
-    fprintf(data->logs, "%s>\n\n", NORMAL);
+    fputs(NORMAL ">\n\n", data->logs);
 }
 
 void
@@ -290,7 +290,7 @@ _ut_vmessage (UtTestData *data, const char *msg, va_list args)
 {
     fputc('\t', data->logs);
     vfprintf(data->logs, msg, args);
-    fprintf(data->logs, "\n\n");
+    fputs("\n\n", data->logs);
 }
 
 void
