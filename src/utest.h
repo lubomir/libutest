@@ -65,7 +65,7 @@ typedef void (*UtCallback)(void);
 /**
  * Internal helper macro for writing simple assertions.
  */
-#define ut_assert_eq_with_type(type, fmt, expected, actual)                 \
+#define _ut_assert_eq_with_type(type, fmt, expected, actual)                \
     do {                                                                    \
         type _ut_exp = expected;                                            \
         type _ut_act = actual;                                              \
@@ -162,7 +162,7 @@ void ut_register_callback(UtCallback cb, const char *suite, UtCallbackType type)
  * @param actual    expression that evaluates to integer value
  */
 #define ut_assert_equal_int(expected, actual)                               \
-    ut_assert_eq_with_type(int, "%d", expected, actual)
+    _ut_assert_eq_with_type(int, "%d", expected, actual)
 
 /**
  * Fail the test unless two unsigned integer values are the same.
@@ -171,7 +171,7 @@ void ut_register_callback(UtCallback cb, const char *suite, UtCallbackType type)
  * @param actual    expression that evaluates to unsigned integer value
  */
 #define ut_assert_equal_uint(expected, actual)                              \
-    ut_assert_eq_with_type(unsigned int, "%u", expected, actual)
+    _ut_assert_eq_with_type(unsigned int, "%u", expected, actual)
 
 /**
  * Fail the test unless two strings are both `NULL` or have the same contents.
