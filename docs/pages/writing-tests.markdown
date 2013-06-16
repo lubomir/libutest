@@ -36,8 +36,8 @@ In each test, you can use many test assertions.
 
 `ut_assert_equal_string(expected, actual)`
 
-:   Check that both arguments are non-`NULL` and contain the same string. The
-    character data is compared, not memory addresses.
+:   Check that both arguments are either `NULL` or contain the same string.
+    The character data is compared, not memory addresses.
 
 
 ## Custom assertions
