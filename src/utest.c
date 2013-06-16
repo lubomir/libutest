@@ -226,3 +226,43 @@ _ut_assert_func (UtTestData *data,
     va_end(args);
     fprintf(data->logs, "\n\n");
 }
+
+void
+_ut_assert_equal_string(UtTestData *data, const char *file, int line,
+                        const char *expected, const char *actual)
+{
+    if (expected == NULL && actual == NULL) {
+        ++data->assertions_ok;
+        return;
+    }
+    if (expected && actual && strcmp(expected, actual) == 0) {
+        ++data->assertions_ok;
+        return;
+    }
+    ++data->assertions_failed;
+    fprintf(data->logs, "Assertion in %s%s%s (%s:%d) failed:\n\t",
+            BOLD, data->name, NORMAL, file, line);
+
+    if (expected == NULL) {
+        fprintf(data->logs, "Expected NULL, got <%s%s%s>\n\n",
+                BOLD, actual, NORMAL);
+        return;
+    }
+    if (actual == NULL) {
+        fprintf(data->logs, "Expected <%s%s%s>, got NULL\n\n",
+                BOLD, expected, NORMAL);
+        return;
+    }
+
+    fprintf(data->logs, "Expected <%s%s%s>\n", BOLD, expected, NORMAL);
+    fprintf(data->logs, "\tGot      <%s", BOLD);
+    size_t len = strlen(expected);
+    for (size_t i = 0; actual[i] != 0; ++i) {
+        if (i < len && actual[i] != expected[i]) {
+            fprintf(data->logs, "%s%c%s%s", RED, actual[i], NORMAL, BOLD);
+        } else {
+            fputc(actual[i], data->logs);
+        }
+    }
+    fprintf(data->logs, "%s>\n\n", NORMAL);
+}

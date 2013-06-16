@@ -185,13 +185,26 @@ void ut_register_callback(UtCallback cb, const char *suite, UtCallbackType type)
     ut_assert_eq_with_type(unsigned int, UT_DIRECT_EQ, "%u", expected, actual)
 
 /**
- * Fail the test unless two strings are non-`NULL` and have the same contents.
+ * Fail the test unless two strings are both `NULL` or have the same contents.
  *
  * @param expected  expected value of the string
  * @param actual    expression that evaluates to a pointer to `char`
  */
 #define ut_assert_equal_string(expected, actual)                            \
-    ut_assert_eq_with_type(char *, UT_STR_EQ, "%s", expected, actual)
+    _ut_assert_equal_string(_ut_test_data, __FILE__, __LINE__, expected, actual)
+
+/**
+ * Actual string compare assertion.
+ *
+ * @param data      test data
+ * @param file      file where the test is defined
+ * @param line      line from which the assertion was called
+ * @param expected  expected string
+ * @param actual    actual string
+ */
+void _ut_assert_equal_string(UtTestData *data,
+        const char *file, int line,
+        const char *expected, const char *actual);
 
 /**
  * Add a setup function to the default file suite.
