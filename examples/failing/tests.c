@@ -4,8 +4,8 @@
 #include <string.h>
 
 UT_TEST(pointers) {
-    int a;
-    ut_assert_null(&a);
+    int *a = (int *) 0xCAFE;
+    ut_assert_null(a);
     ut_assert_not_null(strstr("foobar", "X"));
 }
 
