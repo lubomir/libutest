@@ -4,8 +4,6 @@
 #ifndef UTEST_H
 #define UTEST_H
 
-#include <string.h>
-
 /** @cond HIDDEN */
 #define _ut_STRINGIFY_INT(x) #x
 #define _ut_STRINGIFY(x) _ut_STRINGIFY_INT(x)
@@ -42,15 +40,6 @@ typedef void (*UtFunc)(UtTestData *);
 typedef void (*UtCallback)(void);
 
 /**
- * Direct comparison of two values.
- */
-#define UT_DIRECT_EQ(x,y) ((x) == (y))
-/**
- * Comparison of strings using strcmp().
- */
-#define UT_STR_EQ(x,y) (strcmp(x,y) == 0)
-
-/**
  * Internal macro for defining tests.
  */
 #define _ut_UT_SUITE_TEST(suite, suitename, tname)                          \
@@ -76,11 +65,11 @@ typedef void (*UtCallback)(void);
 /**
  * Internal helper macro for writing simple assertions.
  */
-#define ut_assert_eq_with_type(type, eq, fmt, expected, actual)             \
+#define ut_assert_eq_with_type(type, fmt, expected, actual)                 \
     do {                                                                    \
         type _ut_exp = expected;                                            \
         type _ut_act = actual;                                              \
-        ut_assert_func(eq(_ut_exp, _ut_act),                                \
+        ut_assert_func((_ut_exp) == (_ut_act),                              \
                 "Expected <"_ut_INBOLD(fmt)">, got <"_ut_INBOLD(fmt)">",    \
                 _ut_exp, _ut_act);                                          \
     } while (0)
@@ -173,7 +162,7 @@ void ut_register_callback(UtCallback cb, const char *suite, UtCallbackType type)
  * @param actual    expression that evaluates to integer value
  */
 #define ut_assert_equal_int(expected, actual)                               \
-    ut_assert_eq_with_type(int, UT_DIRECT_EQ, "%d", expected, actual)
+    ut_assert_eq_with_type(int, "%d", expected, actual)
 
 /**
  * Fail the test unless two unsigned integer values are the same.
@@ -182,7 +171,7 @@ void ut_register_callback(UtCallback cb, const char *suite, UtCallbackType type)
  * @param actual    expression that evaluates to unsigned integer value
  */
 #define ut_assert_equal_uint(expected, actual)                              \
-    ut_assert_eq_with_type(unsigned int, UT_DIRECT_EQ, "%u", expected, actual)
+    ut_assert_eq_with_type(unsigned int, "%u", expected, actual)
 
 /**
  * Fail the test unless two strings are both `NULL` or have the same contents.
