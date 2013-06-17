@@ -5,9 +5,11 @@ lib_LTLIBRARIES = src/libutest.la
 include_HEADERS = src/utest.h
 src_libutest_la_SOURCES = src/main.c \
 			  src/timer.c \
+			  src/timer.h \
 			  src/utest.h \
 			  src/utest.c \
-			  src/utils.c
+			  src/utils.c \
+			  src/utils.h
 noinst_PROGRAMS =
 AM_CFLAGS = -I$(srcdir)/src
 
