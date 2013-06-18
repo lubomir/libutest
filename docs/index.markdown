@@ -8,6 +8,20 @@ them automatically. Magic!
 
 File found issues at [libutest] website.
 
+## Installation
+
+So far, you need to install `libutest` by building from source yourself.
+It uses the classic autotools build. First obtain the contents of the
+repository, then run `configure` and `make`.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{.bash}
+$ git clone git://github.com/lubomir/libutest.git
+$ autoreconf -i
+$ ./configure
+$ make
+$ make install
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 ## Documentation
 
  * [Defining tests](pages/defining-tests.html)

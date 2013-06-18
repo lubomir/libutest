@@ -63,11 +63,11 @@ code {
     color: #2e3436;
 }
 
-.sourceCode {
+pre, .sourceCode {
     background-color: #2e3436;
     color: #eeeeec;
 }
-pre.sourceCode {
+pre {
     border: 5px solid #2e3436;
 }
 
