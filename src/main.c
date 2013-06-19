@@ -28,7 +28,7 @@ help (const char *exe)
     puts("  -V, --version   display version information");
 
     printf("\nReport %s bugs to %s\n", PACKAGE_NAME, PACKAGE_BUGREPORT);
-    printf("%s homepage: %s\n", PACKAGE_NAME, "https://github.com/lubomir/libutest");
+    printf("%s homepage: %s\n", PACKAGE_NAME, PACKAGE_URL);
 }
 
 static void
