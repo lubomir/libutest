@@ -12,6 +12,31 @@ static struct option options[] = {
     { NULL, 0, 0, 0 }
 };
 
+static void
+usage (const char *exe, FILE *fh)
+{
+    fprintf(fh, _ut_INBOLD("Usage")": %s [OPTIONS]\n", exe);
+}
+
+static void
+help (const char *exe)
+{
+    usage(exe, stdout);
+
+    puts("\n"_ut_INBOLD("Options"));
+    puts("  -h, --help      print this help");
+    puts("  -V, --version   display version information");
+
+    printf("\nReport %s bugs to %s\n", PACKAGE_NAME, PACKAGE_BUGREPORT);
+    printf("%s homepage: %s\n", PACKAGE_NAME, "https://github.com/lubomir/libutest");
+}
+
+static void
+version (void)
+{
+    printf("%s %s\n", PACKAGE_NAME, VERSION);
+}
+
 int __attribute__((weak)) main (int argc, char **argv)
 {
     int c;
@@ -26,11 +51,14 @@ int __attribute__((weak)) main (int argc, char **argv)
 
         switch (c) {
         case 'h':
-            printf("Help!\n");
-            break;
+            help(argv[0]);
+            return 0;
         case 'V':
-            printf("Version!\n");
-            break;
+            version();
+            return 0;
+        case '?':
+            usage(argv[0], stderr);
+            return 1;
         }
     }
 
