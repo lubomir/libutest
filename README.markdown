@@ -9,3 +9,8 @@ routines into a file and hack away.
     $ autoreconf -i
     $ ./configure --enable-docs
     $ make
+
+## Documentation
+
+There is some documentation available on <http://lubomir.github.io/libutest/>.
+Runtime options are documented with classic `--help` command-line argument.
