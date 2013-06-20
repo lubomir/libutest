@@ -164,6 +164,7 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
             write(pipe_fd[1], &data, sizeof data);
             close(pipe_fd[1]);
             fclose(logs);
+            timer_free(results->timer);
             exit(EXIT_SUCCESS);
         } else {
             close(pipe_fd[1]);
