@@ -5,7 +5,7 @@ next: compiling-tests.html
 ---
 
 Tests written using *libutest* are meant to be compiled into a separate
-executable file. Therefore to be able to run it, the needs to be a `main`
+executable file. Therefore to be able to run it, there needs to be a `main`
 function.
 
 There is a default main provided which you can insert into your program with

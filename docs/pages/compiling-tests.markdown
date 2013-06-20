@@ -3,7 +3,7 @@ title: Compiling the tests
 prev: running-tests.html
 ---
 
-The `libutest` framework is designed for the tests to be compiled into a
+The *libutest* framework is designed for the tests to be compiled into a
 standalone executable. The installed library needs to be linked to the
 executable.
 
