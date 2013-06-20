@@ -62,6 +62,9 @@ code {
     background-color: #eeeeec;
     color: #2e3436;
 }
+dt code {
+    padding: 3px;
+}
 
 pre, .sourceCode {
     background-color: #2e3436;

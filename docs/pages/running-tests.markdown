@@ -22,7 +22,7 @@ However, if you are not satisfied with it and want something more complex, you
 can write your own entrypoint. In that case you will need `ut_run_all_tests`
 function to run the tests.
 
-`int ut_run_all_tests (UtVerbosityLevel verbosity)`
+`int ut_run_all_tests (UtVerbosityLevel verbosity)`{.C}
 
 :   Run all registered tests from all suites. This function returns number of
     failed tests. The argument to this function specifies what output should be
