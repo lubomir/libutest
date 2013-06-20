@@ -14,6 +14,13 @@ body {
 a {
     color: #3465a4;
 }
+a:hover {
+    text-decoration: none;
+}
+
+p, li {
+    line-height: 150%;
+}
 
 header, footer {
     padding: 1em 0;
@@ -83,9 +90,12 @@ header h1 {
 code {
     background-color: #eeeeec;
     color: #2e3436;
+    border: 1px solid #d3d7cf;
+    padding: 2px;
 }
-dt code {
-    padding: 3px;
+pre code {
+    padding: 0;
+    border: none;
 }
 
 pre, .sourceCode {
@@ -94,6 +104,7 @@ pre, .sourceCode {
 }
 pre {
     border: 5px solid #2e3436;
+    line-height: 125%;
 }
 
 .dt, .kw, .fu {
