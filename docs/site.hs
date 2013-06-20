@@ -20,7 +20,6 @@ main = hakyll $ do
     match "index.markdown" $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
-            >>= applyAsTemplate myContext
             >>= loadAndApplyTemplate "templates/default.html" myContext
             >>= relativizeUrls
 

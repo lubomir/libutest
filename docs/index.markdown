@@ -15,11 +15,11 @@ It uses the classic autotools build. First obtain the contents of the
 repository, then run `configure` and `make`.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.bash}
-$$ git clone git://github.com/lubomir/libutest.git
-$$ autoreconf -i
-$$ ./configure
-$$ make
-$$ make install
+$ git clone git://github.com/lubomir/libutest.git
+$ autoreconf -i
+$ ./configure
+$ make
+$ make install
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Documentation
