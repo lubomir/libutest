@@ -27,7 +27,8 @@ safe_malloc (size_t size)
         error("memory allocation failed");
         exit(EXIT_FAILURE);
     }
-    return memset(mem, 0, size);
+    memset(mem, 0, size);
+    return mem;
 }
 
 void *
