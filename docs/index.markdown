@@ -27,6 +27,7 @@ $ make install
  * [Defining tests](pages/defining-tests.html)
  * [Writing tests](pages/writing-tests.html)
  * [Running tests](pages/running-tests.html)
+ * [Compiling tests](pages/compiling-tests.html)
 
 
 [libutest]: https://github.com/lubomir/libutest

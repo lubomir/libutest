@@ -1,6 +1,7 @@
 ---
 title: Running the tests
 prev: writing-tests.html
+next: compiling-tests.html
 ---
 
 Tests written using *libutest* are meant to be compiled into a separate
