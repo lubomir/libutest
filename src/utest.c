@@ -4,8 +4,8 @@
 #include "utest.h"
 #include "utils.h"
 
-#include <fcntl.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,6 +43,13 @@ struct test_result {
     unsigned int assertions_ok;
     unsigned int assertions_failed;
 };
+
+/**
+ * Settings struct.
+ */
+static struct {
+    bool quiet;                 /**< Silence all output */
+} settings = { false };
 
 /**
  * Helper function for printing messages.
@@ -181,12 +188,15 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
                     "Killed with signal "_ut_INBOLD("%d")" (%s)\n\n",
                     data.name, suite->tests[i].file,
                     WTERMSIG(status), strsignal(WTERMSIG(status)));
-            putc_color('C', RED);
+            if (!settings.quiet)
+                putc_color('C', RED);
         } else if (data.assertions_failed > 0) {
             ++results->tests_failed;
-            putc_color('F', RED);
+            if (!settings.quiet)
+                putc_color('F', RED);
         } else {
-            putc_color('.', GREEN);
+            if (!settings.quiet)
+                putc_color('.', GREEN);
         }
         results->assertions_ok += data.assertions_ok;
         results->assertions_failed += data.assertions_failed;
@@ -204,16 +214,19 @@ ut_run_all_tests (void)
     for (Suite *suite = global_tests; suite; suite = suite->next) {
         suite_run(suite, &results, logs);
     }
-    fputs("\n\n", stdout);
 
-    rewind(logs);
-    copy_from_to(logs, stdout);
+    if (!settings.quiet) {
+        fputs("\n\n", stdout);
 
-    printf("%u assertions succeeded, %u assertions failed\n",
-            results.assertions_ok, results.assertions_failed);
-    printf("%u tests ran, %u failed, %u crashed\n",
-            results.tests_ran, results.tests_failed, results.tests_crashed);
-    printf("Time elapsed: %.3f sec\n", timer_get_elapsed(results.timer));
+        rewind(logs);
+        copy_from_to(logs, stdout);
+
+        printf("%u assertions succeeded, %u assertions failed\n",
+                results.assertions_ok, results.assertions_failed);
+        printf("%u tests ran, %u failed, %u crashed\n",
+                results.tests_ran, results.tests_failed, results.tests_crashed);
+        printf("Time elapsed: %.3f sec\n", timer_get_elapsed(results.timer));
+    }
     fclose(logs);
     timer_free(results.timer);
     return results.tests_failed == 0;
@@ -304,6 +317,5 @@ _ut_pass (UtTestData *data)
 void
 ut_set_quiet (void)
 {
-    int dev_null = open("/dev/null", 0);
-    dup2(dev_null, STDOUT_FILENO);
+    settings.quiet = true;
 }

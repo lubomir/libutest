@@ -27,7 +27,7 @@ LT_INIT
 
 # Checks for header files.
 AC_CHECK_HEADER_STDBOOL
-AC_CHECK_HEADERS([fcntl.h stdlib.h string.h unistd.h])
+AC_CHECK_HEADERS([stdlib.h string.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_INLINE
@@ -37,7 +37,7 @@ AC_TYPE_PID_T
 # Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
-AC_CHECK_FUNCS([atexit clock_gettime memset strstr dup2])
+AC_CHECK_FUNCS([atexit clock_gettime memset strstr])
 AC_FUNC_FORK
 
 AC_CONFIG_FILES([Makefile data/libutest.pc])
