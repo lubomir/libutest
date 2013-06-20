@@ -44,6 +44,7 @@ version (void)
 int __attribute__((weak)) main (int argc, char **argv)
 {
     int c;
+    UtVerbosityLevel verbosity = UT_NORMAL;
 
     while (1) {
         c = getopt_long(argc, argv, OPTSTRING, options, NULL);
@@ -59,7 +60,7 @@ int __attribute__((weak)) main (int argc, char **argv)
             version();
             return 0;
         case 'q':
-            ut_set_quiet();
+            verbosity = UT_QUIET;
             break;
         case '?':
             usage(argv[0], stderr);
@@ -67,5 +68,5 @@ int __attribute__((weak)) main (int argc, char **argv)
         }
     }
 
-    return ut_run_all_tests() == 0;
+    return ut_run_all_tests(verbosity) == 0;
 }

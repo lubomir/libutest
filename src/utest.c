@@ -45,13 +45,6 @@ struct test_result {
 };
 
 /**
- * Settings struct.
- */
-static struct {
-    bool quiet;                 /**< Silence all output */
-} settings = { false };
-
-/**
  * Helper function for printing messages.
  */
 static void _ut_vmessage (UtTestData *data, const char *msg, va_list args);
@@ -145,7 +138,7 @@ test_run (Suite *suite, size_t idx, UtTestData *data)
 }
 
 static void
-suite_run (Suite *suite, struct test_result *results, FILE *logs)
+suite_run (Suite *suite, struct test_result *results, FILE *logs, bool quiet)
 {
     for (size_t i = 0; i < suite->num; ++i) {
         debug("Running '%s:%s'\n", suite->name, suite->tests[i].name);
@@ -188,14 +181,14 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
                     "Killed with signal "_ut_INBOLD("%d")" (%s)\n\n",
                     data.name, suite->tests[i].file,
                     WTERMSIG(status), strsignal(WTERMSIG(status)));
-            if (!settings.quiet)
+            if (!quiet)
                 putc_color('C', RED);
         } else if (data.assertions_failed > 0) {
             ++results->tests_failed;
-            if (!settings.quiet)
+            if (!quiet)
                 putc_color('F', RED);
         } else {
-            if (!settings.quiet)
+            if (!quiet)
                 putc_color('.', GREEN);
         }
         results->assertions_ok += data.assertions_ok;
@@ -205,17 +198,17 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs)
 }
 
 int
-ut_run_all_tests (void)
+ut_run_all_tests (UtVerbosityLevel verbose)
 {
     struct test_result results = { NULL, 0, 0, 0, 0, 0 };
     FILE *logs = tmpfile();
     results.timer = timer_new();
 
     for (Suite *suite = global_tests; suite; suite = suite->next) {
-        suite_run(suite, &results, logs);
+        suite_run(suite, &results, logs, verbose == UT_QUIET);
     }
 
-    if (!settings.quiet) {
+    if (verbose != UT_QUIET) {
         fputs("\n\n", stdout);
 
         rewind(logs);
@@ -312,10 +305,4 @@ void
 _ut_pass (UtTestData *data)
 {
     ++data->assertions_ok;
-}
-
-void
-ut_set_quiet (void)
-{
-    settings.quiet = true;
 }
