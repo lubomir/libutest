@@ -1,8 +1,8 @@
 
-CLEANFILES += docs/site.hi docs/site.o
+CLEANFILES += docs/*.hi docs/*.o
 
-docs/site : docs/site.hs
-	ghc --make docs/site.hs
+docs/site : docs/site.hs docs/Constants.hs
+	cd docs && ghc --make site.hs
 
 .PHONY: web deploy
 

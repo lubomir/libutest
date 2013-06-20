@@ -3,3 +3,4 @@ _site
 _cache
 *.hi
 *.o
+Constants.hs

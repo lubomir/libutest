@@ -1,0 +1,11 @@
+module Constants where
+
+import Data.Monoid (mconcat)
+import Hakyll
+
+myContext :: Context String
+myContext = mconcat
+    [ constField "version"    "@VERSION@"
+    , constField "packageurl" "@PACKAGE_URL@"
+    , defaultContext
+    ]

@@ -2,6 +2,8 @@
 
 import Hakyll
 
+import Constants
+
 main :: IO ()
 main = hakyll $ do
     match "css/*" $ do
@@ -11,14 +13,14 @@ main = hakyll $ do
     match "pages/*" $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/page.html" defaultContext
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= loadAndApplyTemplate "templates/page.html" myContext
+            >>= loadAndApplyTemplate "templates/default.html" myContext
             >>= relativizeUrls
 
     match "index.markdown" $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= loadAndApplyTemplate "templates/default.html" myContext
             >>= relativizeUrls
 
     match "templates/*" $ compile templateCompiler

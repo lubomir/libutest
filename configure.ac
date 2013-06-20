@@ -40,7 +40,7 @@ AC_FUNC_REALLOC
 AC_CHECK_FUNCS([atexit clock_gettime memset strstr])
 AC_FUNC_FORK
 
-AC_CONFIG_FILES([Makefile data/libutest.pc])
+AC_CONFIG_FILES([Makefile data/libutest.pc docs/Constants.hs])
 AC_OUTPUT
 
 echo ""
