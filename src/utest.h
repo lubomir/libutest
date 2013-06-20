@@ -240,6 +240,11 @@ void _ut_assert_equal_string(UtTestData *data, int line,
 int ut_run_all_tests(void);
 
 /**
+ * Disable writing to standard output.
+ */
+void ut_set_quiet (void);
+
+/**
  * This macro expands to a simple main. This main function runs all the
  * defined tests and then exits with number of failed tests.
  *

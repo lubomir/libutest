@@ -4,6 +4,7 @@
 #include "utest.h"
 #include "utils.h"
 
+#include <fcntl.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -298,4 +299,11 @@ void
 _ut_pass (UtTestData *data)
 {
     ++data->assertions_ok;
+}
+
+void
+ut_set_quiet (void)
+{
+    int dev_null = open("/dev/null", 0);
+    dup2(dev_null, STDOUT_FILENO);
 }

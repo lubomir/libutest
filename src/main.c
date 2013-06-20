@@ -6,11 +6,12 @@
 #include <getopt.h>
 #include <stdio.h>
 
-#define OPTSTRING "hV"
+#define OPTSTRING "hVq"
 
 static struct option options[] = {
-    { "help", no_argument, NULL, 'h' },
-    { "version", no_argument, NULL, 'V' },
+    { "help",       no_argument, NULL, 'h' },
+    { "version",    no_argument, NULL, 'V' },
+    { "quiet",      no_argument, NULL, 'q' },
     { NULL, 0, 0, 0 }
 };
 
@@ -28,6 +29,7 @@ help (const char *exe)
     puts("\n"_ut_INBOLD("Options"));
     puts("  -h, --help      print this help");
     puts("  -V, --version   display version information");
+    puts("  -q, --quiet     do not display any output");
 
     printf("\nReport %s bugs to %s\n", PACKAGE_NAME, PACKAGE_BUGREPORT);
     printf("%s homepage: %s\n", PACKAGE_NAME, PACKAGE_URL);
@@ -56,6 +58,9 @@ int __attribute__((weak)) main (int argc, char **argv)
         case 'V':
             version();
             return 0;
+        case 'q':
+            ut_set_quiet();
+            break;
         case '?':
             usage(argv[0], stderr);
             return 1;
