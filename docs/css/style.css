@@ -1,20 +1,41 @@
 body, html {
     margin: 0;
     padding: 0;
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    position: relative;
 }
 
 a {
     color: #3465a4;
 }
 
-header {
+header, footer {
+    padding: 1em 0;
     background: #2e3436;
     color: #eeeeec;
-    padding: 1em;
     text-align: center;
-    border-bottom: 5px solid #204a87;
 }
-header a {
+
+footer {
+    position: absolute;
+    bottom: 0;
+    height: 2em;
+    width: 100%;
+}
+
+header {
+    border-bottom: 0.4em solid #204a87;
+}
+footer {
+    border-top: 0.4em solid #204a87;
+}
+header a, footer a {
     background: #2e3436;
     color: #eeeeec;
     text-decoration: none;
@@ -30,6 +51,7 @@ header h1 {
 #body {
     width: 33em;
     margin: 0 auto;
+    padding-bottom: 4.4em; /* Height of footer + paddings + borders */
 }
 
 #bottom-nav {
