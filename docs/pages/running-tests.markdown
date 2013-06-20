@@ -26,3 +26,9 @@ function to run the tests.
 
 :   Run all registered tests from all suites. This function returns number of
     failed tests.
+
+`void ut_set_quiet (void)`
+
+:   Silence all output from the test executable. This can be useful if you want
+    to run the tests inside a script. The return value indicates status of the
+    test suite.
