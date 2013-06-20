@@ -39,7 +39,7 @@
 <dd><p>Check equality of two unsigned integers.</p>
 </dd>
 <dt><code>ut_assert_equal_string(expected, actual)</code></dt>
-<dd><p>Check that both arguments are non-<code>NULL</code> and contain the same string. The character data is compared, not memory addresses.</p>
+<dd><p>Check that both arguments are either <code>NULL</code> or contain the same string. The character data is compared, not memory addresses.</p>
 </dd>
 </dl>
 <h2 id="custom-assertions">Custom assertions</h2>
@@ -48,6 +48,18 @@
 <dt><code>ut_assert_func(expr, fmt, ...)</code></dt>
 <dd><p>Verify that <code>expr</code> evaluates to true. The error message is determined by the <code>fmt</code> argument, which is a <code>printf</code>-like formatting string.</p>
 <p>Please note that is is in fact a macro, that wraps a function and gives it current file name and line number to further enhance error message.</p>
+</dd>
+</dl>
+<p>If your assertion can not be easily delegated to <code>ut_assert_func</code>, you can use following macros to build your assertion from scratch. Please note that each assertion should call exactly one of <code>ut_pass</code> and <code>ut_fail</code>.</p>
+<dl>
+<dt><code>ut_pass()</code></dt>
+<dd><p>Marks the assertion as passed. This is again a macro that wraps a function and passes it additional arguments.</p>
+</dd>
+<dt><code>ut_fail(int line)</code></dt>
+<dd><p>Mark the assertion as failed. This macro also prints a header with information about which test this assertion is in as well as file and line number. File name is determined by the current test, line number must be supplied in an argument.</p>
+</dd>
+<dt><code>ut_message(msg, ...)</code></dt>
+<dd><p>This macro is a helper for failed assertions. It enables you to print detailed information about why the assertion failed. Since there is an empty line after the message, you should only call this once.</p>
 </dd>
 </dl>
 <h3 id="example">Example</h3>
@@ -79,5 +91,9 @@
 </ul>
 
       </div>
+
+      <footer>
+          <a href="http://lubomir.github.io/libutest/">libutest</a> 0.3
+      </footer>
   </body>
 </html>

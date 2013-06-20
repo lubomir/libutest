@@ -14,13 +14,25 @@
 
       <div id="body">
           <p><code>libutest</code> is a very simple unit testing framework for C. Its main advantage is that does not force you to write lists of all test function. Instead, it finds them automatically. Magic!</p>
-<p>File found issues at <a href="https://github.com/lubomir/libutest">libutest</a> website.</p>
+<p>File found issues at GitHub in <a href="https://github.com/lubomir/libutest/issues">libutest repository</a>.</p>
+<h2 id="installation">Installation</h2>
+<p>So far, you need to install <code>libutest</code> by building from source yourself. It uses the classic autotools build. First obtain the contents of the repository, then run <code>configure</code> and <code>make</code>.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="ot">$</span> <span class="kw">git</span> clone git://github.com/lubomir/libutest.git
+<span class="ot">$</span> <span class="kw">autoreconf</span> -i
+<span class="ot">$</span> <span class="kw">./configure</span>
+<span class="ot">$</span> <span class="kw">make</span>
+<span class="ot">$</span> <span class="kw">make</span> install</code></pre>
 <h2 id="documentation">Documentation</h2>
 <ul>
 <li><a href="pages/defining-tests.html">Defining tests</a></li>
 <li><a href="pages/writing-tests.html">Writing tests</a></li>
 <li><a href="pages/running-tests.html">Running tests</a></li>
+<li><a href="pages/compiling-tests.html">Compiling tests</a></li>
 </ul>
       </div>
+
+      <footer>
+          <a href="http://lubomir.github.io/libutest/">libutest</a> 0.3
+      </footer>
   </body>
 </html>

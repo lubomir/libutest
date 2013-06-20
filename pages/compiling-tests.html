@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="../css/style.css" type="text/css">
+    <title>libutest - Compiling the tests</title>
+  </head>
+
+  <body>
+      <header>
+          <h1><a href="http://lubomir.github.io/libutest/">libutest</a></h1>
+          <p>simple unit testing for C</p>
+      </header>
+
+      <div id="body">
+          <h1>Compiling the tests</h1>
+
+<p>The <em>libutest</em> framework is designed for the tests to be compiled into a standalone executable. The installed library needs to be linked to the executable.</p>
+<p>There are <code>pkg-config</code> data provided for ease of use.</p>
+<p>Given the tests are in <code>tests.c</code> file, to compile you need to execute following command.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">gcc</span> -o test-exe tests.c <span class="kw">`pkg-config</span> --cflags --libs libutest<span class="kw">`</span>
+$ <span class="co"># Now you can run the tests</span>
+$ <span class="kw">./test-exe</span>
+<span class="kw">....</span>
+
+<span class="kw">11</span> assertions succeeded, 0 assertions failed
+<span class="kw">4</span> tests ran, 0 failed, 0 crashed
+<span class="kw">Time</span> elapsed: 0.001 sec
+$ </code></pre>
+<p>If you used the provided default main, the behavior of the resulting executable can be tweaked using command line arguments. To print help about them, run the executable with <code>--help</code> (or <code>-h</code> for short).</p>
+<h2 id="command-line-options">Command line options</h2>
+<dl>
+<dt><code>-h</code>, <code>--help</code></dt>
+<dd>prints help about the options
+</dd>
+<dt><code>-V</code>, <code>--version</code></dt>
+<dd>prints version information
+</dd>
+<dt><code>-q</code>, <code>--quiet</code></dt>
+<dd>disables all output
+</dd>
+</dl>
+
+<ul id="bottom-nav">
+
+    <li id="prev-link"><a href="running-tests.html">Previous</a></li>
+
+    <li><a href="../index.html">Index</a></li>
+
+</ul>
+
+      </div>
+
+      <footer>
+          <a href="http://lubomir.github.io/libutest/">libutest</a> 0.3
+      </footer>
+  </body>
+</html>

@@ -15,7 +15,7 @@
       <div id="body">
           <h1>Running the tests</h1>
 
-<p>Tests written using <em>libutest</em> are meant to be compiled into a separate executable file. Therefore to be able to run it, the needs to be a <code>main</code> function.</p>
+<p>Tests written using <em>libutest</em> are meant to be compiled into a separate executable file. Therefore to be able to run it, there needs to be a <code>main</code> function.</p>
 <p>There is a default main provided which you can insert into your program with <code>UT_DEFAULT_MAIN</code> (now deprecated). Starting from version 0.2, there is no need to manually include <code>UT_DEFAULT_MAIN</code> anymore, as the default <code>main</code> function is included in the library and is used unless your code defines your own entry point function.</p>
 <dl>
 <dt><code>UT_DEFAULT_MAIN</code></dt>
@@ -24,8 +24,13 @@
 </dl>
 <p>However, if you are not satisfied with it and want something more complex, you can write your own entrypoint. In that case you will need <code>ut_run_all_tests</code> function to run the tests.</p>
 <dl>
-<dt><code>int ut_run_all_tests (void)</code></dt>
-<dd>Run all registered tests from all suites. This function returns number of failed tests.
+<dt><code class="sourceCode c"><span class="dt">int</span> ut_run_all_tests (UtVerbosityLevel verbosity)</code></dt>
+<dd><p>Run all registered tests from all suites. This function returns number of failed tests. The argument to this function specifies what output should be printed. There are a few options:</p>
+<ul>
+<li><code>UT_NORMAL</code> prints progress and error messages</li>
+<li><code>UT_QUIET</code> disables all output</li>
+</ul>
+<p>Not printing can be useful if the tests are run as part of a script or in other automated way. The result can still be determined based on exit value.</p>
 </dd>
 </dl>
 
@@ -35,8 +40,14 @@
 
     <li><a href="../index.html">Index</a></li>
 
+    <li id="next-link"><a href="compiling-tests.html">Next</a></li>
+
 </ul>
 
       </div>
+
+      <footer>
+          <a href="http://lubomir.github.io/libutest/">libutest</a> 0.3
+      </footer>
   </body>
 </html>
