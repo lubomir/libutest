@@ -8,7 +8,7 @@ In each test, you can use many test assertions.
 
 `ut_assert(expr)`
 
-:   Check that `expr` evaluates to truth (i.e. anything non-zero).
+:   <p>Check that `expr` evaluates to truth (i.e. anything non-zero).</p>
 
 
 ### Pointers

@@ -31,8 +31,13 @@ executable with `--help` (or `-h` for short).
 ## Command line options
 
 `-h`, `--help`
+
 :   prints help about the options
+
 `-V`, `--version`
+
 :   prints version information
+
 `-q`, `--quiet`
+
 :   disables all output

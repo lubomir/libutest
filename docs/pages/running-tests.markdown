@@ -16,7 +16,8 @@ point function.
 
 `UT_DEFAULT_MAIN`
 
-:   Deprecated. This macro expands to definition of a `main()` function.
+:   <p>*Deprecated.* This macro expands to definition of a `main()`
+    function.</p>
 
 However, if you are not satisfied with it and want something more complex, you
 can write your own entrypoint. In that case you will need `ut_run_all_tests`
