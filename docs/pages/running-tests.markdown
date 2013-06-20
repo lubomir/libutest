@@ -22,13 +22,15 @@ However, if you are not satisfied with it and want something more complex, you
 can write your own entrypoint. In that case you will need `ut_run_all_tests`
 function to run the tests.
 
-`int ut_run_all_tests (void)`
+`int ut_run_all_tests (UtVerbosityLevel verbosity)`
 
 :   Run all registered tests from all suites. This function returns number of
-    failed tests.
+    failed tests. The argument to this function specifies what output should be
+    printed. There are a few options:
 
-`void ut_set_quiet (void)`
+     * `UT_NORMAL` prints progress and error messages
+     * `UT_QUIET` disables all output
 
-:   Silence all output from the test executable. This can be useful if you want
-    to run the tests inside a script. The return value indicates status of the
-    test suite.
+    Not printing can be useful if the tests are run as part of a script or in
+    other automated way. The result can still be determined based on exit
+    value.

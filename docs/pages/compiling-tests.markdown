@@ -34,3 +34,5 @@ executable with `--help` (or `-h` for short).
 :   prints help about the options
 `-V`, `--version`
 :   prints version information
+`-q`, `--quiet`
+:   disables all output
