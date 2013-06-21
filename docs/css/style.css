@@ -9,6 +9,7 @@ body {
     height: auto !important;
     height: 100%;
     position: relative;
+    font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
 }
 
 a {
