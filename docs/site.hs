@@ -10,6 +10,10 @@ main = hakyll $ do
         route idRoute
         compile compressCssCompiler
 
+    match "images/*" $ do
+        route idRoute
+        compile copyFileCompiler
+
     match "pages/*" $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
