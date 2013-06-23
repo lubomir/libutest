@@ -156,6 +156,7 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs, bool quiet)
         timer_start(results->timer);
         pid_t pid = fork();
         int status;
+        ssize_t len;
         if (pid < 0) {
             perror("fork");
             abort();
@@ -171,8 +172,13 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs, bool quiet)
             close(pipe_fd[1]);
             waitpid(pid, &status, 0);
             timer_stop(results->timer);
-            safe_read(pipe_fd[0], &data, sizeof data);
+            len = read(pipe_fd[0], &data, sizeof data);
             close(pipe_fd[0]);
+        }
+
+        if (len != sizeof data && !WIFSIGNALED(status)) {
+            error("failed to read data");
+            continue;
         }
 
         if (WIFSIGNALED(status)) {
