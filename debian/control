@@ -1,0 +1,16 @@
+Source: utest
+Section: devel
+Priority: extra
+Maintainer: Lubomír Sedlář <lubomir.sedlar@gmail.com>
+Build-Depends: debhelper (>= 8.0.0), autotools-dev, build-essential
+Standards-Version: 3.9.4
+Homepage: http://lubomir.github.io/libutest/
+#Vcs-Git: git://git.debian.org/collab-maint/utest.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/utest.git;a=summary
+
+Package: utest
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Simple unit testing library for C code
+ Utest is a unit testing library that makes it easy to write tests by not
+ forcing programmer to write lists of every single test routine.
