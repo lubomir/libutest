@@ -10,7 +10,11 @@ routines into a file and hack away.
     $ ./configure --enable-docs
     $ make
 
+If you use Debian or Ubuntu, there is a packaged version at [my PPA].
+
 ## Documentation
 
 There is some documentation available on <http://lubomir.github.io/libutest/>.
 Runtime options are documented with classic `--help` command-line argument.
+
+[my PPA]: https://launchpad.net/~lubomir-sedlar/+archive/ppa

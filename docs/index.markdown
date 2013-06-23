@@ -44,6 +44,10 @@ $ make
 $ make install
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+### Packages
+
+There are prepared Debian/Ubuntu packages at [my PPA].
+
 ## Documentation
 
  * [Defining tests](pages/defining-tests.html)
@@ -55,3 +59,4 @@ $ make install
 [libutest repository]: https://github.com/lubomir/libutest/issues
 [cutter]: http://cutter.sourceforge.net/
 [hakyll]: http://jaspervdj.be/hakyll/
+[my PPA]: https://launchpad.net/~lubomir-sedlar/+archive/ppa
