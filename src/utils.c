@@ -81,3 +81,35 @@ copy_from_to (FILE *src, FILE *dest)
         }
     }
 }
+
+void
+safe_write (int fd, const void *buf, size_t count)
+{
+    ssize_t len;
+    size_t offset = 0;
+
+    do {
+        len = write(fd, (const unsigned char *)buf + offset, count - offset);
+        if (len < 0) {
+            perror("write");
+            abort();
+        }
+        offset += len;
+    } while (count - offset > 0);
+}
+
+void
+safe_read (int fd, void *buf, size_t count)
+{
+    ssize_t len;
+    size_t offset = 0;
+
+    do {
+        len = read(fd, (unsigned char *)buf + offset, count - offset);
+        if (len < 0) {
+            perror("read");
+            abort();
+        }
+        offset += len;
+    } while (count - offset > 0);
+}

@@ -162,7 +162,7 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs, bool quiet)
         } else if (pid == 0) {
             close(pipe_fd[0]);
             test_run(suite, i, &data);
-            write(pipe_fd[1], &data, sizeof data);
+            safe_write(pipe_fd[1], &data, sizeof data);
             close(pipe_fd[1]);
             fclose(logs);
             timer_free(results->timer);
@@ -171,7 +171,7 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs, bool quiet)
             close(pipe_fd[1]);
             waitpid(pid, &status, 0);
             timer_stop(results->timer);
-            read(pipe_fd[0], &data, sizeof data);
+            safe_read(pipe_fd[0], &data, sizeof data);
             close(pipe_fd[0]);
         }
 

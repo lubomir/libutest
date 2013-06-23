@@ -76,4 +76,26 @@ void putc_color(char c, char *color);
  */
 void copy_from_to(FILE *src, FILE *dest);
 
+/**
+ * Wrapper arount write(2). It writes count bytes from buf to file descriptor
+ * fd. If the underlying function writes less bytes, it retries to write the
+ * rest until all is written.
+ *
+ * @param fd    file descriptor to write to
+ * @param buf   buffer to read data from
+ * @param count number of bytes to write
+ */
+void safe_write(int fd, const void *buf, size_t count);
+
+/**
+ * Wrapper arount read(2). It reads count bytes to buf from file descriptor
+ * fd. If the underlying function reads less bytes, it retries to read the
+ * rest until all is read.
+ *
+ * @param fd    file descriptor to read from
+ * @param buf   buffer to write data to
+ * @param count number of bytes to read
+ */
+void safe_read(int fd, void *buf, size_t count);
+
 #endif /* end of include guard: UTILS_H */
