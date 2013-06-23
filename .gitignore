@@ -21,3 +21,4 @@ install/
 *.lo
 stamp-h1
 Doxyfile
+dist
