@@ -1,8 +1,6 @@
 #include "stack.h"
 
-#include <stdio.h>
 #include <utest.h>
-#include <stdlib.h>
 
 static Stack *s = NULL;
 

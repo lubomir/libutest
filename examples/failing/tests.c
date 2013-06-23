@@ -1,6 +1,5 @@
 #include <utest.h>
 
-#include <stdio.h>
 #include <string.h>
 
 UT_TEST(pointers) {
