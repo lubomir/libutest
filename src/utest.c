@@ -13,15 +13,17 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+typedef struct {
+    const char *name;
+    UtFunc func;
+    const char *file;
+} Test;
+
 typedef struct suite {
     const char *name;
     size_t size;
     size_t num;
-    struct {
-        const char *name;
-        UtFunc func;
-        const char *file;
-    } *tests;
+    Test *tests;
     UtCallback setup;
     UtCallback teardown;
     struct suite *next;
