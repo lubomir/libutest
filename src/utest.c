@@ -137,6 +137,49 @@ test_run (Suite *suite, size_t idx, UtTestData *data)
     }
 }
 
+static bool
+test_run_forked (Suite *suite, size_t idx, struct test_result *results,
+        UtTestData *data, int *status, FILE *logs)
+{
+    int pipe_fd[2];
+
+    if (pipe(pipe_fd) < 0) {
+        perror("pipe");
+        abort();
+    }
+
+    fflush(stdout);
+    fflush(logs);
+    timer_start(results->timer);
+    pid_t pid = fork();
+    ssize_t len;
+    if (pid < 0) {
+        perror("fork");
+        abort();
+    } else if (pid == 0) {
+        close(pipe_fd[0]);
+        test_run(suite, idx, data);
+        safe_write(pipe_fd[1], data, sizeof *data);
+        close(pipe_fd[1]);
+        fclose(logs);
+        timer_free(results->timer);
+        exit(EXIT_SUCCESS);
+    } else {
+        close(pipe_fd[1]);
+        waitpid(pid, status, 0);
+        timer_stop(results->timer);
+        len = read(pipe_fd[0], data, sizeof *data);
+        close(pipe_fd[0]);
+    }
+
+    if (len != sizeof *data && !WIFSIGNALED(*status)) {
+        error("failed to read data");
+        return false;
+    }
+
+    return true;
+}
+
 static void
 suite_run (Suite *suite, struct test_result *results, FILE *logs, bool quiet)
 {
@@ -144,42 +187,9 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs, bool quiet)
         debug("Running '%s:%s'\n", suite->name, suite->tests[i].name);
 
         UtTestData data = {suite->tests[i].name, suite->tests[i].file, 0, 0, logs};
-        int pipe_fd[2];
-
-        if (pipe(pipe_fd) < 0) {
-            perror("pipe");
-            abort();
-        }
-
-        fflush(stdout);
-        fflush(logs);
-        timer_start(results->timer);
-        pid_t pid = fork();
         int status;
-        ssize_t len;
-        if (pid < 0) {
-            perror("fork");
-            abort();
-        } else if (pid == 0) {
-            close(pipe_fd[0]);
-            test_run(suite, i, &data);
-            safe_write(pipe_fd[1], &data, sizeof data);
-            close(pipe_fd[1]);
-            fclose(logs);
-            timer_free(results->timer);
-            exit(EXIT_SUCCESS);
-        } else {
-            close(pipe_fd[1]);
-            waitpid(pid, &status, 0);
-            timer_stop(results->timer);
-            len = read(pipe_fd[0], &data, sizeof data);
-            close(pipe_fd[0]);
-        }
-
-        if (len != sizeof data && !WIFSIGNALED(status)) {
-            error("failed to read data");
+        if (!test_run_forked(suite, i, results, &data, &status, logs))
             continue;
-        }
 
         if (WIFSIGNALED(status)) {
             ++results->tests_crashed;
