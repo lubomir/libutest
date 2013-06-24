@@ -6,12 +6,13 @@
 #include <getopt.h>
 #include <stdio.h>
 
-#define OPTSTRING "hVq"
+#define OPTSTRING "hVqf"
 
 static struct option options[] = {
     { "help",       no_argument, NULL, 'h' },
     { "version",    no_argument, NULL, 'V' },
     { "quiet",      no_argument, NULL, 'q' },
+    { "no-fork",    no_argument, NULL, 'f' },
     { NULL, 0, 0, 0 }
 };
 
@@ -30,6 +31,7 @@ help (const char *exe)
     puts("  -h, --help      print this help");
     puts("  -V, --version   display version information");
     puts("  -q, --quiet     do not display any output");
+    puts("  -f, --no-fork   disable forking before running tests");
 
     printf("\nReport %s bugs to %s\n", PACKAGE_NAME, PACKAGE_BUGREPORT);
     printf("%s homepage: %s\n", PACKAGE_NAME, PACKAGE_URL);
@@ -61,6 +63,9 @@ int __attribute__((weak)) main (int argc, char **argv)
             return 0;
         case 'q':
             flags |= UT_QUIET;
+            break;
+        case 'f':
+            flags |= UT_NO_FORK;
             break;
         case '?':
             usage(argv[0], stderr);
