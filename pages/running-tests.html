@@ -19,18 +19,23 @@
 <p>There is a default main provided which you can insert into your program with <code>UT_DEFAULT_MAIN</code> (now deprecated). Starting from version 0.2, there is no need to manually include <code>UT_DEFAULT_MAIN</code> anymore, as the default <code>main</code> function is included in the library and is used unless your code defines your own entry point function.</p>
 <dl>
 <dt><code>UT_DEFAULT_MAIN</code></dt>
-<dd>Deprecated. This macro expands to definition of a <code>main()</code> function.
+<dd><p>
+<em>Deprecated.</em> This macro expands to definition of a <code>main()</code> function.
+</p>
+
 </dd>
 </dl>
 <p>However, if you are not satisfied with it and want something more complex, you can write your own entrypoint. In that case you will need <code>ut_run_all_tests</code> function to run the tests.</p>
 <dl>
-<dt><code class="sourceCode c"><span class="dt">int</span> ut_run_all_tests (UtVerbosityLevel verbosity)</code></dt>
-<dd><p>Run all registered tests from all suites. This function returns number of failed tests. The argument to this function specifies what output should be printed. There are a few options:</p>
+<dt><code class="sourceCode c"><span class="dt">int</span> ut_run_all_tests (UtFlags flags)</code></dt>
+<dd><p>Run all registered tests from all suites. This function returns number of failed tests. The argument allows you to customize the execution of tests. It is a bitset, which should be accessed only by provided constants.</p>
 <ul>
-<li><code>UT_NORMAL</code> prints progress and error messages</li>
 <li><code>UT_QUIET</code> disables all output</li>
+<li><code>UT_NO_FORK</code> makes everything run in same thread</li>
+<li>use <code>0</code> if you want no flag</li>
 </ul>
 <p>Not printing can be useful if the tests are run as part of a script or in other automated way. The result can still be determined based on exit value.</p>
+<p>Disabling forking is useful when you want to use a tool like <a href="http://www.valgrind.org/">Valgrind</a>, which gives you confusing output when many processes take place. However, disabling the forking will lead to segmentation fault should any single test crash.</p>
 </dd>
 </dl>
 
@@ -47,7 +52,12 @@
       </div>
 
       <footer>
-          <a href="http://lubomir.github.io/libutest/">libutest</a> 0.3
+          <ul>
+              <li><a href="http://lubomir.github.io/libutest/">libutest</a> 0.4</li>
+              <li><a id="github-link" href="https://github.com/lubomir/libutest">
+                  Browse on GitHub
+              </a></li>
+          </ul>
       </footer>
   </body>
 </html>

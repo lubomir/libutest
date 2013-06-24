@@ -13,15 +13,23 @@
       </header>
 
       <div id="body">
-          <p><code>libutest</code> is a very simple unit testing framework for C. Its main advantage is that does not force you to write lists of all test function. Instead, it finds them automatically. Magic!</p>
+          <p><code>libutest</code> is a very simple unit testing framework for C. Its main advantage is that it does not force you to write lists of all test function. Instead, it finds them automatically. Magic!</p>
 <p>File found issues at GitHub in <a href="https://github.com/lubomir/libutest/issues">libutest repository</a>.</p>
+<h2 id="who-it-is-for">Who it is for</h2>
+<p>This library/framework is supposed to be used with simple programs. Initially, it was designed to simplify testing programs written as assignment for introductory courses, where simplicity is essential.</p>
+<p>Testing with <code>libutest</code> consists of writing the tests into a file, compiling it into an executable and you are ready to go. However, if you are working on a complex project with sophisticated build system, you may be better of with something more established, like <a href="http://cutter.sourceforge.net/">cutter</a>.</p>
+<h2 id="dependencies">Dependencies</h2>
+<p>To compile from Git, you need autotools and a C compiler that understands GCC <code>__attribute__</code> syntax and a bit of C99. Obviously, GCC works fine, but Clang can also be used. It should probably work on any platform that runs a satisfactory compiler, but only GNU/Linux was tested.</p>
+<p>This website is built from Markdown files using <a href="http://jaspervdj.be/hakyll/">Hakyll</a>, which is quite dependency heavy. However, for actually using the library this is very much useless.</p>
 <h2 id="installation">Installation</h2>
 <p>So far, you need to install <code>libutest</code> by building from source yourself. It uses the classic autotools build. First obtain the contents of the repository, then run <code>configure</code> and <code>make</code>.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="ot">$</span> <span class="kw">git</span> clone git://github.com/lubomir/libutest.git
-<span class="ot">$</span> <span class="kw">autoreconf</span> -i
-<span class="ot">$</span> <span class="kw">./configure</span>
-<span class="ot">$</span> <span class="kw">make</span>
-<span class="ot">$</span> <span class="kw">make</span> install</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> clone git://github.com/lubomir/libutest.git
+$ <span class="kw">autoreconf</span> -i
+$ <span class="kw">./configure</span>
+$ <span class="kw">make</span>
+$ <span class="kw">make</span> install</code></pre>
+<h3 id="packages">Packages</h3>
+<p>There are prepared Debian/Ubuntu packages at <a href="https://launchpad.net/~lubomir-sedlar/+archive/ppa">my PPA</a>.</p>
 <h2 id="documentation">Documentation</h2>
 <ul>
 <li><a href="pages/defining-tests.html">Defining tests</a></li>
@@ -29,10 +37,36 @@
 <li><a href="pages/running-tests.html">Running tests</a></li>
 <li><a href="pages/compiling-tests.html">Compiling tests</a></li>
 </ul>
+<h3 id="quick-overview">Quick overview</h3>
+<p>The <code>libutest</code> library makes it very convenient to write unit tests, because it does not require the programmer to write list of every test routine. This is accomplished by using GCC <code>constructor</code> function attribute, which marks a function that should be run on program startup.</p>
+<p>Each test is actually composed of two functions. One of them is a normal function with the actual testing code, the other is a constructor one that registers the test in a global storage. The <code>main</code> function can <a href="pages/running-tests.html">execute the tests</a> later.</p>
+<p>Since writing two functions by hand would not by any better than having to write some list, preprocessor macros are used (some might say abused) to actually create the functions. User of this library writes something like:</p>
+<pre class="sourceCode c"><code class="sourceCode c">UT_TEST(MyTest) {
+    <span class="co">/* test code */</span>
+}</code></pre>
+<p>which gets expanded to the following snippet.<sup><a href="#fn1" class="footnoteRef" id="fnref1">1</a></sup></p>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="dt">static</span> <span class="dt">void</span> <span class="co">/* constructor */</span> _ut_register_MyTest(<span class="dt">void</span>) {
+    ut_register_test(_ut_test_MyTest, <span class="st">&quot;MyTest&quot;</span>);
+}
+<span class="dt">static</span> <span class="dt">void</span> _ut_test_MyTest(UtTestData *_ut_data) {
+    <span class="co">/* test code */</span>
+}</code></pre>
+<p>The argument to the testing function is hidden from the user and only used by provided assertions. All functions that access it have a preprocessor macro wrapper that uses this argument without the user actually having to know.</p>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Actually it is a little more complicated due to the fact that each test belongs into a suite. But that is the gist of it.<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
       </div>
 
       <footer>
-          <a href="http://lubomir.github.io/libutest/">libutest</a> 0.3
+          <ul>
+              <li><a href="http://lubomir.github.io/libutest/">libutest</a> 0.4</li>
+              <li><a id="github-link" href="https://github.com/lubomir/libutest">
+                  Browse on GitHub
+              </a></li>
+          </ul>
       </footer>
   </body>
 </html>
