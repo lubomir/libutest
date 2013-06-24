@@ -41,3 +41,7 @@ executable with `--help` (or `-h` for short).
 `-q`, `--quiet`
 
 :   disables all output
+
+`-f`, `--no-fork`
+
+:   disables forking before executing tests

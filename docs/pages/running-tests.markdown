@@ -23,15 +23,23 @@ However, if you are not satisfied with it and want something more complex, you
 can write your own entrypoint. In that case you will need `ut_run_all_tests`
 function to run the tests.
 
-`int ut_run_all_tests (UtVerbosityLevel verbosity)`{.C}
+`int ut_run_all_tests (UtFlags flags)`{.C}
 
 :   Run all registered tests from all suites. This function returns number of
-    failed tests. The argument to this function specifies what output should be
-    printed. There are a few options:
+    failed tests. The argument allows you to customize the execution of tests.
+    It is a bitset, which should be accessed only by provided constants.
 
-     * `UT_NORMAL` prints progress and error messages
      * `UT_QUIET` disables all output
+     * `UT_NO_FORK` makes everything run in same thread
+     * use `0` if you want no flag
 
     Not printing can be useful if the tests are run as part of a script or in
     other automated way. The result can still be determined based on exit
     value.
+
+    Disabling forking is useful when you want to use a tool like [Valgrind],
+    which gives you confusing output when many processes take place. However,
+    disabling the forking will lead to segmentation fault should any single
+    test crash.
+
+[Valgrind]: http://www.valgrind.org/
