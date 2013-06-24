@@ -183,18 +183,25 @@ test_run_forked (Suite *suite, Test *test, Timer *timer,
 }
 
 static void
-suite_run (Suite *suite, struct test_result *results, FILE *logs, bool quiet)
+suite_run (Suite *suite, struct test_result *results,
+           FILE *logs, bool quiet, bool forked)
 {
     for (size_t i = 0; i < suite->num; ++i) {
         debug("Running '%s:%s'\n", suite->name, suite->tests[i].name);
 
         UtTestData data = {suite->tests[i].name, suite->tests[i].file, 0, 0, logs};
         int status;
-        if (!test_run_forked(suite, &suite->tests[i], results->timer, &data,
-                    &status, logs))
-            continue;
+        if (forked) {
+            if (!test_run_forked(suite, &suite->tests[i], results->timer, &data,
+                        &status, logs))
+                continue;
+        } else {
+            timer_start(results->timer);
+            test_run(suite, &suite->tests[i], &data);
+            timer_stop(results->timer);
+        }
 
-        if (WIFSIGNALED(status)) {
+        if (forked && WIFSIGNALED(status)) {
             ++results->tests_crashed;
             fprintf(logs, "Crash in "_ut_INBOLD("%s")" (%s)\n\t"
                     "Killed with signal "_ut_INBOLD("%d")" (%s)\n\n",
@@ -224,7 +231,7 @@ ut_run_all_tests (UtVerbosityLevel verbose)
     results.timer = timer_new();
 
     for (Suite *suite = global_tests; suite; suite = suite->next) {
-        suite_run(suite, &results, logs, verbose == UT_QUIET);
+        suite_run(suite, &results, logs, verbose == UT_QUIET, true);
     }
 
     if (verbose != UT_QUIET) {
