@@ -126,13 +126,13 @@ ut_register_callback (UtCallback cb, const char *suitename, UtCallbackType type)
 }
 
 static void
-test_run (Suite *suite, size_t idx, UtTestData *data)
+test_run (Suite *suite, Test *test, UtTestData *data)
 {
     if (suite->setup) {
         suite->setup();
     }
 
-    suite->tests[idx].func(data);
+    test->func(data);
 
     if (suite->teardown) {
         suite->teardown();
@@ -140,7 +140,7 @@ test_run (Suite *suite, size_t idx, UtTestData *data)
 }
 
 static bool
-test_run_forked (Suite *suite, size_t idx, Timer *timer,
+test_run_forked (Suite *suite, Test *test, Timer *timer,
         UtTestData *data, int *status, FILE *logs)
 {
     int pipe_fd[2];
@@ -160,7 +160,7 @@ test_run_forked (Suite *suite, size_t idx, Timer *timer,
         abort();
     } else if (pid == 0) {
         close(pipe_fd[0]);
-        test_run(suite, idx, data);
+        test_run(suite, test, data);
         safe_write(pipe_fd[1], data, sizeof *data);
         close(pipe_fd[1]);
         fclose(logs);
@@ -190,7 +190,8 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs, bool quiet)
 
         UtTestData data = {suite->tests[i].name, suite->tests[i].file, 0, 0, logs};
         int status;
-        if (!test_run_forked(suite, i, results->timer, &data, &status, logs))
+        if (!test_run_forked(suite, &suite->tests[i], results->timer, &data,
+                    &status, logs))
             continue;
 
         if (WIFSIGNALED(status)) {
