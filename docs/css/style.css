@@ -22,6 +22,9 @@ a:hover {
 p, li {
     line-height: 150%;
 }
+hr {
+    border-top: 1px solid #204a87;
+}
 
 header, footer {
     padding: 1em 0;
