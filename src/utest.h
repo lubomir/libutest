@@ -235,17 +235,17 @@ void _ut_assert_equal_string(UtTestData *data, int line,
     _ut_UT_TEARDOWN(suitename, #suitename)
 
 typedef enum {
-    UT_NORMAL,                  /**< Print progress and error messages. */
-    UT_QUIET                    /**< Do not print anything at all. */
-} UtVerbosityLevel;
+    UT_QUIET    = 1 << 0,       /**< Do not print anything at all. */
+    UT_NO_FORK  = 1 << 1        /**< Run each test in separate process. */
+} UtFlags;
 
 /**
  * Run all defined tests.
  *
- * @param verbosity whether to print results to stdout
+ * @param flags     flags affecting the runtime
  * @return          number of failed tests
  */
-int ut_run_all_tests(UtVerbosityLevel verbosity);
+int ut_run_all_tests(UtFlags flags);
 
 /**
  * This macro expands to a simple main. This main function runs all the
