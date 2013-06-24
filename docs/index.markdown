@@ -55,6 +55,45 @@ There are prepared Debian/Ubuntu packages at [my PPA].
  * [Running tests](pages/running-tests.html)
  * [Compiling tests](pages/compiling-tests.html)
 
+### Quick overview
+
+The `libutest` library makes it very convenient to write unit tests, because it
+does not require the programmer to write list of every test routine. This is
+accomplished by using GCC `constructor` function attribute, which marks a
+function that should be run on program startup.
+
+Each test is actually composed of two functions. One of them is a normal
+function with the actual testing code, the other is a constructor one that
+registers the test in a global storage. The `main` function can [execute the
+tests](pages/running-tests.html) later.
+
+Since writing two functions by hand would not by any better than having to
+write some list, preprocessor macros are used (some might say abused) to
+actually create the functions. User of this library writes something like:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.c}
+UT_TEST(MyTest) {
+    /* test code */
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+which gets expanded to the following snippet.^[Actually it is a little more
+complicated due to the fact that each test belongs into a suite. But that is
+the gist of it.]
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.c}
+static void /* constructor */ _ut_register_MyTest(void) {
+    ut_register_test(_ut_test_MyTest, "MyTest");
+}
+static void _ut_test_MyTest(UtTestData *_ut_data) {
+    /* test code */
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The argument to the testing function is hidden from the user and only used by
+provided assertions. All functions that access it have a preprocessor macro
+wrapper that uses this argument without the user actually having to know.
+
 
 [libutest repository]: https://github.com/lubomir/libutest/issues
 [cutter]: http://cutter.sourceforge.net/
