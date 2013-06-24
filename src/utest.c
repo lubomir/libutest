@@ -138,7 +138,7 @@ test_run (Suite *suite, size_t idx, UtTestData *data)
 }
 
 static bool
-test_run_forked (Suite *suite, size_t idx, struct test_result *results,
+test_run_forked (Suite *suite, size_t idx, Timer *timer,
         UtTestData *data, int *status, FILE *logs)
 {
     int pipe_fd[2];
@@ -150,7 +150,7 @@ test_run_forked (Suite *suite, size_t idx, struct test_result *results,
 
     fflush(stdout);
     fflush(logs);
-    timer_start(results->timer);
+    timer_start(timer);
     pid_t pid = fork();
     ssize_t len;
     if (pid < 0) {
@@ -162,12 +162,12 @@ test_run_forked (Suite *suite, size_t idx, struct test_result *results,
         safe_write(pipe_fd[1], data, sizeof *data);
         close(pipe_fd[1]);
         fclose(logs);
-        timer_free(results->timer);
+        timer_free(timer);
         exit(EXIT_SUCCESS);
     } else {
         close(pipe_fd[1]);
         waitpid(pid, status, 0);
-        timer_stop(results->timer);
+        timer_stop(timer);
         len = read(pipe_fd[0], data, sizeof *data);
         close(pipe_fd[0]);
     }
@@ -188,7 +188,7 @@ suite_run (Suite *suite, struct test_result *results, FILE *logs, bool quiet)
 
         UtTestData data = {suite->tests[i].name, suite->tests[i].file, 0, 0, logs};
         int status;
-        if (!test_run_forked(suite, i, results, &data, &status, logs))
+        if (!test_run_forked(suite, i, results->timer, &data, &status, logs))
             continue;
 
         if (WIFSIGNALED(status)) {
