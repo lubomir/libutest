@@ -24,7 +24,8 @@ something more established, like [cutter].
 To compile from Git, you need autotools and a C compiler that understands GCC
 `__attribute__` syntax and a bit of C99. Obviously, GCC works fine, but Clang
 can also be used. It should probably work on any platform that runs a
-satisfactory compiler, but only GNU/Linux was tested.
+satisfactory compiler, but only GNU/Linux was tested. Version 0.4 of `libutest`
+does not compile on [MinGW] on Windows.
 
 This website is built from Markdown files using [Hakyll], which is quite
 dependency heavy. However, for actually using the library this is very much
@@ -99,3 +100,4 @@ wrapper that uses this argument without the user actually having to know.
 [cutter]: http://cutter.sourceforge.net/
 [hakyll]: http://jaspervdj.be/hakyll/
 [my PPA]: https://launchpad.net/~lubomir-sedlar/+archive/ppa
+[MinGW]: http://mingw.org/
