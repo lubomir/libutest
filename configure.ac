@@ -27,11 +27,12 @@ LT_INIT
 
 # Checks for header files.
 AC_CHECK_HEADER_STDBOOL
-AC_CHECK_HEADERS([stdlib.h string.h unistd.h])
+AC_CHECK_HEADERS([stddef.h stdlib.h string.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_INLINE
 AC_TYPE_SIZE_T
+AC_TYPE_SSIZE_T
 AC_TYPE_PID_T
 
 # Checks for library functions.
