@@ -253,7 +253,7 @@ int ut_run_all_tests(UtFlags flags);
  *
  * @deprecated
  */
-#define UT_DEFAULT_MAIN int main (void) { return ut_run_all_tests() == 0; }
+#define UT_DEFAULT_MAIN int main (void) { return ut_run_all_tests(0) == 0; }
 
 /**
  * Frontend for _ut_assert_func(). This macro automatically inserts correct
