@@ -9,15 +9,15 @@ executable file. Therefore to be able to run it, there needs to be a `main`
 function.
 
 There is a default main provided which you can insert into your program with
-`UT_DEFAULT_MAIN` (now deprecated). Starting from version 0.2, there is no need
+`UT_DEFAULT_MAIN`. However, starting from version 0.2, there is no need
 to manually include `UT_DEFAULT_MAIN` anymore, as the default `main` function
 is included in the library and is used unless your code defines your own entry
-point function.
+point function (as weak symbol). If your system does not support `main` as a
+weak symbol, you will have to resolve to including it yourself..
 
 `UT_DEFAULT_MAIN`
 
-:   <p>*Deprecated.* This macro expands to definition of a `main()`
-    function.</p>
+:   <p>This macro expands to definition of a `main()` function.</p>
 
 However, if you are not satisfied with it and want something more complex, you
 can write your own entrypoint. In that case you will need `ut_run_all_tests`
