@@ -18,3 +18,13 @@ There is some documentation available on <http://lubomir.github.io/libutest/>.
 Runtime options are documented with classic `--help` command-line argument.
 
 [my PPA]: https://launchpad.net/~lubomir-sedlar/+archive/ppa
+
+## License
+
+This library is licensed under 3-clause BSD license. Details are in the LICENSE
+file in root directory of the package.
+
+## Contributing
+
+Feel free to open pull requests here on GitHub. If you find any bug or think of
+an enhancement, report an Issue.
