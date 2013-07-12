@@ -58,12 +58,13 @@ void * safe_malloc (size_t size)             __attribute__((alloc_size(1)));
 void * safe_realloc (void *mem, size_t size) __attribute__((alloc_size(2)));
 
 /**
- * Print a character on stdout with given color. If stdout is not a terminal,
- * the color will be skipped.
+ * Possibly print a character on stdout with given color. The last argument
+ * controls whether output will be colorized. If UT_QUIET bit is set in the
+ * flags, nothing at all will be printed.
  *
  * @param c     char to be printed
  * @param color ANSI color escape sequence
- * @param flags flags affecting whether the color is stripped
+ * @param flags flags affecting the output
  */
 void putc_color(char c, char *color, int flags);
 

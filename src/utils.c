@@ -58,6 +58,7 @@ safe_realloc (void *mem, size_t size)
 void
 putc_color (char c, char *color, int flags)
 {
+    if (flags & UT_QUIET) return;
     if (should_print_color(STDOUT_FILENO, flags)) {
         printf("%s%c%s", color, c, NORMAL);
     } else {

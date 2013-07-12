@@ -207,15 +207,12 @@ suite_run (Suite *suite, struct test_result *results,
                     "Killed with signal "_ut_INBOLD("%d")" (%s)\n\n",
                     data.name, suite->tests[i].file,
                     WTERMSIG(status), strsignal(WTERMSIG(status)));
-            if (!(flags & UT_QUIET))
-                putc_color('C', RED, flags);
+            putc_color('C', RED, flags);
         } else if (data.assertions_failed > 0) {
             ++results->tests_failed;
-            if (!(flags & UT_QUIET))
-                putc_color('F', RED, flags);
+            putc_color('F', RED, flags);
         } else {
-            if (!(flags & UT_QUIET))
-                putc_color('.', GREEN, flags);
+            putc_color('.', GREEN, flags);
         }
         results->assertions_ok += data.assertions_ok;
         results->assertions_failed += data.assertions_failed;
