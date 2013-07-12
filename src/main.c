@@ -49,11 +49,10 @@ version (void)
 
 int _ut_default_main_worker (int argc, char **argv)
 {
-    int c;
     UtFlags flags = 0;
 
     while (1) {
-        c = getopt_long(argc, argv, OPTSTRING, options, NULL);
+        int c = getopt_long(argc, argv, OPTSTRING, options, NULL);
         if (c == -1) {
             break;
         }

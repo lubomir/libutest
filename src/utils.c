@@ -98,11 +98,10 @@ copy_from_to (FILE *src, FILE *dest, int flags)
 void
 safe_write (int fd, const void *buf, size_t count)
 {
-    ssize_t len;
     size_t offset = 0;
 
     do {
-        len = write(fd, (const unsigned char *)buf + offset, count - offset);
+        ssize_t len = write(fd, (const unsigned char *)buf + offset, count - offset);
         if (len < 0) {
             perror("write");
             abort();
