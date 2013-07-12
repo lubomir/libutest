@@ -45,3 +45,8 @@ executable with `--help` (or `-h` for short).
 `-f`, `--no-fork`
 
 :   disables forking before executing tests
+
+`--color=WHEN`
+
+:   customize colorizing output. Default value for `WHEN` is `auto`, other
+    possibilities are `never` and `always`

@@ -31,6 +31,8 @@ function to run the tests.
 
      * `UT_QUIET` disables all output
      * `UT_NO_FORK` makes everything run in same thread
+     * `UT_COLOR_NEVER` disables colorizing of the output
+     * `UT_COLOR_AUTO` forces the output to be colorized
      * use `0` if you want no flag
 
     Not printing can be useful if the tests are run as part of a script or in
@@ -41,5 +43,9 @@ function to run the tests.
     which gives you confusing output when many processes take place. However,
     disabling the forking will lead to segmentation fault should any single
     test crash.
+
+    The default behaviour about colorizing output is to use colors if printing
+    output to a TTY and skip colors otherwise. It makes no sense to specify
+    both color controls at the same time.
 
 [Valgrind]: http://www.valgrind.org/
