@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <getopt.h>
 #include <stdio.h>
+#include <string.h>
 
 #define OPTSTRING "hVqf"
 
@@ -13,6 +14,7 @@ static struct option options[] = {
     { "version",    no_argument, NULL, 'V' },
     { "quiet",      no_argument, NULL, 'q' },
     { "no-fork",    no_argument, NULL, 'f' },
+    { "color",      required_argument, NULL, 'c' },
     { NULL, 0, 0, 0 }
 };
 
@@ -32,6 +34,8 @@ help (const char *exe)
     puts("  -V, --version   display version information");
     puts("  -q, --quiet     do not display any output");
     puts("  -f, --no-fork   disable forking before running tests");
+    puts("  --color=WHEN    customize coloring. WHEN defaults to 'auto' or can");
+    puts("                  be 'never' or 'always'");
 
     printf("\nReport %s bugs to %s\n", PACKAGE_NAME, PACKAGE_BUGREPORT);
     printf("%s homepage: %s\n", PACKAGE_NAME, PACKAGE_URL);
@@ -66,6 +70,16 @@ int _ut_default_main_worker (int argc, char **argv)
             break;
         case 'f':
             flags |= UT_NO_FORK;
+            break;
+        case 'c':
+            if (strcmp(optarg, "never") == 0) {
+                flags |= UT_COLOR_NEVER;
+            } else if (strcmp(optarg, "always") == 0) {
+                flags |= UT_COLOR_ALWAYS;
+            } else if (strcmp(optarg, "auto") != 0) {
+                fprintf(stderr, "Error: unrecognized --color option argument\n");
+                return 1;
+            }
             break;
         case '?':
             usage(argv[0], stderr);
