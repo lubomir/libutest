@@ -235,8 +235,10 @@ void _ut_assert_equal_string(UtTestData *data, int line,
     _ut_UT_TEARDOWN(suitename, #suitename)
 
 typedef enum {
-    UT_QUIET    = 1 << 0,       /**< Do not print anything at all. */
-    UT_NO_FORK  = 1 << 1        /**< Run each test in separate process. */
+    UT_QUIET        = 1 << 0,   /**< Do not print anything at all. */
+    UT_NO_FORK      = 1 << 1,   /**< Run each test in separate process. */
+    UT_COLOR_NEVER  = 1 << 2,   /**< Never use colors in output. */
+    UT_COLOR_ALWAYS = 1 << 3    /**< Always use colors in output. */
 } UtFlags;
 
 /**

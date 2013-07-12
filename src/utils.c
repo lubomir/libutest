@@ -1,5 +1,6 @@
 #include <config.h>
 
+#include "utest.h"
 #include "utils.h"
 
 #include <stdarg.h>
@@ -7,6 +8,17 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+static bool
+should_print_color (int fd, int flags)
+{
+    if (flags & UT_COLOR_NEVER) {
+        return false;
+    } else if (flags & UT_COLOR_ALWAYS) {
+        return true;
+    }
+    return isatty(fd);
+}
 
 void
 emit_message (const char *type, const char *msg, ...)
@@ -44,9 +56,9 @@ safe_realloc (void *mem, size_t size)
 }
 
 void
-putc_color (char c, char *color)
+putc_color (char c, char *color, int flags)
 {
-    if (isatty(STDOUT_FILENO)) {
+    if (should_print_color(STDOUT_FILENO, flags)) {
         printf("%s%c%s", color, c, NORMAL);
     } else {
         putchar(c);
@@ -67,17 +79,17 @@ write_strip_escapes (char *buffer, size_t len, FILE *dest)
 }
 
 void
-copy_from_to (FILE *src, FILE *dest)
+copy_from_to (FILE *src, FILE *dest, int flags)
 {
     static char buffer[4096];
     size_t len;
-    bool tty = isatty(fileno(dest));
+    bool strip = !should_print_color(fileno(dest), flags);
 
     while ((len = fread(buffer, 1, sizeof buffer, src)) > 0) {
-        if (tty) {
-            fwrite(buffer, len, 1, dest);
-        } else {
+        if (strip) {
             write_strip_escapes(buffer, len, dest);
+        } else {
+            fwrite(buffer, len, 1, dest);
         }
     }
 }

@@ -63,8 +63,9 @@ void * safe_realloc (void *mem, size_t size) __attribute__((alloc_size(2)));
  *
  * @param c     char to be printed
  * @param color ANSI color escape sequence
+ * @param flags flags affecting whether the color is stripped
  */
-void putc_color(char c, char *color);
+void putc_color(char c, char *color, int flags);
 
 /**
  * Read all data from one file handle and write it to the other.
@@ -73,8 +74,9 @@ void putc_color(char c, char *color);
  *
  * @param src   where to copy from
  * @param dest  where to write
+ * @param flags flags affecting whether the color is stripped
  */
-void copy_from_to(FILE *src, FILE *dest);
+void copy_from_to(FILE *src, FILE *dest, int flags);
 
 /**
  * Wrapper arount write(2). It writes count bytes from buf to file descriptor
