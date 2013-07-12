@@ -248,12 +248,6 @@ typedef enum {
 int ut_run_all_tests(UtFlags flags);
 
 /**
- * This macro expands to a simple main. This main function runs all the
- * defined tests and then exits with number of failed tests.
- */
-#define UT_DEFAULT_MAIN int main (void) { return ut_run_all_tests(0) == 0; }
-
-/**
  * Frontend for _ut_assert_func(). This macro automatically inserts correct
  * file name and line number.
  */
@@ -327,5 +321,20 @@ void _ut_pass(UtTestData *data);
  */
 void _ut_message(UtTestData *data, const char *msg, ...)
     __attribute__((format(printf, 2, 3)));
+
+/**
+ * Helper function for the generated main() entrypoint. Do not call this
+ * function directly. If you want to use provided functionality, use
+ * UT_DEFAULT_MAIN instead to generate whole main function.
+ */
+int _ut_default_main_worker (int argc, char **argv);
+
+/**
+ * This macro expands to a simple main. This main function runs all the
+ * defined tests and then exits with number of failed tests.
+ */
+#define UT_DEFAULT_MAIN                                                     \
+    int main (int argc, char **argv)                                        \
+    { return _ut_default_main_worker(argc, argv); }
 
 #endif /* end of include guard: UTEST_H */

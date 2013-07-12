@@ -43,7 +43,7 @@ version (void)
     printf("%s %s\n", PACKAGE_NAME, VERSION);
 }
 
-int __attribute__((weak)) main (int argc, char **argv)
+int _ut_default_main_worker (int argc, char **argv)
 {
     int c;
     UtFlags flags = 0;
@@ -74,4 +74,10 @@ int __attribute__((weak)) main (int argc, char **argv)
     }
 
     return ut_run_all_tests(flags) == 0;
+}
+
+int __attribute__((weak))
+main (int argc, char **argv)
+{
+    return _ut_default_main_worker(argc, argv);
 }
