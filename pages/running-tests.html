@@ -16,11 +16,11 @@
           <h1>Running the tests</h1>
 
 <p>Tests written using <em>libutest</em> are meant to be compiled into a separate executable file. Therefore to be able to run it, there needs to be a <code>main</code> function.</p>
-<p>There is a default main provided which you can insert into your program with <code>UT_DEFAULT_MAIN</code> (now deprecated). Starting from version 0.2, there is no need to manually include <code>UT_DEFAULT_MAIN</code> anymore, as the default <code>main</code> function is included in the library and is used unless your code defines your own entry point function.</p>
+<p>There is a default main provided which you can insert into your program with <code>UT_DEFAULT_MAIN</code>. However, starting from version 0.2, there is no need to manually include <code>UT_DEFAULT_MAIN</code> anymore, as the default <code>main</code> function is included in the library and is used unless your code defines your own entry point function (as weak symbol). If your system does not support <code>main</code> as a weak symbol, you will have to resolve to including it yourself..</p>
 <dl>
 <dt><code>UT_DEFAULT_MAIN</code></dt>
 <dd><p>
-<em>Deprecated.</em> This macro expands to definition of a <code>main()</code> function.
+This macro expands to definition of a <code>main()</code> function.
 </p>
 
 </dd>
@@ -32,10 +32,13 @@
 <ul>
 <li><code>UT_QUIET</code> disables all output</li>
 <li><code>UT_NO_FORK</code> makes everything run in same thread</li>
+<li><code>UT_COLOR_NEVER</code> disables colorizing of the output</li>
+<li><code>UT_COLOR_AUTO</code> forces the output to be colorized</li>
 <li>use <code>0</code> if you want no flag</li>
 </ul>
 <p>Not printing can be useful if the tests are run as part of a script or in other automated way. The result can still be determined based on exit value.</p>
 <p>Disabling forking is useful when you want to use a tool like <a href="http://www.valgrind.org/">Valgrind</a>, which gives you confusing output when many processes take place. However, disabling the forking will lead to segmentation fault should any single test crash.</p>
+<p>The default behaviour about colorizing output is to use colors if printing output to a TTY and skip colors otherwise. It makes no sense to specify both color controls at the same time.</p>
 </dd>
 </dl>
 
