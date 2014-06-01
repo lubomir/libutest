@@ -34,6 +34,10 @@ In each test, you can use many test assertions.
 
 :   Check equality of two unsigned integers.
 
+`ut_assert_equal_char(expected, actual)`
+
+:   Check equality of two `char`s.
+
 `ut_assert_equal_string(expected, actual)`
 
 :   Check that both arguments are either `NULL` or contain the same string.

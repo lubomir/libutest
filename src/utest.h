@@ -170,6 +170,15 @@ void ut_register_callback(UtCallback cb, const char *suite, UtCallbackType type)
     _ut_assert_eq_with_type(int, "%d", expected, actual)
 
 /**
+ * Fail the test unless two char values are the same.
+ *
+ * @param expected  expected value in the second parameter
+ * @param actual    expression that evaluates to char value
+ */
+#define ut_assert_equal_char(expected, actual)                              \
+    _ut_assert_eq_with_type(char, "%c", expected, actual)
+
+/**
  * Fail the test unless two unsigned integer values are the same.
  *
  * @param expected  expected value in the second parameter
