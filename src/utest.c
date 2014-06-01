@@ -34,6 +34,10 @@ struct ut_test_data {
     const char *file;
     unsigned int assertions_ok;
     unsigned int assertions_failed;
+    void **free_array;          /**< Array of pointers to be freed later. */
+    UtFreeFunc *free_funcs;
+    size_t free_arr_num;
+    size_t free_arr_len;
     FILE *logs;
 };
 
@@ -183,18 +187,26 @@ test_run_forked (Suite *suite, Test *test, Timer *timer,
 }
 
 static void
+run_free_funcs(UtTestData *data)
+{
+    for (size_t i = 0; i < data->free_arr_num; ++i) {
+        data->free_funcs[i](data->free_array[i]);
+    }
+}
+
+static void
 suite_run (Suite *suite, struct test_result *results,
            FILE *logs, UtFlags flags)
 {
     for (size_t i = 0; i < suite->num; ++i) {
         debug("Running '%s:%s'\n", suite->name, suite->tests[i].name);
 
-        UtTestData data = {suite->tests[i].name, suite->tests[i].file, 0, 0, logs};
+        UtTestData data = {suite->tests[i].name, suite->tests[i].file, 0, 0, NULL, NULL, 0, 0, logs};
         int status;
         if (!(flags & UT_NO_FORK)) {
             if (!test_run_forked(suite, &suite->tests[i], results->timer, &data,
                         &status, logs))
-                continue;
+                goto next;
         } else {
             timer_start(results->timer);
             test_run(suite, &suite->tests[i], &data);
@@ -216,6 +228,9 @@ suite_run (Suite *suite, struct test_result *results,
         }
         results->assertions_ok += data.assertions_ok;
         results->assertions_failed += data.assertions_failed;
+
+next:
+        run_free_funcs(&data);
     }
     results->tests_ran += suite->num;
 }
@@ -328,4 +343,18 @@ void
 _ut_pass (UtTestData *data)
 {
     ++data->assertions_ok;
+}
+
+void *
+_ut_take_memory(UtTestData *data, void *ptr, UtFreeFunc func)
+{
+    if (data->free_arr_num >= data->free_arr_len) {
+        data->free_arr_len += 8;
+        data->free_array = safe_realloc(data->free_array, data->free_arr_len * sizeof (*data->free_array));
+        data->free_funcs = safe_realloc(data->free_funcs, data->free_arr_len * sizeof (*data->free_array));
+    }
+    data->free_array[data->free_arr_num] = ptr;
+    data->free_funcs[data->free_arr_num] = func;
+    ++data->free_arr_num;
+    return ptr;
 }

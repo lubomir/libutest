@@ -349,4 +349,26 @@ int _ut_default_main_worker (int argc, char **argv);
     int main (int argc, char **argv)                                        \
     { return _ut_default_main_worker(argc, argv); }
 
+/**
+ * Register memory to be freed upon test completion (whether successful or not.
+ *
+ * @param data  pointer to the data
+ * @param func  function to free the data of type `void(*)(void *)`
+ * @return      returns the first argument, `data`
+ */
+#define ut_take_memory(data, func)                                          \
+    _ut_take_memory(_ut_test_data, data, func)
+
+typedef void (*UtFreeFunc) (void *);
+
+/**
+ * Actual implementation for taking responsibility of data freeing.
+ *
+ * @param data  test data
+ * @param ptr   pointer to be freed
+ * @param func  function to perform actual freeing
+ * @return      passed pointer
+ */
+void * _ut_take_memory(UtTestData *data, void *ptr, UtFreeFunc func);
+
 #endif /* end of include guard: UTEST_H */
