@@ -1,6 +1,6 @@
 #                                               -*- Autoconf -*-
 AC_PREREQ([2.69])
-AC_INIT([libutest], [0.4], [lubomir.sedlar@gmail.com],
+AC_INIT([libutest], [0.5], [lubomir.sedlar@gmail.com],
         [utest], [http://lubomir.github.io/libutest/])
 AC_CONFIG_SRCDIR([src/utest.c])
 AC_CONFIG_MACRO_DIR([m4])
