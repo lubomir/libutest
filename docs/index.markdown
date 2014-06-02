@@ -16,7 +16,7 @@ introductory courses, where simplicity is essential.
 
 Testing with `libutest` consists of writing the tests into a file, compiling it
 into an executable and you are ready to go. However, if you are working on a
-complex project with sophisticated build system, you may be better of with
+complex project with sophisticated build system, you may be better off with
 something more established, like [cutter].
 
 ## Dependencies
