@@ -245,7 +245,7 @@ ut_run_all_tests (UtFlags flags)
     }
     fclose(logs);
     timer_free(results.timer);
-    return results.tests_failed == 0;
+    return results.tests_failed + results.tests_crashed == 0;
 }
 
 void
