@@ -44,6 +44,21 @@ In each test, you can use many test assertions.
     The character data is compared, not memory addresses.
 
 
+## Memory management
+
+If your test needs to allocate memory, open a file or anything like that, it
+may become difficult to free the resource when the test finishes. To simplify
+this, there is a function that gives a pointer to the library to be released
+after the test is done, no matter if successfully or not.
+
+`ut_take_memory(ptr, free_function)`
+
+:   <p>Give `ptr` to the library. After the current test finishes, it will be
+    freed with the supplied function. The type of `free_function` should be
+    `void (*) (void *)`, that is it should accept a single pointer (the one
+    given to `ut_take_memory` and should not return anything. Standard `free`
+    has this interface.</p>
+
 ## Custom assertions
 
 You may find yourself in a situation where you need to write your own
