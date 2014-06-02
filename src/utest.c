@@ -129,6 +129,22 @@ ut_register_callback (UtCallback cb, const char *suitename, UtCallbackType type)
     }
 }
 
+/**
+ * Run all free functions and reset data structure related to them.
+ */
+static void
+run_free_funcs(UtTestData *data)
+{
+    for (size_t i = 0; i < data->free_arr_num; ++i) {
+        data->free_funcs[i](data->free_array[i]);
+    }
+    free(data->free_array);
+    free(data->free_funcs);
+    data->free_array = NULL;
+    data->free_funcs = NULL;
+    data->free_arr_num = data->free_arr_len = 0;
+}
+
 static void
 test_run (Suite *suite, Test *test, UtTestData *data)
 {
@@ -141,6 +157,8 @@ test_run (Suite *suite, Test *test, UtTestData *data)
     if (suite->teardown) {
         suite->teardown();
     }
+
+    run_free_funcs(data);
 }
 
 static bool
@@ -187,14 +205,6 @@ test_run_forked (Suite *suite, Test *test, Timer *timer,
 }
 
 static void
-run_free_funcs(UtTestData *data)
-{
-    for (size_t i = 0; i < data->free_arr_num; ++i) {
-        data->free_funcs[i](data->free_array[i]);
-    }
-}
-
-static void
 suite_run (Suite *suite, struct test_result *results,
            FILE *logs, UtFlags flags)
 {
@@ -206,7 +216,7 @@ suite_run (Suite *suite, struct test_result *results,
         if (!(flags & UT_NO_FORK)) {
             if (!test_run_forked(suite, &suite->tests[i], results->timer, &data,
                         &status, logs))
-                goto next;
+                continue;
         } else {
             timer_start(results->timer);
             test_run(suite, &suite->tests[i], &data);
@@ -228,9 +238,6 @@ suite_run (Suite *suite, struct test_result *results,
         }
         results->assertions_ok += data.assertions_ok;
         results->assertions_failed += data.assertions_failed;
-
-next:
-        run_free_funcs(&data);
     }
     results->tests_ran += suite->num;
 }
