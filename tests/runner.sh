@@ -1,10 +1,9 @@
 #!/bin/bash
 
-INFILE=$1.c
 STRINGS=$1.strs
 EXIT_CODE_FILE=$1.ret
 
-BINARY=$(mktemp)
+BINARY=$1
 OUTPUT=$(mktemp)
 WD=$(dirname $0)
 
@@ -12,7 +11,7 @@ FAILURE=0
 
 cleanup()
 {
-    rm -r $BINARY $OUTPUT
+    rm -r $OUTPUT
 }
 
 trap cleanup EXIT
@@ -25,14 +24,6 @@ print_out()
     echo "------------------------------------------------"
 }
 
-gcc -o $BINARY -Wall -Wextra -std=c99 $INFILE \
-    -I$WD/../src -lutest -L$WD/../src/ -L$WD/../src/.libs
-
-if [ $? -ne 0 ]; then
-    echo "Compilation failed"
-    exit 1
-fi
-
 EXIT_CODE=0
 if [ -f $EXIT_CODE_FILE ]; then
     EXIT_CODE=$(cat $EXIT_CODE_FILE)
@@ -43,7 +34,7 @@ if [ -f $1.no-valgrind ]; then
     VALGRIND=""
 fi
 
-$VALGRIND $BINARY >$OUTPUT
+libtool --mode=execute $VALGRIND $BINARY >$OUTPUT
 REAL_CODE=$?
 if [ $REAL_CODE != $EXIT_CODE ]; then
     echo "Expected exit code $EXIT_CODE, got $REAL_CODE"

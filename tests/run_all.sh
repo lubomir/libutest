@@ -2,6 +2,8 @@
 
 WD=$(dirname $0)
 
-for x in $WD/*.c; do
-    $WD/runner.sh ${x%.c}
+TEST_LIST=$(ls $WD | egrep '^[0-9]*-[^.]*$')
+
+for x in $TEST_LIST; do
+    $WD/runner.sh $WD/$x
 done

@@ -1,16 +1,29 @@
 TESTS = tests/run_all.sh
 
+check_PROGRAMS = tests/01-basic \
+		 tests/02-failures \
+		 tests/03-fixtures \
+		 tests/04-crash \
+		 $(NULL)
+
+tests_01_basic_SOURCES = tests/01-basic.c
+tests_01_basic_LDADD = src/libutest.la
+
+tests_02_failures_SOURCES = tests/02-failures.c
+tests_02_failures_LDADD = src/libutest.la
+
+tests_03_fixtures_SOURCES = tests/03-fixtures.c
+tests_03_fixtures_LDADD = src/libutest.la
+
+tests_04_crash_SOURCES = tests/04-crash.c
+tests_04_crash_LDADD = src/libutest.la
+
 EXTRA_DIST = tests/run_all.sh \
 	     tests/runner.sh \
-	     tests/01-basic.c \
 	     tests/01-basic.strs \
-	     tests/02-failures.c \
 	     tests/02-failures.ret \
 	     tests/02-failures.strs \
-	     tests/03-fixtures.c \
 	     tests/03-fixtures.strs \
-	     tests/04-crash.c \
 	     tests/04-crash.strs \
 	     tests/04-crash.ret \
 	     $(NULL)
-
