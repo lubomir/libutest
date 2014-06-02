@@ -9,5 +9,8 @@ EXTRA_DIST = tests/run_all.sh \
 	     tests/02-failures.strs \
 	     tests/03-fixtures.c \
 	     tests/03-fixtures.strs \
+	     tests/04-crash.c \
+	     tests/04-crash.strs \
+	     tests/04-crash.ret \
 	     $(NULL)
 

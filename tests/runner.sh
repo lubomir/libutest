@@ -38,7 +38,12 @@ if [ -f $EXIT_CODE_FILE ]; then
     EXIT_CODE=$(cat $EXIT_CODE_FILE)
 fi
 
-valgrind -q --trace-children=yes $BINARY >$OUTPUT
+VALGRIND="valgrind -q --trace-children=yes"
+if [ -f $1.no-valgrind ]; then
+    VALGRIND=""
+fi
+
+$VALGRIND $BINARY >$OUTPUT
 REAL_CODE=$?
 if [ $REAL_CODE != $EXIT_CODE ]; then
     echo "Expected exit code $EXIT_CODE, got $REAL_CODE"
