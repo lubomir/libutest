@@ -149,7 +149,8 @@ void ut_register_callback(UtCallback cb, const char *suite, UtCallbackType type)
  * @param exp   expression that must evaluate to `NULL`
  */
 #define ut_assert_null(exp)                                                 \
-    ut_assert_func((exp) == NULL, _ut_INBOLD(#exp)" (%p) is not NULL", exp)
+    ut_assert_func((exp) == NULL,                                           \
+            _ut_INBOLD(#exp)" (%p) is not NULL", (void *)(exp))
 
 
 /**
