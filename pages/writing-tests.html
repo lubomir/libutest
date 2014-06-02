@@ -49,6 +49,16 @@ Check that <code>expr</code> evaluates to truth (i.e. anything non-zero).
 <dd><p>Check that both arguments are either <code>NULL</code> or contain the same string. The character data is compared, not memory addresses.</p>
 </dd>
 </dl>
+<h2 id="memory-management">Memory management</h2>
+<p>If your test needs to allocate memory, open a file or anything like that, it may become difficult to free the resource when the test finishes. To simplify this, there is a function that gives a pointer to the library to be released after the test is done, no matter if successfully or not.</p>
+<dl>
+<dt><code>ut_take_memory(ptr, free_function)</code></dt>
+<dd><p>
+Give <code>ptr</code> to the library. After the current test finishes, it will be freed with the supplied function. The type of <code>free_function</code> should be <code>void (*) (void *)</code>, that is it should accept a single pointer (the one given to <code>ut_take_memory</code> and should not return anything. Standard <code>free</code> has this interface.
+</p>
+
+</dd>
+</dl>
 <h2 id="custom-assertions">Custom assertions</h2>
 <p>You may find yourself in a situation where you need to write your own assertion. There is support for doing that.</p>
 <dl>

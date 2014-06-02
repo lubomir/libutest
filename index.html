@@ -17,7 +17,7 @@
 <p>File found issues at GitHub in <a href="https://github.com/lubomir/libutest/issues">libutest repository</a>.</p>
 <h2 id="who-it-is-for">Who it is for</h2>
 <p>This library/framework is supposed to be used with simple programs. Initially, it was designed to simplify testing programs written as assignment for introductory courses, where simplicity is essential.</p>
-<p>Testing with <code>libutest</code> consists of writing the tests into a file, compiling it into an executable and you are ready to go. However, if you are working on a complex project with sophisticated build system, you may be better of with something more established, like <a href="http://cutter.sourceforge.net/">cutter</a>.</p>
+<p>Testing with <code>libutest</code> consists of writing the tests into a file, compiling it into an executable and you are ready to go. However, if you are working on a complex project with sophisticated build system, you may be better off with something more established, like <a href="http://cutter.sourceforge.net/">cutter</a>.</p>
 <h2 id="dependencies">Dependencies</h2>
 <p>To compile from Git, you need autotools and a C compiler that understands GCC <code>__attribute__</code> syntax and a bit of C99. Obviously, GCC works fine, but Clang can also be used. It should probably work on any platform that runs a satisfactory compiler, but only GNU/Linux was tested.</p>
 <p>On Windows, version 0.4 was tested on <a href="http://mingw.org/">MinGW</a> and does not work. Compiling from tarball under <a href="http://cygwin.com/">Cygwin</a> is possible (given you include <code>main()</code> function and ignore compiler warnings).</p>
@@ -32,6 +32,7 @@ $ <span class="kw">make</span> install</code></pre>
 <h3 id="packages">Packages</h3>
 <p>There are prepared Debian/Ubuntu packages at <a href="https://launchpad.net/~lubomir-sedlar/+archive/ppa">my PPA</a>.</p>
 <h2 id="documentation">Documentation</h2>
+<p>The only public interface of the library is the header file <code>utest.h</code>.</p>
 <ul>
 <li><a href="pages/defining-tests.html">Defining tests</a></li>
 <li><a href="pages/writing-tests.html">Writing tests</a></li>
