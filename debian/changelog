@@ -1,3 +1,9 @@
+utest (0.5-1) trusty; urgency=medium
+
+  * New upstream release
+
+ -- Lubomír Sedlář <lubomir.sedlar@gmail.com>  Mon, 02 Jun 2014 13:47:24 +0200
+
 utest (0.4-1) raring; urgency=low
 
   * New upstream release
