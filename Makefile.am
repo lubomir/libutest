@@ -21,6 +21,7 @@ AM_CFLAGS = -I$(srcdir)/src
 CLEANFILES = $(NULL)
 include data/Makefile.include
 include docs/Makefile.include
+include tests/Makefile.include
 if ENABLE_EXAMPLES
 include examples/Makefile.include
 endif

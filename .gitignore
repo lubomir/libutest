@@ -22,3 +22,6 @@ install/
 stamp-h1
 Doxyfile
 dist
+test-suite.log
+tests/run_all.sh.log
+tests/run_all.sh.trs

@@ -1,0 +1,13 @@
+TESTS = tests/run_all.sh
+
+EXTRA_DIST = tests/run_all.sh \
+	     tests/runner.sh \
+	     tests/01-basic.c \
+	     tests/01-basic.strs \
+	     tests/02-failures.c \
+	     tests/02-failures.ret \
+	     tests/02-failures.strs \
+	     tests/03-fixtures.c \
+	     tests/03-fixtures.strs \
+	     $(NULL)
+

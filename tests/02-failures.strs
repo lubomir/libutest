@@ -1,17 +1,17 @@
 ^FFFFFFF$
-Assertion in basic (tests/02-failures.c:4) failed:
+Assertion in basic (.*tests/02-failures.c:4) failed:
 0
-Assertion in not_null (tests/02-failures.c:9) failed:
+Assertion in not_null (.*tests/02-failures.c:9) failed:
 p is NULL
-Assertion in null (tests/02-failures.c:14) failed:
+Assertion in null (.*tests/02-failures.c:14) failed:
 p (0xcafe) is not NULL
-Assertion in equal_int (tests/02-failures.c:19) failed:
+Assertion in equal_int (.*tests/02-failures.c:19) failed:
 Expected <2>, got <1>
-Assertion in equal_char (tests/02-failures.c:24) failed:
+Assertion in equal_char (.*tests/02-failures.c:24) failed:
 Expected <c>, got <a>
-Assertion in equal_uint (tests/02-failures.c:29) failed:
+Assertion in equal_uint (.*tests/02-failures.c:29) failed:
 Expected <3>, got <2>
-Assertion in equal_string (tests/02-failures.c:34) failed:
+Assertion in equal_string (.*tests/02-failures.c:34) failed:
 Expected <foo>
 Got      <bar>
 0 assertions succeeded, 7 assertions failed
