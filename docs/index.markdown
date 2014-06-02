@@ -54,6 +54,8 @@ There are prepared Debian/Ubuntu packages at [my PPA].
 
 ## Documentation
 
+The only public interface of the library is the header file `utest.h`.
+
  * [Defining tests](pages/defining-tests.html)
  * [Writing tests](pages/writing-tests.html)
  * [Running tests](pages/running-tests.html)
